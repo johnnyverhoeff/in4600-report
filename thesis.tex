@@ -33,6 +33,37 @@
 
 \usepackage{enumitem}
 
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows}
+
+\tikzset{
+  block/.style={
+    draw,
+    rectangle,
+    minimum height=1cm,
+    minimum width=1cm,
+    align=center
+  },
+  subblock/.style={
+    draw,
+    rectangle,
+    minimum height=.75cm,
+    minimum width=1.5cm,
+    align=center
+  },
+  line/.style={->,>=latex},
+  XOR/.style={draw,circle,append after command={
+        [shorten >=\pgflinewidth, shorten <=\pgflinewidth,]
+        (\tikzlastnode.north east) edge (\tikzlastnode.south west)
+        (\tikzlastnode.south east) edge (\tikzlastnode.north west)
+        }
+    }
+}
+
+
+
+
+
 
 
 
