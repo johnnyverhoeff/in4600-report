@@ -29,6 +29,14 @@
 \usepackage{url}
 \usepackage[plainpages=false]{hyperref}
 
+
+
+\usepackage{enumitem}
+
+
+
+
+
 % Information that will be filled in at various points in the report
 \newcommand{\reportTitle}{Leveraging VLC for energy disaggregation in Smart Buildings}
 \newcommand{\reportAuthor}{Johnny Verhoeff}
@@ -107,14 +115,26 @@ TODO GRADUATION COMMITTEE & Delft University of Technology \\
 \pagenumbering{arabic}
 \setcounter{page}{1}
 
+
+
+
 % INTRODUCTION: page 1
 \include{chapters/introduction}
 
 % CHAPTERS ... For instance: History/Prior Work, Design/Implementation, Experiments
 \include{chapters/chapter_2}
 
+\include{chapters/CDMA/CDMA}
+
+% chapter  (end)
+
 % CONCLUSIONS AND FUTURE WORK
 \include{chapters/conclusionsandfuturework}
+
+
+
+
+
 
 % BIBLIOGRAPHY
 %#define SORTED 1

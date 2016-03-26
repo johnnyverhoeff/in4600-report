@@ -1,0 +1,97 @@
+\section{CDMA}
+\label{sec:CDMA}
+
+	This section will explain what CDMA is, alternatives and why it is needed.
+
+	When transmitting data from a transmitter to a receiver over a channel, the entire channel is being used for this purpose.
+	If one wants to have multiple transmitters transmitting over one channel, there is a problem. 
+	The transmitters interfere with each other, this is called multiple access interference (MAI). 
+	There are several ways to get around this problem: 
+
+	\begin{itemize}
+		\item TDM: Time Division Multiplexing. \\
+				Each transmitter gets assigned a time slot, in which it and only it is allowed to transmit, hereby going around the MAI problem.
+		\item FDM: Frequency Division Multiplexing. \\
+				Each transmitters gets assigned a frequency band. Each transmitter is allowed to transmit the whole time, but only at the assigned frequencies.
+		\item CDM: Code Division Multiplexing. \\
+				Each transmitter gets assigned a code word. 
+				The data first needs to be encoded using the code word and then the transmitter can send his message. 
+				Each transmitter can transmit all the time using the entire frequency band. 
+				These codes will determine how many transmitters can actually transmit with correct decoding results at the receiver end.
+	\end{itemize}
+
+	The distributed network of the VLC LEDs is inherently uncoordinated, since all the LEDs are basically only lights. 
+	They have no receiver of any kind. 
+	They can only implicitly transmit data by turning the load or the LED on or off.
+	Because the LEDs cannot receive data, they cannot be assigned a time slot and therefor we cannot use a TDM scheme.
+
+	An FDM scheme is also not applicable.
+	This is because the LEDs do not have an explicit hardware transmitter that can modulate a signal.
+	Instead the transmitting is implicitly done via turning the LED on and off.
+	So only binary values of the current draw are sent as signals.
+
+	This is where the CDM approach comes into play.
+	This scheme allows the multiple LEDs to transmit at the same time.
+	But the type of code used here is of importance.
+	The code type determines the MAI and what the receiver is able to decode.
+
+	\subsection{Performance metrics of a code}
+	\label{subsec:performance-metrics}
+
+		To determine which code is the best for this problem some measures are needed to be able to compare the codes.
+
+		One such a measure is called the correlation.
+		Correlation is a measure for determining how much sequence $X$ is similar to sequence $Y$ and can be found in \autoref{eq:correlation}.
+		With $L$ being the length of the code and $\tau$ the time-shift.
+		When sequence $X$ and $Y$ are the same sequence, we speak of the autocorrelation.
+		When they are two different sequences, we speak of the cross-correlation. 
+
+		\begin{equation}
+			R(\tau)_{xy} = \displaystyle\sum_{i = 0} ^ {L - 1} x(i) \times y(i + \tau) {\text{  with $\tau = 0, 1, 2, \dotsc, L$}}
+			\label{eq:correlation}
+		\end{equation}
+
+		The properties of an ideal code set should be, that the autocorrelation for each code in the set should be $0$ for each time-shift $\tau \neq 0$, at $\tau = 0$ the autocorrelation should be $L$.
+		The ideal cross-correlation properties should $0$ for every time-shift $\tau$, so that no code interferes with any other code, hereby causing no MAI.
+
+	\subsection{Hadamard Sequences}
+
+		Hadamard sequences are sequences which are created using a Hadamard matrix.
+		Hadamard matrices are $n \times n$ matrices which are recursively generated.
+		Starting with a $1 \times 1$ matrix: 
+		$H_{1} = \begin{bmatrix} 1 \end{bmatrix}$, then 
+		$H_{2} = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix}$.
+		Or in general: $H_{2n} = \begin{bmatrix} H_n & H_n \\ H_n & -H_n \end{bmatrix}$.
+
+		The Hadamard matrix has the property that every row in the matrix is orthogonal to every other row.
+		Hadamard matrices exist for every power of $2$, so the code length is also a power of $2$.
+		So for $\tau = 0$, the cross-correlation is $0$, but when $\tau \neq 0$ not all the rows are orthogonal anymore.
+		Only the rows for which the index is a power of $2$ are still orthogonal to each other.
+		These codes are called Cyclically Orthogonal Walsh Hadamard Codes (COWHC).
+		And with code length equal to $L$, with $L$ being a power of $2$ there are only $\log_2(L)$ number of COWH codes.
+
+		All rows of the matrix have the property that the autocorrelation at $\tau = 0$ is equal to $L$.
+		But when $\tau \neq 0$, undesirable behavior occurs as can be seen in \autoref{fig:autocorr-hadamard}.
+		The autocorrelation function has several high peaks where only one is desired.
+		This means that if a transmitter sends an encoded message with this code and the receiver does not know when in time the start of the message is, the receiver would get false positives for data.
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{chapters/CDMA/autocorr-hadamard.eps}
+			\caption{Autocorrelation of Hadamard code with index 120 of length 256.}
+			\label{fig:autocorr-hadamard}
+		\end{figure}
+
+		So only a small subset of the codes have a $0$ for every time-shift $\tau$ and the autocorrelation is far from what the ideal code set should have.
+
+
+	\subsection{PN Sequences}
+
+
+
+
+		
+
+
+
+
