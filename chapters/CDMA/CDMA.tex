@@ -223,9 +223,113 @@
 
 	\subsection{Gold Sequences}
 
-		\cite{kedia2012comparative}
+		Gold sequences are named after R. Gold who created them \cite{1054106}.
+		These sequences are very similar to $m$-sequences, in fact they are created by using two LFS registers as shown in \autoref{fig:gold-lfsr}.
+		In this figure there are two vectors $s$ and $t$ and two polynomials $C$ and $D$.
+		For a sequence to be constructed in this way that is a Gold sequence, only preferred pairs of polynomials can be used \cite{kedia2012comparative}.
+		When we have the polynomials $p(x)$ and $q(x)$, which are a preferred pair and produces the $m$-sequences $d_1$ and $d_2$ respectively, the resulting set of Gold codes is defined as can be seen in \autoref{eq:gold-def}, where $T^n$ represent the cyclic shift of $n$ bits.
+		With the exception of the two original $m$-sequences, the Gold codes are not maximal length sequences. 
+		They also do not have the property that the codes are balanced.
+		If the two shift registers used, have length $n$ than the code length will still become $L = 2^n - 1$ as with the $m$-sequences.
+		But the number of codes in the set is greater than that of the $m$-sequences.
+		If the two shift registers used, have length $n$ than the number of codes are $2^n + 1$.
+
+		\begin{equation}
+			\label{eq:gold-def}
+			Gold(d_1, d_2) = \{ d_1, d_2, d_1 \oplus d_2, d_1 \oplus Td_2, d_1 \oplus T^2d_2, \dotsc, d_1 \oplus T^{L - 1}d_2 \}
+		\end{equation}
 
 
+		\begin{figure}
+			\centering
+			\begin{tikzpicture}
+
+				\node[block                  ] (last_register1) {$s_{n-1}$};
+				\node[block, right = 1cm of last_register1] (second_last_register1) {$s_{n-2}$};
+				\draw[line] (last_register1.east) -- (second_last_register1.west) ;
+
+				\node[block, right = 3cm of second_last_register1] (second_register1) {$s_{1}$};
+				\node[block, right = 1cm of second_register1] (mid_register1) {$s_{0}$};
+				\draw[line] (second_register1.east) -- (mid_register1.west) ;
+
+				\draw[dashed, line] (second_last_register1.east) -- (second_register1.west) ;
+
+				\node[coordinate, right = 1cm of mid_register1] (output_point1) {};
+
+				\node[XOR, scale=2, above = 2cm of second_register1] (first_xor1) {};
+				\draw[line] (second_register1.north) -- (first_xor1.south) node [midway, right] {$C_1$};
+				\draw[line] (mid_register1.north) |- (first_xor1.east) node [pos=0.21, right] {$C_0$};
+
+				\node[coordinate, right = 1.5cm of second_last_register1] (h1) {};
+				\node[XOR, scale=2, above = 2.5cm of h1] (mid_xor1) {};
+				\draw[line] (first_xor1.west) -- (mid_xor1.east) ;
+				\draw[dashed, line] (h1.north) -- (mid_xor1.south) ;
+
+				\node[XOR, scale=2, above = 2cm of second_last_register1] (second_last_xor1) {};
+				\node[XOR, scale=2, above = 2cm of last_register1] (last_xor1) {};
+
+				\draw[line] (second_last_register1.north) -- (second_last_xor1.south) node [midway, right] {$C_{n-2}$};
+				\draw[line] (mid_xor1.west) -- (second_last_xor1.east) ;
+				
+				\draw[line] (second_last_xor1.west) -- (last_xor1.east) ;
+				\draw[line] (last_register1.north) -- (last_xor1.south) node [midway, right] {$C_{n-1}$};
+
+				\node[coordinate, left = 1cm of last_register1] (return_point1) {};
+				
+				\draw[line] (last_xor1.west) -| (return_point1) -- (last_register1.west) ;
+
+				%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+				\node[block, below = 2cm of last_register1] (last_register) {$t_{n-1}$};
+				\node[block, right = 1cm of last_register] (second_last_register) {$t_{n-2}$};
+				\draw[line] (last_register.east) -- (second_last_register.west) ;
+
+				\node[block, right = 3cm of second_last_register] (second_register) {$t_{1}$};
+				\node[block, right = 1cm of second_register] (mid_register) {$t_{0}$};
+				\draw[line] (second_register.east) -- (mid_register.west) ;
+
+				\draw[dashed, line] (second_last_register.east) -- (second_register.west) ;
+
+				\node[coordinate, right = 1cm of mid_register] (output_point) {};
+
+				\node[XOR, scale=2, below = 2cm of second_register] (first_xor) {};
+				\draw[line] (second_register.south) -- (first_xor.north) node [midway, right] {$D_1$};
+				\draw[line] (mid_register.south) |- (first_xor.east) node [pos=0.21, right] {$D_0$};
+
+				\node[coordinate, right = 1.5cm of second_last_register] (h) {};
+				\node[XOR, scale=2, below = 2.5cm of h] (mid_xor) {};
+				\draw[line] (first_xor.west) -- (mid_xor.east) ;
+				\draw[dashed, line] (h.south) -- (mid_xor.north) ;
+
+				\node[XOR, scale=2, below = 2cm of second_last_register] (second_last_xor) {};
+				\node[XOR, scale=2, below = 2cm of last_register] (last_xor) {};
+
+				\draw[line] (second_last_register.south) -- (second_last_xor.north) node [midway, right] {$D_{n-2}$};
+				\draw[line] (mid_xor.west) -- (second_last_xor.east) ;
+				
+				\draw[line] (second_last_xor.west) -- (last_xor.east) ;
+				\draw[line] (last_register.south) -- (last_xor.north) node [midway, right] {$D_{n-1}$};
+
+				\node[coordinate, left = 1cm of last_register] (return_point) {};
+				
+				\draw[line] (last_xor.west) -| (return_point) -- (last_register.west) ;
+
+				%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+				\node[XOR, scale=2, below = 1cm of output_point1] (gold_xor) {};
+				\draw[line] (mid_register1) -| (gold_xor) ;
+				\draw[line] (mid_register) -| (gold_xor) ;
+				\node[coordinate, right = 2cm of gold_xor] (gold_output) {} ;
+				\draw[line] (gold_xor.east) -- (gold_output.west) node [midway, above] {output};
+
+
+			\end{tikzpicture}
+			\caption{Two linear feedback shifter registers of length $n$, with XOR gates to produce a Gold code.}
+			\label{fig:gold-lfsr}
+		\end{figure}
+
+		%auto correlation / cross...
 
 
 
