@@ -329,10 +329,51 @@
 			\label{fig:gold-lfsr}
 		\end{figure}
 
-		%auto correlation / cross...
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{chapters/CDMA/autocorr-gold.eps}
+			\caption{Autocorrelation of one Gold sequence of length 1023.}
+			\label{fig:autocorr-gold}
+		\end{figure}
 
 
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{chapters/CDMA/autocorr-gold-3d.eps}
+			\caption{Autocorrelation of all Gold codes in the same set of length 63.}
+			\label{fig:autocorr-gold-3d}
+		\end{figure}
 
+		The autocorrelation properties of Gold sequences are not as good as that of the $m$-sequences, as can be seen from \autoref{fig:autocorr-gold-3d}.
+		Apart from the original two $m$-sequences the autocorrelation values are not two-valued, but are four-valued.
+		See \autoref{eq:autocorr-gold} and \autoref{eq:gold-t(n)} for the autocorrelation properties of Gold sequences and see \autoref{eq:corsscorr-gold} and \autoref{eq:gold-t(n)} for the cross-correlation properties of Gold sequences \cite{mitra2008pseudo}.
+		From these equations it is clear to see that the absolute maximum cross-correlation is bounded by $t(n)$.
+
+		\begin{equation}
+			\label{eq:autocorr-gold}
+			R(\tau) = 
+				\begin{cases}
+					L    							& \quad \text{if } \tau = 0 \\
+					\{ -t(n), \ -1, \ t(n) - 2  \} 	& \quad \text{if } \tau \neq 0 \\
+				\end{cases}
+		\end{equation}
+
+		\begin{equation}
+			\label{eq:corsscorr-gold}
+			R_{xy}(\tau) = 	\{ -t(n), -1, t(n) - 2  \} 
+		\end{equation}
+
+		\begin{equation}
+			\label{eq:gold-t(n)}
+			t(n) = 
+				\begin{cases}
+					1 + 2^{\frac{n+1}{2}} & \quad \text{for odd } n \\
+					1 + 2^{\frac{n+2}{2}} & \quad \text{for even } n \\
+				\end{cases}
+		\end{equation}
+
+		
 
 		
 
