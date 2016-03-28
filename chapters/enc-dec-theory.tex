@@ -1,0 +1,16 @@
+%!TEX root = ../thesis.tex
+
+\section{Encoding \& Decoding Data Simulation}
+\label{sec:enc-dec-theory}
+
+	All of the coding schemes as discussed in \autoref{sec:CDMA} are designed for wireless transceivers.
+	Meaning they send a radiowave through the air which is encoded with that particular code sequence.
+	That radiowave is an analog signal and can vary between $+1$ and $-1$.
+	But the VLC enabled LEDs cannot send such signals.
+	They can only be turned on or off, thus encoding only $0$ and $1$ symbols.
+	Those symbols correspond to a current draw of the LED which is measured by an ADC for example.
+	To experiment with the encoding and decoding process and obstacles without the need for hardware and such, we use Matlab to simulate the process.
+
+	\subsection{Walsh-Hadamard Sequences}
+
+		%about radio dec. and bin. enc. proof etc...
