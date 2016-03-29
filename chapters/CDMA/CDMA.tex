@@ -68,9 +68,27 @@
 		Starting with a $1 \times 1$ matrix: 
 		$H_{1} = \begin{bmatrix} 1 \end{bmatrix}$, then 
 		$H_{2} = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix}$.
-		Or in general: $H_{2n} = \begin{bmatrix} H_n & H_n \\ H_n & -H_n \end{bmatrix}$ \cite{714616}.
-		The matrix can also be filled with binary values: zero and one. In that case the general matrix will be: 
-		$H_{2n} = \begin{bmatrix} H_n & H_n \\ H_n & \overline{H_n} \end{bmatrix}$
+		Or in general see \autoref{eq:hadamard-matrix-creation} which is a recursive formula to generate other ranks of Hadamard matrices \cite{714616}.
+
+		\begin{equation}
+			H_{2n} = 
+			\begin{bmatrix} 
+				H_n & H_n \\ 
+				H_n & -H_n 
+			\end{bmatrix}
+			\label{eq:hadamard-matrix-creation}
+		\end{equation}
+		 
+		The matrix can also be filled with binary values: zero and one. In that case the general recursive formula is stated in \autoref{eq:hadamard-matrix-creation-bin}. 
+
+		\begin{equation}
+			H_{2n} = 
+			\begin{bmatrix} 
+				H_n & H_n \\ 
+				H_n & \overline{H_n}
+			\end{bmatrix}
+			\label{eq:hadamard-matrix-creation-bin}
+		\end{equation}
 
 		The Hadamard matrix has the property that every row in the matrix is orthogonal to every other row.
 		Hadamard matrices exist for every power of $2$, so the code length is also a power of $2$.

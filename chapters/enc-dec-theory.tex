@@ -5,12 +5,125 @@
 
 	All of the coding schemes as discussed in \autoref{sec:CDMA} are designed for wireless transceivers.
 	Meaning they send a radiowave through the air which is encoded with that particular code sequence.
-	That radiowave is an analog signal and can vary between $+1$ and $-1$.
+	That radiowave is an analog signal and can vary between $+1$ and $-1$ symbols.
 	But the VLC enabled LEDs cannot send such signals.
 	They can only be turned on or off, thus encoding only $0$ and $1$ symbols.
 	Those symbols correspond to a current draw of the LED which is measured by an ADC for example.
-	To experiment with the encoding and decoding process and obstacles without the need for hardware and such, we use Matlab to simulate the process.
+	To experiment with the encoding and decoding process and obstacles without the need for hardware, we use Matlab to simulate the process.
 
 	\subsection{Walsh-Hadamard Sequences}
 
 		%about radio dec. and bin. enc. proof etc...
+		The way the Walsh-Hadamard sequences work with encoding and decoding with for example the link from a base-station to a mobile device of a CDMA application, is that the sequence of $+1$ and $-1$ symbols gets multiplied with the encoded data. 
+		Say for example that we have a Hadamard matrix of rank $8$ as can be seen in \autoref{matrix:h8} which is created by using \autoref{eq:hadamard-matrix-creation}.
+		And we select a random code to encode our data with, which corresponds to a row of this matrix.
+		We also assume that our data is binary, consisting of 0s and 1s. 
+		Our last assumption is that is we want to encode a $0$ we use the code itself and if we want to encode a $1$ we use the inverse of the code, i.e. $-1 \times$ the code.
+		That describes the encoding process. 
+		The decoding process involves the calculation of the correlation of the received signal with a code sequence for which we want to know if there is information embedded in the received signal and if so, what might that information be.
+
+			\begin{equation}
+				H_8 = 
+				\begin{bmatrix*}[r] 
+					H_4 & H_4 \\ 
+					H_4 & -H_4 
+				\end{bmatrix*}
+				%=
+				%\begin{bmatrix*}[r] 
+				%	H_2 & H_2   & H_2 & H_2   \\
+				%	H_2 & -H_2  & H_2 & -H_2  \\
+				%	H_2 & H_2   & -H_2 & -H_2 \\
+				%	H_2 & -H_2  & -H_2 & H_2  \\
+				%\end{bmatrix*}
+				=
+				\dotsc
+				=
+				\begin{bmatrix*}[r]
+					1	&	 1	&	 1	&	 1	&	 1	&	 1	&	 1	&	 1 \\
+					1	&	-1	&	 1	&	-1	&	 1	&	-1	&	 1	&	-1 \\
+					1	&	 1	&	-1	&	-1	&	 1	&	 1	&	-1	&	-1 \\
+					1	&	-1	&	-1	&	 1	&	 1	&	-1	&	-1	&	 1 \\
+					1	&	 1	&	 1	&	 1	&	-1	&	-1	&	-1	&	-1 \\
+					1	&	-1	&	 1	&	-1	&	-1	&	 1	&	-1	&	 1 \\
+					1	&	 1	&	-1	&	-1	&	-1	&	-1	&	 1	&	 1 \\
+					1	&	-1	&	-1	&	 1	&	-1	&	 1	&	 1	&	-1 
+				\end{bmatrix*}
+				\label{matrix:h8}
+			\end{equation}
+
+		Since the autocorrelation of Walsh-Hadamard sequences do not allow to find the beginning of a code, see \autoref{fig:autocorr-hadamard}, we will only consider the synchronized situation, for which these codes are also used in practice, so $\tau = 0$.
+		Say we have a code $c_i(t)$ and we want to encode a $0$ with this code and send that as a signal for our receiver to receive.
+		The receiver will receive this signal $s(t)$ assuming a perfect channel, the decoding process can be seen below.
+
+		%Want something different than proof, but dont know how/what
+
+		\begin{proof}
+			Let $s(t)$ be the received signal which encodes a 0 for code: $c_i(t)$.\\
+			And let $c_i(t)$ be the code for which we want to check if there is information there. \\
+
+			\begin{align*}
+				R(\tau)_{xy} = \displaystyle\sum_{t = 0} ^ {L - 1} x(t) \times y(t + \tau)	\tag{See \autoref{eq:correlation}}
+				\\ \tau = 0,\ x = s(t),\ y = c_i(t)	
+				\\ R(0)_{sc_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} s(t) \times c_i(t)	
+				\\ s(t) = c_i(t)															
+				\\ R(0)_{sc_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} c_i(t) \times c_i(t) = L
+			\end{align*}
+
+		\end{proof}
+
+		We can also state what the result will be when we decode a $1$ with a code $c_i(t)$, see below:
+
+		\begin{proof}
+			Let $s(t)$ be the received signal which encodes a 1 for code: $c_i(t)$.\\
+			And let $c_i(t)$ be the code for which we want to check if there is information there. \\
+
+			\begin{align*}
+				R(\tau)_{xy} = \displaystyle\sum_{t = 0} ^ {L - 1} x(t) \times y(t + \tau)	\tag{See \autoref{eq:correlation}}
+				\\ \tau = 0,\ x = s(t),\ y = c_i(t)	
+				\\ R(0)_{sc_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} s(t) \times c_i(t)	
+				\\ s(t) = -1 \times c_i(t)															
+				\\ R(0)_{sc_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} -1 \times c_i(t) \times c_i(t)
+				\\ &= -1 \times \displaystyle\sum_{t = 0} ^ {L - 1} c_i(t) \times c_i(t) = -1 \times L
+			\end{align*}
+
+		\end{proof}
+
+		This two statement state that if we encode a data bit with code $c_i$ and that is the only information received by the receiver, we either get the maximum positive correlation, i.e. $L$ or we get the maximum negative correlation, i.e. $-L$.
+		If we would have received a signal consisting of only zeros the correlation would also be zero.
+
+		Next let us look at what happens when we try to decode information with a different code than the code which was used to encode information with. In that case we also get a correlation of zero, see below. This is per definition the case since we are using Walsh-Hadamard codes which are orthogonal to each other when they are synchronized.
+
+		\begin{proof}
+			Let $s(t)$ be the received signal which encodes a data bit for code: $c_i(t)$.\\
+			And let $c_j(t)$ be the code for which we want to check if there is information there. \\
+
+			\begin{align*}
+				R(\tau)_{xy} = \displaystyle\sum_{t = 0} ^ {L - 1} x(t) \times y(t + \tau)	\tag{See \autoref{eq:correlation}}
+				\\ \tau = 0,\ x = s(t),\ y = c_j(t)	
+				\\ R(0)_{sc_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} s(t) \times c_j(t)	
+				\\ s(t) = c_i(t)															
+				\\ R(0)_{sc_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} c_i(t) \times c_j(t) = 0
+			\end{align*}
+
+		\end{proof}
+
+		Finally we look at the decoding process for when the received signal consists of several encoded signals, see below. 
+		Because all the codes in Walsh-Hadamard sequences are orthogonal to each other they produce no MAI and so there can be as many codes superimposed on each other and still a correct decoding can take place. 
+
+
+		\begin{proof}
+			Let $s(t)$ be the received signal which encodes data for several codes: $c_i(t)$, $c_j(t)$, $c_k(t)$ and $c_l(t)$.\\
+			And let $c_i(t)$ be the code for which we want to check if there is information there. \\
+
+			\begin{align*}
+				R(\tau)_{xy} = \displaystyle\sum_{t = 0} ^ {L - 1} x(t) \times y(t + \tau)	\tag{See \autoref{eq:correlation}}
+				\\ \tau = 0,\ x = s(t),\ y = c_i(t)	
+				\\ R(0)_{sc_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} s(t) \times c_i(t)	
+				\\ s(t) = c_i(t) + c_j(t) + c_k(t) + c_l(t)															
+				\\ R(0)_{sc_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} \{ c_i(t) + c_j(t) + c_k(t) + c_l(t) \} \times c_i(t)
+				\\ R(0)_{sc_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} c_i(t) \times c_i(t) + c_j(t) \times c_i(t) + c_k(t) \times c_i(t) + c_l(t) \times c_i(t)
+				\\ = L + 0 + 0 + 0 = L
+			\end{align*}
+
+		\end{proof}
+		
