@@ -4,8 +4,8 @@
 \label{sec:enc-dec-theory}
 
 	All of the coding schemes as discussed in \autoref{sec:CDMA} are designed for wireless transceivers.
-	Meaning they send a radiowave through the air which is encoded with that particular code sequence.
-	That radiowave is an analog signal and can vary between $+1$ and $-1$ symbols.
+	Meaning they send a radio wave through the air which is encoded with that particular code sequence.
+	That radio wave is an analog signal and can vary between $+1$ and $-1$ symbols.
 	But the VLC enabled LEDs cannot send such signals.
 	They can only be turned on or off, thus encoding only $0$ and $1$ symbols.
 	Those symbols correspond to a current draw of the LED which is measured by an ADC for example.
@@ -126,4 +126,245 @@
 			\end{align*}
 
 		\end{proof}
-		
+
+		But as stated in \autoref{sec:enc-dec-theory} the VLC enabled LEDs cannot send $+1$ and $-1$ symbols of data, they can only be in an on or off state.
+		This means that the code that is being used for encoding must be mapped to zeros and ones.
+		Let us assume that a $+1$ symbol maps to an off state, i.e. $0$ and that a $-1$ symbol maps to an on state, i.e. $1$.
+		We can summarize that in \autoref{eq:radio-to-bin}, where $r$ denotes the $+1$ or $-1$ symbols and the outcome $b$ will be our binary value, i.e. $0$ or $1$.
+
+		\begin{equation}
+			b = \frac{1 - r}{2}
+			\label{eq:radio-to-bin}
+		\end{equation}
+
+		Because we are now using the binary values as code, we can no longer use multiply to encode our binary information.
+		Instead, we must use th XOR function.
+		Now let us see what happens when we try to decode information that has been encoded using on-off keying (OOK), below is stated what happens when both data bits are encoded.
+
+		\begin{proof}
+			Let $s(t)$ be the received signal which encodes a 0 for code: $c^b_i(t)$, where $c^b_i(t)$ is binary valued, i.e. $0$ or $1$ \\
+			And let $c^r_i(t)$ be the code for which we want to check if there is information there, where $c^r_i(t)$ uses the traditional values $-1$ and $+1$ \\
+
+			\begin{align*}
+				R(\tau)_{xy} = \displaystyle\sum_{t = 0} ^ {L - 1} x(t) \times y(t + \tau)	\tag{See \autoref{eq:correlation}}
+				\\ \tau = 0,\ x = s(t),\ y = c^r_i(t)	
+				\\ R(0)_{sc^r_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} s(t) \times c^r_i(t)	
+				\\ s(t) = \forall t \in \{ 0, 1, 2, \dotsc, L - 1 \} \ \ 0(t) \oplus c^b_i(t) = c^b_i(t) \tag{Where $0(t) = 0 \ \forall t$ }										
+				\\ R(0)_{sc^r_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} c^b_i(t) \times c^r_i(t)
+				\\ = \displaystyle\sum_{t = 0} ^ {L - 1} \frac{1 - c^r_i(t)}{2} \times c^r_i(t) \tag{Via \autoref{eq:radio-to-bin}}
+				\\ = \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) - c^r_i(t) \times c^r_i(t)
+				\\ = \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) - \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) \times c^r_i(t)
+				\\ = 0 - \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) \times c^r_i(t) \tag{Balance property}
+				\\ = - \frac{1}{2} \times L
+			\end{align*}
+
+		\end{proof}
+
+		\begin{proof}
+			Let $s(t)$ be the received signal which encodes a 1 for code: $c^b_i(t)$, where $c^b_i(t)$ is binary valued, i.e. $0$ or $1$ \\
+			And let $c^r_i(t)$ be the code for which we want to check if there is information there, where $c^r_i(t)$ uses the traditional values $-1$ and $+1$ \\
+
+			\begin{align*}
+				R(\tau)_{xy} = \displaystyle\sum_{t = 0} ^ {L - 1} x(t) \times y(t + \tau)	\tag{See \autoref{eq:correlation}}
+				\\ \tau = 0,\ x = s(t),\ y = c^r_i(t)	
+				\\ R(0)_{sc^r_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} s(t) \times c^r_i(t)	
+				\\ s(t) = \forall t \in \{ 0, 1, 2, \dotsc, L - 1 \} \ \ 1(t) \oplus c^b_i(t) = 1 - c^b_i(t) \tag{Where $1(t) = 1 \ \forall t$ }
+				\\ R(0)_{sc^r_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} (1 - c^b_i(t)) \times c^r_i(t)
+				\\ = \displaystyle\sum_{t = 0} ^ {L - 1} (1 - \frac{1 - c^r_i(t)}{2}) \times c^r_i(t) \tag{Via \autoref{eq:radio-to-bin}}
+				\\ = \displaystyle\sum_{t = 0} ^ {L - 1} \frac{1 + c^r_i(t)}{2} \times c^r_i(t)
+				\\ = \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) + c^r_i(t) \times c^r_i(t)
+				\\ = \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) + \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) \times c^r_i(t)
+				\\ = 0 + \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) \times c^r_i(t) \tag{Balance property}
+				\\ = \frac{1}{2} \times L
+			\end{align*}
+
+		\end{proof}
+
+		The case for when there is no data encoded for this particular code:
+
+		\begin{proof}
+			Let $s(t)$ be the received signal which encodes data for code: $c^b_i(t)$, where $c^b_i(t)$ is binary valued, i.e. $0$ or $1$ \\
+			And let $c^r_j(t)$ be the code for which we want to check if there is information there, where $c^r_j(t)$ uses the traditional values $-1$ and $+1$ \\
+
+			\begin{align*}
+				R(\tau)_{xy} = \displaystyle\sum_{t = 0} ^ {L - 1} x(t) \times y(t + \tau)	\tag{See \autoref{eq:correlation}}
+				\\ \tau = 0,\ x = s(t),\ y = c^r_j(t)	
+				\\ R(0)_{sc^r_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} s(t) \times c^r_j(t)	
+				\\ s(t) = c^b_i(t)										
+				\\ R(0)_{sc^r_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} c^b_i(t) \times c^r_j(t)
+				\\ = \displaystyle\sum_{t = 0} ^ {L - 1} \frac{1 - c^r_i(t)}{2} \times c^r_j(t) \tag{Via \autoref{eq:radio-to-bin}}
+				\\ = \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_j(t) - c^r_i(t) \times c^r_j(t)
+				\\ = \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_j(t) - \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) \times c^r_j(t)
+				\\ = 0 - \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) \times c^r_i(t) \tag{Balance property}
+				\\ = 0 + 0 = 0\tag{Because the codes are orthogonal.}
+			\end{align*}
+
+		\end{proof}
+
+		Finally the case for when there are multiple signals:
+
+
+		\begin{proof}
+			Let $s(t)$ be the received signal which encodes data for several codes: $c^b_i(t)$, $c^b_j(t)$, $c^b_k(t)$ and $c^b_l(t)$, where $c^b_i(t)$ is binary valued, i.e. $0$ or $1$\\
+			And let $c^r_i(t)$ be the code for which we want to check if there is information there, where $c^r_i(t)$ uses the traditional values $-1$ and $+1$ \\
+
+			\begin{align*}
+				R(\tau)_{xy} = \displaystyle\sum_{t = 0} ^ {L - 1} x(t) \times y(t + \tau)	\tag{See \autoref{eq:correlation}}
+				\\ \tau = 0,\ x = s(t),\ y = c^r_i(t)	
+				\\ R(0)_{sc^r_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} s(t) \times c^r_i(t)	
+				\\ s(t) = c^b_i(t) + c^b_j(t) + c^b_k(t) + c^b_l(t)															
+				\\ R(0)_{sc^r_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} \{ c^b_i(t) + c^b_j(t) + c^b_k(t) + c^b_l(t) \} \times c^r_i(t)
+				\\ R(0)_{sc^r_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} c^b_i(t) \times c^r_i(t) + c^b_j(t) \times c^r_i(t) + c^b_k(t) \times c^r_i(t) + c^b_l(t) \times c^r_i(t)
+				\\ = \frac{1}{2} \times L + 0 + 0 + 0 = \frac{1}{2} \times L \tag{See above proofs}
+			\end{align*}
+
+		\end{proof}
+
+
+
+
+		As we can see the correlation is for both data bits and when there is no information encoded, exactly $-\frac{1}{2}$ times as large as when dealing only with $+1$ and $-1$ symboled codes. 
+		It also works for when there are multiple streams of encoded information present in the signal received.
+		A summary is available, see \autoref{tbl:correlation-levels}.
+
+		\begin{table}[h!]
+			\centering
+			
+			\begin{tabular}{| l | l |}
+				\hline
+				Method												& Correlation \\ \hline \hline
+				Encoding a 0 and decoding with only one transmitter & $-\frac{1}{2} \times L$  \\ \hline
+				Encoding a 1 and decoding with only one transmitter & $ \frac{1}{2} \times L$   \\ \hline
+				Encoding a 0 and decoding with a different code, with only one transmitter & 0  \\ \hline
+				Encoding a 0 and decoding with multiple transmitters & $-\frac{1}{2} \times L$ \\ \hline
+			\end{tabular}
+			\caption{Table containing summary of correlation levels.}
+			\label{tbl:correlation-levels}
+		\end{table}
+
+
+
+
+
+
+
+
+
+		We can also choose to encode and decode with the binary valued codes only, so only use values with $0$ and $1$. 
+
+
+		\begin{proof}
+			Let $s(t)$ be the received signal which encodes a 0 for code: $c^b_i(t)$, where $c^b_i(t)$ is binary valued, i.e. $0$ or $1$ \\
+			And let $c^b_i(t)$ be the code for which we want to check if there is information there, where $c^b_i(t)$ is binary valued, i.e. $0$ or $1$ \\
+
+			\begin{align*}
+				R(\tau)_{xy} = \displaystyle\sum_{t = 0} ^ {L - 1} x(t) \times y(t + \tau)	\tag{See \autoref{eq:correlation}}
+				\\ \tau = 0,\ x = s(t),\ y = c^b_i(t)	
+				\\ R(0)_{sc^b_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} s(t) \times c^b_i(t)	
+				\\ s(t) = \forall t \in \{ 0, 1, 2, \dotsc, L - 1 \} \ \ 0(t) \oplus c^b_i(t) = c^b_i(t) \tag{Where $0(t) = 0 \ \forall t$ }
+				\\ R(0)_{sc^b_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} c^b_i(t) \times c^b_i(t)
+				\\ = \displaystyle\sum_{t = 0} ^ {L - 1} \frac{1 - c^r_i(t)}{2} \times \frac{1 - c^r_i(t)}{2} \tag{Via \autoref{eq:radio-to-bin}}
+				\\ = \frac{1}{4} \times \displaystyle\sum_{t = 0} ^ {L - 1} 1 - 2 \times c^r_i(t) + c^r_i(t) \times c^r_i(t)
+				\\ = \frac{1}{4} \times \displaystyle\sum_{t = 0} ^ {L - 1} 1 - \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) + \frac{1}{4} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) \times c^r_i(t)
+				\\ = \frac{1}{4} \times L - 0 + \frac{1}{4} \times L = \frac{1}{2} \times L
+			\end{align*}
+
+		\end{proof}
+
+
+		\begin{proof}
+			Let $s(t)$ be the received signal which encodes a 1 for code: $c^b_i(t)$, where $c^b_i(t)$ is binary valued, i.e. $0$ or $1$ \\
+			And let $c^b_i(t)$ be the code for which we want to check if there is information there, where $c^b_i(t)$ is binary valued, i.e. $0$ or $1$ \\
+
+			\begin{align*}
+				R(\tau)_{xy} = \displaystyle\sum_{t = 0} ^ {L - 1} x(t) \times y(t + \tau)	\tag{See \autoref{eq:correlation}}
+				\\ \tau = 0,\ x = s(t),\ y = c^b_i(t)	
+				\\ R(0)_{sc^b_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} s(t) \times c^b_i(t)	
+				\\ s(t) = \forall t \in \{ 0, 1, 2, \dotsc, L - 1 \} \ \ 1(t) \oplus c^b_i(t) = 1 - c^b_i(t) \tag{Where $1(t) = 1 \ \forall t$ }
+				\\ R(0)_{sc^b_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} (1 - c^b_i(t)) \times c^b_i(t)
+				\\ = \displaystyle\sum_{t = 0} ^ {L - 1} (1 - \frac{1 - c^r_i(t)}{2}) \times \frac{1 - c^r_i(t)}{2} \tag{Via \autoref{eq:radio-to-bin}}
+				\\ = \displaystyle\sum_{t = 0} ^ {L - 1} \frac{1 + c^r_i(t)}{2} \times \frac{1 - c^r_i(t)}{2}
+				\\ = \frac{1}{4} \times \displaystyle\sum_{t = 0} ^ {L - 1} 1 - c^r_i(t) \times c^r_i(t)
+				\\ = \frac{1}{4} \times \displaystyle\sum_{t = 0} ^ {L - 1} 1 - \frac{1}{4} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) \times c^r_i(t)
+				\\ = \frac{1}{4} \times L - \frac{1}{4} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) \times c^r_i(t)
+				\\ = \frac{1}{4} \times L - \frac{1}{4} \times L = 0
+			\end{align*}
+
+		\end{proof}
+
+		\begin{proof}
+			Let $s(t)$ be the received signal which encodes a 0 for code: $c^b_i(t)$, where $c^b_i(t)$ is binary valued, i.e. $0$ or $1$ \\
+			And let $c^b_j(t)$ be the code for which we want to check if there is information there, where $c^b_i(t)$ is binary valued, i.e. $0$ or $1$ \\
+
+			\begin{align*}
+				R(\tau)_{xy} = \displaystyle\sum_{t = 0} ^ {L - 1} x(t) \times y(t + \tau)	\tag{See \autoref{eq:correlation}}
+				\\ \tau = 0,\ x = s(t),\ y = c^b_j(t)	
+				\\ R(0)_{sc^b_{j}} = \displaystyle\sum_{t = 0} ^ {L - 1} s(t) \times c^b_j(t)	
+				\\ s(t) = \forall t \in \{ 0, 1, 2, \dotsc, L - 1 \} \ \ 0(t) \oplus c^b_i(t) = c^b_i(t) \tag{Where $0(t) = 0 \ \forall t$ }
+				\\ R(0)_{sc^b_{j}} = \displaystyle\sum_{t = 0} ^ {L - 1} c^b_i(t) \times c^b_j(t)
+				\\ = \displaystyle\sum_{t = 0} ^ {L - 1} \frac{1 - c^r_i(t)}{2} \times \frac{1 - c^r_j(t)}{2} \tag{Via \autoref{eq:radio-to-bin}}
+				\\ = \frac{1}{4} \times \displaystyle\sum_{t = 0} ^ {L - 1} 1 - c^r_i(t) - c^r_j(t) + c^r_i(t) \times c^r_j(t)
+				\\ = \frac{1}{4} \times \displaystyle\sum_{t = 0} ^ {L - 1} 1 - \frac{1}{4} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) - \frac{1}{4} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_j(t) + \frac{1}{4} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) \times c^r_j(t) 
+				\\ = \frac{1}{4} \times L - 0 - 0 + 0 = \frac{1}{4} \times L
+			\end{align*}
+
+		\end{proof}
+
+		\begin{proof}
+			Let $s(t)$ be the received signal which encodes data for codes: $c^b_j(t)$, $c^b_l(t)$, where $c^b_j(t)$ is binary valued, i.e. $0$ or $1$\\
+			And let $c^b_i(t)$ be the code for which we want to check if there is information there, where $c^b_i(t)$ is binary valued, i.e. $0$ or $1$ \\
+
+			\begin{align*}
+				R(\tau)_{xy} = \displaystyle\sum_{t = 0} ^ {L - 1} x(t) \times y(t + \tau)	\tag{See \autoref{eq:correlation}}
+				\\ \tau = 0,\ x = s(t),\ y = c^b_i(t)	
+				\\ R(0)_{sc^b_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} s(t) \times c^r_i(t)	
+				\\ s(t) = c^b_j(t) + c^b_l(t)														
+				\\ R(0)_{sc^b_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} \{ c^b_j(t) + c^b_l(t) \} \times c^b_i(t)
+				\\ R(0)_{sc^b_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} c^b_j(t) \times c^b_i(t) + c^b_l(t) \times c^b_i(t)
+				\\ = \frac{1}{4} \times L + \frac{1}{4} \times L = \frac{1}{2} \times L \tag{See above proofs}
+			\end{align*}
+
+		\end{proof}
+
+
+
+		\begin{table}[h!]
+			\centering
+			
+			\begin{tabular}{| l | l |}
+				\hline
+				Method												& Correlation \\ \hline \hline
+				Encoding a 0 and decoding with only one transmitter 							& $\frac{1}{2} \times L$  \\ \hline
+				Encoding a 1 and decoding with only one transmitter 							& $ 0 $   \\ \hline
+				Encoding a 0 and decoding with a different code, with only one transmitter 		& $\frac{1}{4} \times L$  \\ \hline
+				Encoding a 0 and decoding with a different code, with two transmitters			& $\frac{1}{2} \times L$  \\ \hline
+			\end{tabular}
+			\caption{Table containing summary of correlation levels.}
+			\label{tbl:correlation-levels-bin}
+		\end{table}
+
+		As we can see from the summary in \autoref{tbl:correlation-levels-bin}, the correlation levels for decoding one transmitter with the correct code, is the same as the correlation level from decoding with a code that was not encoded.
+		This forms a problem as we cannot distinguish correctly these cases.
+		And as a result we cannot use this decoding scheme. 
+
+
+		In the synchronous case, for which these codes are also used in practice, we can correctly encode and subsequently decode information. 
+		Without experiencing false-positives and without false-negatives.
+		There can also be as much transmitters transmitting concurrently without MAI as there are codes available, because the codes are orthogonal.
+		The only downside to this scheme is that all of the transmitter have to work together, they have to transmit synchronously.
+
+
+
+
+
+	\subsection{PN Sequences}
+
+		As we know from \autoref{sec:theory-pn}, there is particular bound on the cross-correlation between two or more PN sequences.
+		This means that they will have MAI and that there is a limit on how many transmitters can transmit at the same time, with the the receiver still able to correctly decode the information without experiencing false-positives and/or false-negatives.
+
+		Since there is no particular bound on the cross-correlation with PN sequences from the same length,  they need to be calculated.
+		% see table blabla
+		If we want to calculate how many simultaneous transmitters can transmit, we need to take the absolute maximum of all the cross-correlations between each PN sequence of the same length.
+		This will guaranty that for each possible combination of transmitters the information can be correctly decoded.
+
+		%calc. of the bounds and table with results ....

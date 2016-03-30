@@ -47,10 +47,16 @@
 		With $L$ being the length of the code and $\tau$ the time-shift.
 		When sequence $X$ and $Y$ are the same sequence, we speak of the autocorrelation.
 		When they are two different sequences, we speak of the cross-correlation. 
+		Another way to calculate the correlation between two sequences is to count the number of agreements and disagrements between the two sequences, see \autoref{eq:correlation-a-d}, this comes in handy when comparing two digital sequences, which both have $0$ and $1$ signal levels.
 
 		\begin{equation}
 			R(\tau)_{xy} = \displaystyle\sum_{i = 0} ^ {L - 1} x(i) \times y(i + \tau) {\text{  with $\tau = 0, 1, 2, \dotsc, L$}}
 			\label{eq:correlation}
+		\end{equation}
+
+		\begin{equation}
+			R(\tau) = \text{\# of agreements} - \text{\# of disagreements} 
+			\label{eq:correlation-a-d}
 		\end{equation}
 
 		The properties of an ideal code set should be, that the autocorrelation for each code in the set should be $0$ for each time-shift $\tau \neq 0$, at $\tau = 0$ the autocorrelation should be $L$.
@@ -91,6 +97,7 @@
 		\end{equation}
 
 		The Hadamard matrix has the property that every row in the matrix is orthogonal to every other row.
+		And apart from the first row, all other rows have the exact same number of $+1$ as the do of $-1$, meaning the sum of an entire row is equal to zero.
 		Hadamard matrices exist for every power of $2$, so the code length is also a power of $2$.
 		So for $\tau = 0$, the cross-correlation is $0$, but when $\tau \neq 0$ not all the rows are orthogonal anymore.
 		\cite{1182447} proved that an Hadamard matrix of size $2^P$ could be divided into $P + 1$ subsets of rows, where one code could be selected giving $P + 1$ orthogonal codes for each time-shift $\tau$.
@@ -112,7 +119,7 @@
 
 
 	\subsection{PN Sequences}
-
+	\label{sec:theory-pn}
 		PN sequences are sequences where the numbers looks like they are randomly generated but they are easily generated in software or hardware.
 		The sequences have the following noise-like properties~\cite{mitra2008pseudo}:
 
