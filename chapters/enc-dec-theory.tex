@@ -359,12 +359,58 @@
 
 	\subsection{PN Sequences}
 
-		As we know from \autoref{sec:theory-pn}, there is particular bound on the cross-correlation between two or more PN sequences.
+		As we know from \autoref{sec:theory-pn}, there is no particular bound on the cross-correlation between two or more PN sequences.
 		This means that they will have MAI and that there is a limit on how many transmitters can transmit at the same time, with the the receiver still able to correctly decode the information without experiencing false-positives and/or false-negatives.
 
-		Since there is no particular bound on the cross-correlation with PN sequences from the same length,  they need to be calculated.
-		% see table blabla
-		If we want to calculate how many simultaneous transmitters can transmit, we need to take the absolute maximum of all the cross-correlations between each PN sequence of the same length.
-		This will guaranty that for each possible combination of transmitters the information can be correctly decoded.
+		Since there is no particular bound on the cross-correlation with PN sequences from the same length, they need to be calculated.
+		The calculated results can be seen in \autoref{tbl:correlation-pn-families}.
+
+
+		\begin{table}
+			\centering
+			\begin{tabular}{ | l | l | l | l | l | }
+
+				\hline
+				LFSR size 	& Code length	& Number of codes 	& Maximum cross-correlation & $m$	\\ \hline
+
+				3			& 7				& 2					& 5							& 0.70	\\ \hline	
+				4			& 15			& 2					& 7							& 1.07	\\ \hline
+				5			& 31			& 6					& 11						& 1.41	\\ \hline
+				6			& 63			& 6					& 23						& 1.37	\\ \hline
+				7			& 127			& 18				& 43						& 1.48	\\ \hline
+				8			& 255			& 16				& 95						& 1.34	\\ \hline	
+
+
+			\end{tabular}
+			\caption{Table containing the absolute maximum cross-correlation per PN code family.}
+			\label{tbl:correlation-pn-families}
+		\end{table}
+
+		If we want to calculate how many simultaneous transmitters can transmit, we need to set a threshold $T$ for which we will accept or reject a correlation as being a valid transmitter or not.
+		We also know the correlation level of when a code is present in the signal, this is equal to $L$, where $L$ is the length of the code.
+		The last thing we need is the absolute maximum cross-correlation for a given PN family of sequences and we can calculate the maximum number of concurrent transmitters.
+		To prevent false negatives, i.e. there is a valid code present but it is lost due to for example MAI, the correlation level needs to be higher than the threshold $T$. 
+		And the correlation level is equal to $L - m \times \phi$, where $m$ is the number of transmitters and $\phi$ is the absolute maximum cross-correlation, see \autoref{eq:pn-max-tx-pt1}.
+
+		\begin{equation}
+			\label{eq:pn-max-tx-pt1}
+			L - m \times \phi > T
+		\end{equation}
+
+		\begin{equation}
+			\label{eq:pn-max-tx-pt2}
+			T > m \times \phi
+		\end{equation}
+
+		To prevent false negatives, i.e. there is no valid code present but due to for example MAI the correlation level suggests that there is a valid code present, see \autoref{eq:pn-max-tx-pt2} where $m$ is the number of transmitters and $\phi$ the absolute maximum cross-correlation.
+		If we equalize \autoref{eq:pn-max-tx-pt1} and \autoref{eq:pn-max-tx-pt2} we can calculate what $m$ and $T$ are.
+		If we do that, then we get: $m = \frac{L}{2 \times \phi}$ and $T = \frac{L}{2}$.
+		The results are in \autoref{tbl:correlation-pn-families}.
+		
+
 
 		%calc. of the bounds and table with results ....
+
+
+
+
