@@ -245,7 +245,7 @@
 			\label{eq:num-of-pn-codes}
 			C = \frac{1}{n} \prod \{ P_{i} ^ {(\alpha_i - 1)} \times (P_i - 1) \}
 		\end{equation}
-
+holmes2007spread
 	\subsection{Gold Sequences}
 	\label{subsec:gold-theory}
 
@@ -255,7 +255,8 @@
 		For a sequence to be constructed in this way that is a Gold sequence, only preferred pairs of polynomials can be used \cite{kedia2012comparative}.
 		When we have the polynomials $p(x)$ and $q(x)$, which are a preferred pair and produces the $m$-sequences $d_1$ and $d_2$ respectively, the resulting set of Gold codes is defined as can be seen in \autoref{eq:gold-def}, where $T^n$ represent the cyclic shift of $n$ bits.
 		With the exception of the two original $m$-sequences, the Gold codes are not maximal length sequences. 
-		They also do not have the property that the codes are balanced.
+		They also do not have the property that all the codes are balanced like the original $m$-sequences have.
+		Approxamitely half of the Gold codes in the same set are balanced \cite{holmes2007spread}. %mybe add the class table from the holmes book ????
 		If the two shift registers used, have length $n$ than the code length will still become $L = 2^n - 1$ as with the $m$-sequences.
 		But the number of codes in the set is greater than that of the $m$-sequences.
 		If the two shift registers used, have length $n$ than the number of codes are $2^n + 1$.
@@ -398,6 +399,26 @@
 					1 + 2^{\frac{n+2}{2}} & \quad \text{for even } n \\
 				\end{cases}
 		\end{equation}
+
+		When $n$ is chosen to be odd, something can be said about the approximate frequency of occurence of the cross-correlation values, see \autoref{tbl:freq-occurence-gold-cross-correlation} \cite{holmes2007spread}.
+
+		\begin{table}[h]
+			\centering
+			\begin{tabular}{ | l | l | }
+
+				\hline
+				$R_{xy}(\tau)$ 	& Frequency of occurence	\\ \hline
+
+				-1				& 0.5					 	\\ \hline
+				$-t(n)$			& 0.25						\\ \hline
+				$t(n) - 2$		& 0.25						\\ \hline
+
+				
+
+			\end{tabular}
+			\caption{Table containing the approximate frequency of occurence for all the cross-correlation values for $n$ odd.}
+			\label{tbl:freq-occurence-gold-cross-correlation}
+		\end{table}
 
 		
 

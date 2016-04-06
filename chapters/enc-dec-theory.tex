@@ -138,7 +138,7 @@
 		\end{equation}
 
 		Because we are now using the binary values as code, we can no longer use multiply to encode our binary information.
-		Instead, we must use th XOR function.
+		Instead, we must use the XOR function.
 		Now let us see what happens when we try to decode information that has been encoded using on-off keying (OOK), below is stated what happens when both data bits are encoded.
 
 		\begin{proof}
@@ -419,6 +419,7 @@
 		
 		To guaranty that everything is decodable, without false positives and without false negatives, we can only have a small number of concurrent transmitters.
 		In most cases we cannot even guaranty two simultaneous transmissions.
+		It is for this reason, that the decoding scheme for the binary values of $0$ and $1$ is not further investigated in this section, but it is investigated in  \autoref{subsec:enc-dec-theory-gold}.
 
 
 
@@ -427,6 +428,8 @@
 
 
 	\subsection{Gold Sequences}
+	\label{subsec:enc-dec-theory-gold}
+
 
 		The Gold sequences from the same family do have bounded cross-correlation, as can be seen \autoref{subsec:gold-theory}.
 		So we can theorize what the maximum number of transmitters can be, without creating false-positives and/or false-negative.
@@ -447,7 +450,7 @@
 				5			& 31			& 33				& 9							& 1.72	\\ \hline
 				6			& 63			& 65				& 17						& 1.85	\\ \hline
 				7			& 127			& 129				& 17						& 3.74	\\ \hline
-				8			& 255			& 257				& 33						& 3.86	\\ \hline
+				%8			& 255			& 257				& 33						& 3.86	\\ \hline is not a preferred pair for because mod 4 etc...
 				9			& 511			& 513				& 33						& 7.74	\\ \hline
 				10			& 1023			& 1025				& 65						& 7.87	\\ \hline	
 				
@@ -458,6 +461,80 @@
 		\end{table}
 
 		As we can see from \autoref{tbl:correlation-gold-families}, the maximum cross-correlation for Gold codes is much better than that of the same-length PN codes.
-		Ans as a direct result the maximum number of concurrent transmitters is also much higher for the same-length code.
+		And as a direct result the maximum number of concurrent transmitters is also much higher for the same-length code, compared to the results from \autoref{tbl:correlation-pn-families}.
+
+		The cross-correlation is only defined for when two sequences fully overlap, that means that if the two sequences do not start at the same time, they can only overlap when one of the two sequences is sent more than one time back-to-back.
+
+		Previously we said that if we wanted to encode data with these codes we would transmit the code for a $0$ databit and flip all the bits of the code for a $1$ databit, effectively XORing the code chips with the data.
+		This works for the Walsh-Hadamard codes because they are synchronized. 
+		And there is no cross-correlation between one transmitter which transmits a 0 and then a 1, with a second transmitter transmitting their data in overlap with both of the first transmitters codes.
+		This can be the case when we use a-synchronous transmitters and in that case the cross-correlation function no longer provides the same results.
+		Because when it is comparing two sequences and one sequence flips all its bits for a different databit, the correlation also changes. 
+		For this reason, we will stick to just send the code itself and thereby only letting a receiver know that we are on or are off when we do not send a code.
+
+		Next is the description on what happens when trying to decode a incoming signal which is a Gold code consisting of only $0$s and $1$s.
+
+		\begin{proof}
+			Let $s(t)$ be the received signal which is $c^b_i(t)$, where $c^b_i(t)$ is binary valued, i.e. $0$ or $1$ and an arbitrary Gold code.\\
+			And let $c^r_i(t)$ be the code for which we want to check if there is information there, where $c^r_i(t)$ uses the traditional values $-1$ and $+1$ and is the same Gold code as $c^b_i(t)$, only different values. \\
+
+			\begin{align*}
+				R(\tau)_{xy} = \displaystyle\sum_{t = 0} ^ {L - 1} x(t) \times y(t + \tau)	\tag{See \autoref{eq:correlation}}
+				\\ \tau = 0,\ x = s(t),\ y = c^r_i(t)	
+				\\ R(0)_{sc^r_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} s(t) \times c^r_i(t)	
+				\\ s(t) = c^b_i(t) 									
+				\\ R(0)_{sc^r_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} c^b_i(t) \times c^r_i(t)
+				\\ = \displaystyle\sum_{t = 0} ^ {L - 1} \frac{1 - c^r_i(t)}{2} \times c^r_i(t) \tag{Via \autoref{eq:radio-to-bin}}
+				\\ = \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) - c^r_i(t) \times c^r_i(t)
+				\\ = \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) - \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) \times c^r_i(t)
+				\\ = \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) - \frac{1}{2} \times L
+			\end{align*}
+
+		\end{proof}
+
+		We are unable to work out the the final remaining sum, because not all Gold sequences have the same sum.
+
+		Next is the decoding result when there are $m$ concurrent transmitters, all transmitting with a seperate Gold code.
+
+
+		\begin{proof}
+			Let $s(t)$ be the received signal which is are $m$ gold codes ($k = 1$ through $m$: $c^b_k(t)$, where $c^b_k(t)$ is binary valued, i.e. $0$ or $1$ and an arbitrary Gold code.\\
+			And let $c^r_i(t)$ be the code for which we want to check if there is information there, where $c^r_i(t)$ uses the traditional values $-1$ and $+1$. \\
+
+			\begin{align*}
+				R(\tau)_{xy} = \displaystyle\sum_{t = 0} ^ {L - 1} x(t) \times y(t + \tau)	\tag{See \autoref{eq:correlation}}
+				\\ \tau = 0,\ x = s(t),\ y = c^r_i(t)	
+				\\ R(0)_{sc^r_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} s(t) \times c^r_i(t)	
+				\\ s(t) = \displaystyle\sum_{k = 1} ^ {m} c^b_k(t)						
+				\\ R(0)_{sc^r_{i}} = \displaystyle\sum_{t = 0} ^ {L - 1} \bigg\{ \displaystyle\sum_{k = 1} ^ {m} c^b_k(t) \bigg\} \times c^r_i(t)
+				\\ = \displaystyle\sum_{t = 0} ^ {L - 1} \displaystyle\sum_{k = 1} ^ {m} \bigg\{ \frac{1 - c^r_k(t)}{2} \times c^r_i(t) \bigg\} \tag{Via \autoref{eq:radio-to-bin}}
+				\\ = \displaystyle\sum_{t = 0} ^ {L - 1} \displaystyle\sum_{k = 1} ^ {m} \bigg\{ \frac{1}{2} \times c^r_i(t) - \frac{1}{2} \times c^r_k(t) \times c^r_i(t) \bigg\} 
+				\\ = \displaystyle\sum_{t = 0} ^ {L - 1} \bigg\{ \frac{m}{2} \times c^r_i(t) - \frac{1}{2} \times \displaystyle\sum_{k = 1} ^ {m} c^r_k(t) \times c^r_i(t) \bigg\} 
+				\\ = \frac{m}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_i(t) - \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} \displaystyle\sum_{k = 1} ^ {m} \bigg\{ c^r_k(t) \times c^r_i(t) \bigg\}
+			\end{align*}
+
+		\end{proof}
+
+		The first term of this results is dependent on the number of transmitters and the code used to decode the received signal.
+		And the second term is the calculation of the correlation for each of the available signals in the received signal and then summing those correlations.
+
+		To eliminate the first term entirely with normal Gold codes is impossible since the code length is uneven and therefore the sum of the code will always be non zero, because $\forall t \ \forall i \  | c^r_i(t) | = 1$.
+		But the original Gold codes can be modified in such a way that the sum will be zero. 
+		The first step is to remove all the codes that are not balances, i.e. the number of $-1$s and $+1$s do not differ by one.
+		Then we have codes that sum to $-1$ and the number of codes that remain is approximately half \cite{holmes2007spread}.
+		For the next step we add a chip to each such that the sum of the code is equal to zero.
+		We have now affectively created a set of Orthogonal Gold codes.
+		These codes have the property that the cross-correlation is zero for when they are synchronized, just like the Walsh-Hadamard codes.
+		The only problem with these codes is that the cross- and autocorrelation properties are much worse than that of the `normal' Gold codes, as researched by \cite{5422934}, the absolute maximum cross-correlation approximately doubles.
+		And as a direct result of this, the number of transmitters which can send simultaneous without false-positives and/or false-negatives at the decoding process also goes down by approximately a factor of two.
+		So we can get rid of the first term by modifying the Gold codes, but we compromise a key factor in our system: the maximum number of concurrent transmitters without decoding errors, goes down significantly.
+
+		Another way to get round the `problem' of the first term in the equation, is to always know what the result will be.
+		That means that we have to know $m$, the number of transmitters and the sum of the code used to decode the received signal with.
+		The sum of the code can be calculated each time a decoding takes place, so we can always know that.
+		The problem remains with $m$. 
+		So there needs to be an algorithm in place in the controller of each VLC enabled LED that makes sure that in every point in time a certain number of LEDs transmit their code.
+		If such an algorithm can be constructed, then we are rid of the problem of the first term and if that number of LEDs is the maximum for which we can guaranty error free decoding, see \autoref{tbl:correlation-gold-families} column $m$, then we have solved two problems.
+
 
 
