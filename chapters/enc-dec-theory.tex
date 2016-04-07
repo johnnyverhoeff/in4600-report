@@ -537,4 +537,40 @@
 		If such an algorithm can be constructed, then we are rid of the problem of the first term and if that number of LEDs is the maximum for which we can guaranty error free decoding, see \autoref{tbl:correlation-gold-families} column $m$, then we have solved two problems.
 
 
+		To simulate what will happen when there are more transmitters concurrently transmitting than the number that is stated in \autoref{tbl:correlation-gold-families} per gold code length, a Matlab simulation is used.
+		When simulating $m$ concurrent transmitters, $m$ random transmitters are selected out of the total $2^n + 1$ possible transmitters.
+		Then for those $m$ transmitters a random offset $\gamma_i$ is chosen between $1$ and $L - 1 = 2^n - 2$ separate for each transmitter $i$.
+		And then the last $\gamma_i$ chips are taken for each transmitters $i$ and transmitted.
+		Next for each transmitter the entire code is transmitted.
+		And finally another subset of chips is transmitted so that the total chips sent per transmitter is $2 * (2^n - 1)$.
+		This simulation makes sure that for $m$ transmitters they are all sent a-synchronously.
+
+		Then for all the $2^n +1$ codes the decoding process starts, for each subset of the received signal where the $2^n - 1$ length code can fit.
+		So that are the number of elements in the signal minus length of the code plus 1.
+		For each of those position and for each code, the correlation is calculated.
+		And then it is determined according to the offset that we know and the correlation number if that the number is a false-positive, false-negative or a correct correlation number.
+
+		The assumption here is that there is a perfect channel.
+		This simulation is done $10000$ times per chosen number of concurrent transmitters.
+
+
+		The result of the simulation is shown in \autoref{fig:decoding-sim-gold-n7}, this is done for $n = 7$.
+		The distance between the peaks seems to be \autoref{eq:strange-peaks-distance-in-decoding-sim}, this seems to hold for gold codes created with a LFS registers of length $n = 5, 6, 7, 9, 10$.
+		The reason of these peaks is unknown as of yet.
+
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{chapters/decoding-sim-gold-n7.eps}
+			\caption{Decoding results when simulating with gold codes of length 127.}
+			\label{fig:decoding-sim-gold-n7}
+		\end{figure}
+
+		\begin{equation}
+			\label{eq:strange-peaks-distance-in-decoding-sim}
+				\begin{cases}
+					2^{\frac{n+1}{2}} & \quad \text{for odd } n \\
+					2^{\frac{n+2}{2}} & \quad \text{for even } n \\
+				\end{cases}
+		\end{equation}
 
