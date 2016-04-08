@@ -541,8 +541,8 @@
 		When simulating $m$ concurrent transmitters, $m$ random transmitters are selected out of the total $2^n + 1$ possible transmitters.
 		Then for those $m$ transmitters a random offset $\gamma_i$ is chosen between $1$ and $L - 1 = 2^n - 2$ separate for each transmitter $i$.
 		And then the last $\gamma_i$ chips are taken for each transmitters $i$ and transmitted.
-		Next for each transmitter the entire code is transmitted.
-		And finally another subset of chips is transmitted so that the total chips sent per transmitter is $2 * (2^n - 1)$.
+		Next for each transmitter the entire code is transmitted $a$ times.
+		And finally another subset of chips is transmitted so that the total chips sent per transmitter is $(1 + a) * (2^n - 1)$.
 		This simulation makes sure that for $m$ transmitters they are all sent a-synchronously.
 
 		Then for all the $2^n +1$ codes the decoding process starts, for each subset of the received signal where the $2^n - 1$ length code can fit.
