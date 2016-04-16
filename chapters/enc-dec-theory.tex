@@ -548,29 +548,131 @@
 		Then for all the $2^n +1$ codes the decoding process starts, for each subset of the received signal where the $2^n - 1$ length code can fit.
 		So that are the number of elements in the signal minus length of the code plus 1.
 		For each of those position and for each code, the correlation is calculated.
-		And then it is determined according to the offset that we know and the correlation number if that the number is a false-positive, false-negative or a correct correlation number.
+		And then it is determined according to the offset that we know and the correlation number if that the number is a false-positive, false-negative, true-positive or true-negative.
 
 		The assumption here is that there is a perfect channel.
-		This simulation is done $10000$ times per chosen number of concurrent transmitters.
+		This simulation is done $100$ times per chosen number of concurrent transmitters.
 
 
-		The result of the simulation is shown in \autoref{fig:decoding-sim-gold-n7}, this is done for $n = 7$.
-		The distance between the peaks seems to be \autoref{eq:strange-peaks-distance-in-decoding-sim}, this seems to hold for gold codes created with a LFS registers of length $n = 5, 6, 7, 9, 10$.
-		The reason of these peaks is unknown as of yet.
+
+		% paragraph about the F-measure, precision and recall.
 
 
 		\begin{figure}
 			\centering
-			\includegraphics[width=\textwidth]{chapters/decoding-sim-gold-n7.eps}
-			\caption{Decoding results when simulating with gold codes of length 127.}
-			\label{fig:decoding-sim-gold-n7}
+			\includegraphics[width=\textwidth]{chapters/f-measure-n=7-full-overlap-radio-a=1-100runs.eps}
+			\caption{F measure plotted against the number of concurrent transmitters with $n = 7$, 100 runs, fully overlapping codes with Threshold $= \frac{L}{2}$.}
+			\label{fig:f-measure-fully-overlapping-vs-num-of-tx}
 		\end{figure}
 
+		In \autoref{fig:f-measure-fully-overlapping-vs-num-of-tx} we can see the F-measure plotted against the number of transmitters that are transmitting concurrently.
+		We can see that the F-measure is equal to 1 up until the number of transmitters is equal to 4.
+		This number can be derived via \autoref{eq:m}, and the solution is indeed 4 with the threshold being in \autoref{eq:T}.
+		When the number of transmitters increases, even as little as one additional transmitter, the F-measure gets very low. 
+		At 5 transmitters, the F-measure equals to 0.2503. 
+		This means that at any point in time there cannot be more than 4 concurrent transmitters, because else the number of errors when decoding will be very high as can be seen from the drop of the F-measure.
+		Alternatively another F-measure graph as to be constructed which does not have that huge drop at the beginning, for example with a different threshold level.
+
+
+
+		Since there is no way to communicate to any of the VLC enabled LEDs to tell them when to start and stop transmitting, they have to decide that on their own. 
+		The simplest way to make this decision is to have a probability $p$ for which it will transmit and with probability $1 - p$ it will not transmit, which is essentially a Bernoulli distribution.
+		But since every transmitter is a Bernoulli distribution and we have more than one transmitter, the total system is a Binomial distribution.
+
+		We can choose the probability $p$ in such a way that the mean of the Binomial distribution is equal to $m$, the maximum number of concurrent transmitters for which the F-measure (see \autoref{fig:f-measure-fully-overlapping-vs-num-of-tx}) is still 1.
+		So that the total time it takes for every LED to transmit their code is as small as possible.
+		The time it takes for a group of $m$ transmitters to transmit their code can be seen in \autoref{eq:time-m-tx}, where $a$ is the number of times to send the code, $L$ is the length of the code and $f$ is the frequency at which the code will be sent. 
+		It is needed to send the code multiple times because the cross-correlation is only defines for overlapping codes.
+		The lower-bound of the total time is the group time times the number of groups, since every group has the size of $m$ transmitters the number of groups will be $\frac{N}{m}$, where $N$ is the total number of transmitters, see \autoref{eq:total-time-tx}.
+		But this is the lower bound and it does not guaranty that every transmitter or more than 99 \% of the transmitters will have transmitted their code.
+ 
 		\begin{equation}
-			\label{eq:strange-peaks-distance-in-decoding-sim}
-				\begin{cases}
-					2^{\frac{n+1}{2}} & \quad \text{for odd } n \\
-					2^{\frac{n+2}{2}} & \quad \text{for even } n \\
-				\end{cases}
+			\label{eq:time-m-tx}
+			t_{m} = \frac{a \times L}{f}
 		\end{equation}
+
+		\begin{equation}
+			\label{eq:total-time-tx}
+			t \ge t_{m} \times \frac{N}{m} = \frac{a \times L}{f} \times \frac{N}{m}
+		\end{equation}
+
+		The number of transmitters at each point in time will follow a Binomial distribution as discussed above. As an example we will use $n = 7$, meaning $N = 2^n + 1 = 129$, $L = 2^n - 1 = 127$.
+		Since we want the mean of the Binomial distribution to be $m$ and the mean is equal to the number of trials times the probability, the probability will be: $p = \frac{m}{N}$.
+		With all parameters known of the binomial distribution we can calculate the probability mass function, see \autoref{fig:pmf-n=7} and the cumulative distribution function, see \autoref{fig:cdf-n=7}.
+		As we can see from the probability mass function, the probability for $m = 4$ number of transmitters is one of the highest, but there are also probabilities for $m > 4$.
+		Which will cause problems as can be seen in \autoref{fig:f-measure-fully-overlapping-vs-num-of-tx} when $m > 4$.
+		If we look at the cumulative distribution function the probability of the number of concurrent transmitters equal or lower to $m = 4$ is roughly 62 \%, this means that the probability that the number of concurrent transmitters will be higher than $m = 4$ is roughly equal to 38 \%. 
+		That means that 38 \% of the time we will have problems with decoding.
+		So one or more parameters will have to be changed to either have a better F-measure curve or a better cumulative distribution function.
+
+
+		\autoref{eq:total-time-tx} gives the lower bound of the total time needed for all the transmitters to transmit at least once.
+		But this is a lower bound which is not realistic as this bound does not guaranty that more than a certain percentage of transmitters will actually transmit their code.
+		The number of tries it takes to at least transmit one time, is a geometric distribution.
+		For our example case see \autoref{fig:pmf-n=7-num-of-tries} for the probability mass function and \autoref{fig:cdf-n=7-num-of-tries} for the cumulative distribution function, with still the same probability $p = \frac{m}{N}$.
+		These graphs are for one transmitter, but since each transmitter works in parallel and each random variable is independent and identically distributed, this distribution holds for the entire system with $N$ transmitters.
+		From the cumulative distribution function (\autoref{fig:cdf-n=7-num-of-tries}) at the y-axis we can see that of want to have for example 90 \% of the transmitters at least transmit once, we need approximately 74 tries. 
+		Which is significantly more than the $\frac{N}{m} = 32$ times we saw above.
+		The cdf for a geometric distribution can be expressed as can be seen in \autoref{eq:cdf-geometric}.
+
+
+		\begin{equation}
+			\label{eq:cdf-geometric}
+			\text{CDF} = 1 - (1 - p)^k
+		\end{equation}
+
+		But we want to know the number $k$ for a given part of the total number of transmitters to have transmitted at least once.
+		Assume this number is $\eta$. 
+		Then $k$ can be expressed as can be seen in \autoref{eq:reverse-cdf-geometric}.
+
+		\begin{equation}
+			\label{eq:reverse-cdf-geometric}
+			k = \frac{\ln(1 - \eta)}{\ln(1 - p)}
+		\end{equation}
+
+		Now we can give a better estimation of the total time it will take, see \autoref{eq:better-total-time-tx}, where $\eta$ is the part of the transmitters that will transmit at least once and $p$ is the probability that a transmitter will transmit.
+		Now the problem remains to choose an appropriate $p$ such that $k$ is as low as possible and that we still can decode correctly.
+		For decoding correctly we need to look at the F-measure, from there choose a maximum number of transmitters, $m$, for which we can decode correctly, for \autoref{fig:f-measure-fully-overlapping-vs-num-of-tx} $m = 4$.
+		And then we need to look at the cumulative distribution function for all possible probabilities $p$, such that the CDF at $m$ is as good as 1, say $1 - \epsilon$.
+
+		\begin{equation}
+			\label{eq:better-total-time-tx}
+			t \ge \frac{a \times L}{f} \times k = \frac{a \times L}{f} \times \frac{\ln(1 - \eta)}{\ln(1 - p)}
+		\end{equation}
+
+
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{chapters/pmf-n=7-p=m_over_N.eps}
+			\caption{Probability mass function with $n = 7$ and $p = \frac{m}{N}$ of the number of concurrent transmitters.}
+			\label{fig:pmf-n=7}
+		\end{figure}
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{chapters/cdf-n=7-p=m_over_N.eps}
+			\caption{Cumulative distribution function with $n = 7$ and $p = \frac{m}{N}$  of the number of concurrent transmitters.}
+			\label{fig:cdf-n=7}
+		\end{figure}
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{chapters/pmf-n=7-p=m_over_N_num_of_tries.eps}
+			\caption{Probability mass function with $n = 7$ and $p = \frac{m}{N}$ of the number of tries and the first success of transmission.}
+			\label{fig:pmf-n=7-num-of-tries}
+		\end{figure}
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{chapters/cdf-n=7-p=m_over_N_num_of_tries.eps}
+			\caption{Cumulative distribution function with $n = 7$ and $p = \frac{m}{N}$ of the number of tries and the first success of transmission.}
+			\label{fig:cdf-n=7-num-of-tries}
+		\end{figure}
+
+
+
+
+
+
 
