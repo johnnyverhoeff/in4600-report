@@ -463,12 +463,10 @@
 		As we can see from \autoref{tbl:correlation-gold-families}, the maximum cross-correlation for Gold codes is much better than that of the same-length PN codes.
 		And as a direct result the maximum number of concurrent transmitters is also much higher for the same-length code, compared to the results from \autoref{tbl:correlation-pn-families}.
 
-		The cross-correlation is only defined for when two sequences fully overlap, that means that if the two sequences do not start at the same time, they can only overlap when one of the two sequences is sent more than one time back-to-back.
-
 		Previously we said that if we wanted to encode data with these codes we would transmit the code for a $0$ databit and flip all the bits of the code for a $1$ databit, effectively XORing the code chips with the data.
 		This works for the Walsh-Hadamard codes because they are synchronized. 
 		And there is no cross-correlation between one transmitter which transmits a 0 and then a 1, with a second transmitter transmitting their data in overlap with both of the first transmitters codes.
-		This can be the case when we use a-synchronous transmitters and in that case the cross-correlation function no longer provides the same results.
+		This can be the case when we use a-synchronous transmitters and for that case the cross-correlation function is not defined.
 		Because when it is comparing two sequences and one sequence flips all its bits for a different databit, the correlation also changes. 
 		For this reason, we will stick to just send the code itself and thereby only letting a receiver know that we are on or are off when we do not send a code.
 
@@ -494,7 +492,7 @@
 
 		We are unable to work out the the final remaining sum, because not all Gold sequences have the same sum.
 
-		Next is the decoding result when there are $m$ concurrent transmitters, all transmitting with a seperate Gold code.
+		Next is the decoding result when there are $m$ concurrent transmitters, all transmitting with a separate Gold code.
 
 
 		\begin{proof}
@@ -520,9 +518,9 @@
 
 		To eliminate the first term entirely with normal Gold codes is impossible since the code length is uneven and therefore the sum of the code will always be non zero, because $\forall t \ \forall i \  | c^r_i(t) | = 1$.
 		But the original Gold codes can be modified in such a way that the sum will be zero. 
-		The first step is to remove all the codes that are not balances, i.e. the number of $-1$s and $+1$s do not differ by one.
+		The first step is to remove all the codes that are not balanced, i.e. the number of $-1$s and $+1$s do not differ by one.
 		Then we have codes that sum to $-1$ and the number of codes that remain is approximately half \cite{holmes2007spread}.
-		For the next step we add a chip to each such that the sum of the code is equal to zero.
+		For the next step we add a chip to each code such that the sum of the code is equal to zero.
 		We have now affectively created a set of Orthogonal Gold codes.
 		These codes have the property that the cross-correlation is zero for when they are synchronized, just like the Walsh-Hadamard codes.
 		The only problem with these codes is that the cross- and autocorrelation properties are much worse than that of the `normal' Gold codes, as researched by \cite{5422934}, the absolute maximum cross-correlation approximately doubles.
@@ -539,11 +537,12 @@
 
 		To simulate what will happen when there are more transmitters concurrently transmitting than the number that is stated in \autoref{tbl:correlation-gold-families} per gold code length, a Matlab simulation is used.
 		When simulating $m$ concurrent transmitters, $m$ random transmitters are selected out of the total $2^n + 1$ possible transmitters.
-		Then for those $m$ transmitters a random offset $\gamma_i$ is chosen between $1$ and $L - 1 = 2^n - 2$ separate for each transmitter $i$.
+		Then for those $m$ transmitters a random offset $\gamma_i$ is chosen between $1$ and $L - 1 = 2^n - 2$, separate for each transmitter $i$.
 		And then the last $\gamma_i$ chips are taken for each transmitters $i$ and transmitted.
-		Next for each transmitter the entire code is transmitted $a$ times.
-		And finally another subset of chips is transmitted so that the total chips sent per transmitter is $(1 + a) * (2^n - 1)$.
-		This simulation makes sure that for $m$ transmitters they are all sent a-synchronously.
+		Next for each transmitter the entire code is transmitted.
+		And finally another subset of chips is transmitted so that the total chips sent per transmitter is $2 \times (2^n - 1)$.
+		This simulation makes sure that for $m$ transmitters they are all sent a-synchronously and that every transmitted code overlaps entirely with one or more other codes.
+		This is needed because that is the way the cross-correlation is defined.
 
 		Then for all the $2^n +1$ codes the decoding process starts, for each subset of the received signal where the $2^n - 1$ length code can fit.
 		So that are the number of elements in the signal minus length of the code plus 1.
@@ -551,124 +550,214 @@
 		And then it is determined according to the offset that we know and the correlation number if that the number is a false-positive, false-negative, true-positive or true-negative.
 
 		The assumption here is that there is a perfect channel.
-		This simulation is done $100$ times per chosen number of concurrent transmitters.
+		
+		When there is a system for which we can classify the results as false/true-positives and false/true-negatives, we can evaluate the system's performance by investigating the precision and recall.
+		These concepts are used in pattern recognition and information retrieval to evaluate an algorithm.
+		The definitions of precision and recall can be found in \autoref{eq:precision} and \autoref{eq:recall} respectively, where $tp$ stands for the number of true-positives, $fp$ stand for the number of false-positives and $fn$ stand for the number of false-negatives.
 
+		\begin{equation}
+			\label{eq:precision}
+			\text{Precision } = \frac{tp}{tp + fp}
+		\end{equation}
 
+		\begin{equation}
+			\label{eq:recall}
+			\text{Recall } = \frac{tp}{tp + fn}
+		\end{equation}
 
-		% paragraph about the F-measure, precision and recall.
+		This method provides two metrics to consider.
+		Ideally we want only one metric to consider and draw conclusion based on that.
+		We can take the weighted average of the two metrics.
+		This is called the F-measure and is the harmonic mean of the precision and recall.
+		The definition of the F-measure can be seen in \autoref{eq:F-measure}.
 
+		\begin{equation}
+			\label{eq:F-measure}
+			F = 2 \times \frac{\text{precision} \times \text{recall}}{\text{precision} + \text{recall}}
+		\end{equation}
 
-		\begin{figure}
+		\begin{figure}[h]
 			\centering
 			\includegraphics[width=\textwidth]{chapters/f-measure-n=7-full-overlap-radio-a=1-100runs.eps}
 			\caption{F measure plotted against the number of concurrent transmitters with $n = 7$, 100 runs, fully overlapping codes with Threshold $= \frac{L}{2}$.}
 			\label{fig:f-measure-fully-overlapping-vs-num-of-tx}
 		\end{figure}
 
-		In \autoref{fig:f-measure-fully-overlapping-vs-num-of-tx} we can see the F-measure plotted against the number of transmitters that are transmitting concurrently.
+		In \autoref{fig:f-measure-fully-overlapping-vs-num-of-tx} we can see the F-measure plotted against the number of transmitters that are transmitting concurrently, this is done for the Gold-code family with $n = 7$.
 		We can see that the F-measure is equal to 1 up until the number of transmitters is equal to 4.
-		This number can be derived via \autoref{eq:m}, and the solution is indeed 4 with the threshold being in \autoref{eq:T}.
+		This number can be derived via \autoref{eq:m}, and the solution is indeed 4 with the threshold being \autoref{eq:T}.
 		When the number of transmitters increases, even as little as one additional transmitter, the F-measure gets very low. 
 		At 5 transmitters, the F-measure equals to 0.2503. 
 		This means that at any point in time there cannot be more than 4 concurrent transmitters, because else the number of errors when decoding will be very high as can be seen from the drop of the F-measure.
-		Alternatively another F-measure graph as to be constructed which does not have that huge drop at the beginning, for example with a different threshold level.
-
-
 
 		Since there is no way to communicate to any of the VLC enabled LEDs to tell them when to start and stop transmitting, they have to decide that on their own. 
 		The simplest way to make this decision is to have a probability $p$ for which it will transmit and with probability $1 - p$ it will not transmit, which is essentially a Bernoulli distribution.
-		But since every transmitter is a Bernoulli distribution and we have more than one transmitter, the total system is a Binomial distribution.
+		But since every transmitter is a Bernoulli distribution and we have more than one transmitter, the number of transmitters which will be transmitting at an point in time is a Binomial distribution.
 
-		We can choose the probability $p$ in such a way that the mean of the Binomial distribution is equal to $m$, the maximum number of concurrent transmitters for which the F-measure (see \autoref{fig:f-measure-fully-overlapping-vs-num-of-tx}) is still 1.
-		So that the total time it takes for every LED to transmit their code is as small as possible.
-		The time it takes for a group of $m$ transmitters to transmit their code can be seen in \autoref{eq:time-m-tx}, where $a$ is the number of times to send the code, $L$ is the length of the code and $f$ is the frequency at which the code will be sent. 
-		It is needed to send the code multiple times because the cross-correlation is only defines for overlapping codes.
-		The lower-bound of the total time is the group time times the number of groups, since every group has the size of $m$ transmitters the number of groups will be $\frac{N}{m}$, where $N$ is the total number of transmitters, see \autoref{eq:total-time-tx}.
-		But this is the lower bound and it does not guaranty that every transmitter or more than 99 \% of the transmitters will have transmitted their code.
- 
+		By giving the decision to each individual transmitter whether it is going to transmit or not gives us a problem.
+		When the transmitters can transmit at every point in time, it is likely that the codes will not fully overlap.
+		This means that we cannot use the correlation formulas, since they are defined for fully overlapping sequences.
+		Because the sequences do not fully overlap we have to look at the aperiodic correlation, also known as the partial correlation as seen in \autoref{eq:aperiodic-correlation}.
+
+		\begin{equation}
+			R(\tau)_{xy} = 
+				\begin{cases}
+					\displaystyle\sum_{i = 0} ^ {L - 1 - \tau} x(i) \times y(i - \tau)		& \quad 0 \le \tau \le L - 1 \\
+					\displaystyle\sum_{i = 0} ^ {L - 1 + \tau} x(i - \tau) \times y(i)		& \quad 1 - L \le \tau < L - 1 \\
+					0																		& \quad  |\tau| \ge L
+				\end{cases}
+			\label{eq:aperiodic-correlation}
+		\end{equation}
+
+		Unfortunately the aperiodic correlation for a set of Gold codes is different than the periodic correlation for the same set.
+		The general way to assert the aperiodic correlation for a set of Gold codes is just to calculate them.
+
+		The simulation as described before is run again, but now with a slight modification.
+		The offset stays but are now zeros instead of a subset of the code sequence.
+		So the total length of the signal stays $2 \times (2^n - 1)$, but the codes do not overlap. 
+		And the F-measure graph for this simulation can be seen in \autoref{fig:f-measure-no-overlapping-vs-num-of-tx}.
+
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=\textwidth]{chapters/f-measure-n=7-no-overlap-radio-a=1-100runs.eps}
+			\caption{F measure plotted against the number of concurrent transmitters with $n = 7$, 100 runs, no overlapping codes with Threshold $= \frac{L}{2}$.}
+			\label{fig:f-measure-no-overlapping-vs-num-of-tx}
+		\end{figure}
+
+		We see the graph already dropping down before the $m = 4$ mark of the fully overlapping simulation from \autoref{fig:f-measure-fully-overlapping-vs-num-of-tx}.
+		This is due to the increased correlation, namely the aperiodic correlation.
+		The normal correlation of a $n = 7$ Gold code family is equal to $17$ (See \autoref{eq:gold-t(n)}), while the aperiodic correlation is equal to $28$.
+		If we take \autoref{eq:m} and use $28$ for $\phi$, we end up with $2$ as the maximum number of concurrent transmitters such that the F-measure is still equal to 1, which is the same number as can be read from \autoref{fig:f-measure-no-overlapping-vs-num-of-tx}.
+
+
+		Now that we have established that every transmitter will get a probability $p$ to transmit its code we will have to asses to following things: 
+
+		\begin{itemize}
+			\item What should $p$ be in order to guaranty, to a certain degree, that we will be able to successfully decode all data at every point in time ?
+			\item Will every transmitter transmit their code, and if so within what time frame ?
+			\item What is the total time for which we can guaranty, to a certain degree, such that every transmitter has transmitter their code at least once ? 
+		\end{itemize}
+
+
+
+
+		The time it takes for a group of $m$ transmitters to transmit their code can be seen in \autoref{eq:time-m-tx}, where $L$ is the length of the code and $f$ is the frequency at which the code will be sent. 
+
 		\begin{equation}
 			\label{eq:time-m-tx}
-			t_{m} = \frac{a \times L}{f}
+			t_{m} = \frac{L}{f}
 		\end{equation}
+
+		The lower-bound of the total time is the group time times the number of groups, since every group has the size of $m$ transmitters the number of groups will be $\frac{N}{m}$, where $N$ is the total number of transmitters, see \autoref{eq:total-time-tx}.
+		But this is the lower bound and it does not guaranty, to a certain degree, that every transmitter will have transmitted their code at least once.
 
 		\begin{equation}
 			\label{eq:total-time-tx}
-			t \ge t_{m} \times \frac{N}{m} = \frac{a \times L}{f} \times \frac{N}{m}
+			t \ge t_{m} \times \frac{N}{m} = \frac{L}{f} \times \frac{N}{m}
 		\end{equation}
 
+
+
+
+		We can choose the probability $p$ in such a way that the mean of the Binomial distribution is equal to $m$, the maximum number of concurrent transmitters for which the F-measure is still 1.
+		So that the total time it takes for every LED to transmit their code is as small as possible.
 		The number of transmitters at each point in time will follow a Binomial distribution as discussed above. As an example we will use $n = 7$, meaning $N = 2^n + 1 = 129$, $L = 2^n - 1 = 127$.
 		Since we want the mean of the Binomial distribution to be $m$ and the mean is equal to the number of trials times the probability, the probability will be: $p = \frac{m}{N}$.
 		With all parameters known of the binomial distribution we can calculate the probability mass function, see \autoref{fig:pmf-n=7} and the cumulative distribution function, see \autoref{fig:cdf-n=7}.
-		As we can see from the probability mass function, the probability for $m = 4$ number of transmitters is one of the highest, but there are also probabilities for $m > 4$.
-		Which will cause problems as can be seen in \autoref{fig:f-measure-fully-overlapping-vs-num-of-tx} when $m > 4$.
-		If we look at the cumulative distribution function the probability of the number of concurrent transmitters equal or lower to $m = 4$ is roughly 62 \%, this means that the probability that the number of concurrent transmitters will be higher than $m = 4$ is roughly equal to 38 \%. 
-		That means that 38 \% of the time we will have problems with decoding.
-		So one or more parameters will have to be changed to either have a better F-measure curve or a better cumulative distribution function.
 
-
-		\autoref{eq:total-time-tx} gives the lower bound of the total time needed for all the transmitters to transmit at least once.
-		But this is a lower bound which is not realistic as this bound does not guaranty that more than a certain percentage of transmitters will actually transmit their code.
-		The number of tries it takes to at least transmit one time, is a geometric distribution.
-		For our example case see \autoref{fig:pmf-n=7-num-of-tries} for the probability mass function and \autoref{fig:cdf-n=7-num-of-tries} for the cumulative distribution function, with still the same probability $p = \frac{m}{N}$.
-		These graphs are for one transmitter, but since each transmitter works in parallel and each random variable is independent and identically distributed, this distribution holds for the entire system with $N$ transmitters.
-		From the cumulative distribution function (\autoref{fig:cdf-n=7-num-of-tries}) at the y-axis we can see that of want to have for example 90 \% of the transmitters at least transmit once, we need approximately 74 tries. 
-		Which is significantly more than the $\frac{N}{m} = 32$ times we saw above.
-		The cdf for a geometric distribution can be expressed as can be seen in \autoref{eq:cdf-geometric}.
-
-
-		\begin{equation}
-			\label{eq:cdf-geometric}
-			\text{CDF} = 1 - (1 - p)^k
-		\end{equation}
-
-		But we want to know the number $k$ for a given part of the total number of transmitters to have transmitted at least once.
-		Assume this number is $\eta$. 
-		Then $k$ can be expressed as can be seen in \autoref{eq:reverse-cdf-geometric}.
-
-		\begin{equation}
-			\label{eq:reverse-cdf-geometric}
-			k = \frac{\ln(1 - \eta)}{\ln(1 - p)}
-		\end{equation}
-
-		Now we can give a better estimation of the total time it will take, see \autoref{eq:better-total-time-tx}, where $\eta$ is the part of the transmitters that will transmit at least once and $p$ is the probability that a transmitter will transmit.
-		Now the problem remains to choose an appropriate $p$ such that $k$ is as low as possible and that we still can decode correctly.
-		For decoding correctly we need to look at the F-measure, from there choose a maximum number of transmitters, $m$, for which we can decode correctly, for \autoref{fig:f-measure-fully-overlapping-vs-num-of-tx} $m = 4$.
-		And then we need to look at the cumulative distribution function for all possible probabilities $p$, such that the CDF at $m$ is as good as 1, say $1 - \epsilon$.
-
-		\begin{equation}
-			\label{eq:better-total-time-tx}
-			t \ge \frac{a \times L}{f} \times k = \frac{a \times L}{f} \times \frac{\ln(1 - \eta)}{\ln(1 - p)}
-		\end{equation}
-
-
-
-		\begin{figure}
+		\begin{figure}[h!]
 			\centering
 			\includegraphics[width=\textwidth]{chapters/pmf-n=7-p=m_over_N.eps}
 			\caption{Probability mass function with $n = 7$ and $p = \frac{m}{N}$ of the number of concurrent transmitters.}
 			\label{fig:pmf-n=7}
 		\end{figure}
 
-		\begin{figure}
+		\begin{figure}[h!]
 			\centering
 			\includegraphics[width=\textwidth]{chapters/cdf-n=7-p=m_over_N.eps}
 			\caption{Cumulative distribution function with $n = 7$ and $p = \frac{m}{N}$  of the number of concurrent transmitters.}
 			\label{fig:cdf-n=7}
 		\end{figure}
 
-		\begin{figure}
+		As we can see from the probability mass function (\autoref{fig:pmf-n=7}), the probability for $m = 2$ number of transmitters is one of the highest, but there are also probabilities for $m > 2$.
+		Which will cause problems as can be seen in \autoref{fig:f-measure-no-overlapping-vs-num-of-tx} when $m > 2$.
+		If we look at the cumulative distribution function (\autoref{fig:cdf-n=7}) the probability of the number of concurrent transmitters equal or lower to $m = 2$ is roughly 62 \%, this means that the probability that the number of concurrent transmitters will be higher than $m = 2$ is roughly equal to 38 \%. 
+		That means that 38 \% of the time we will have problems with decoding.
+		This means that the probability will have to be changed in order to guaranty, to a certain degree, that at every point in time the number of concurrent transmitters will not exceed $m$.
+		The cumulative distribution function for a binomial distribution can be seen in \autoref{eq:cdf-binomial}, where $X$ is the random variable for the number of transmitters at every point in time, $m$ is the maximum number of transmitter allowed for good decoding and $N$ is the total number of transmitters used.
+
+
+		\begin{equation}
+			\label{eq:cdf-binomial}
+			\text{CDF:  PR}(X \le m) = \displaystyle\sum_{i=0}^{m} \binom Ni \times p^i \times (1 - p)^{N-i}
+		\end{equation}
+
+		We want the probability that $X \le m$ to be as high as possible, but since the CDF goes asymptotically to $1$, we cannot choose the probability $1$.
+		So we choose a number that is as good as $1$, namely $1 - \epsilon$.
+		We can then equalize $1 - \epsilon$ to \autoref{eq:cdf-binomial} and find a probability $p$, since every other variable is known.
+		With the found $p$ we can say that $1 - \epsilon$ part of the time the number of concurrent transmitters will be less than or equal to $m$.
+
+
+		Since every transmitter transmits their code with probability $p$ there is a probability that it will never transmit its code.
+		So what we want to know is after how many tries can we guaranty, to a certain degree, that every transmitter will have transmitted their code at least once.
+		This follows a geometric distribution.
+		For the same probability $p = \frac{m}{N}$ the PMF, \autoref{fig:pmf-n=7-num-of-tries} and the CDF, \autoref{fig:cdf-n=7-num-of-tries} can be seen.
+
+		\begin{figure}[!h]
 			\centering
 			\includegraphics[width=\textwidth]{chapters/pmf-n=7-p=m_over_N_num_of_tries.eps}
 			\caption{Probability mass function with $n = 7$ and $p = \frac{m}{N}$ of the number of tries and the first success of transmission.}
 			\label{fig:pmf-n=7-num-of-tries}
 		\end{figure}
 
-		\begin{figure}
+		\begin{figure}[!h]
 			\centering
 			\includegraphics[width=\textwidth]{chapters/cdf-n=7-p=m_over_N_num_of_tries.eps}
 			\caption{Cumulative distribution function with $n = 7$ and $p = \frac{m}{N}$ of the number of tries and the first success of transmission.}
 			\label{fig:cdf-n=7-num-of-tries}
 		\end{figure}
+
+
+		The CDF of a geometric distribution can be expressed as seen in \autoref{eq:cdf-geometric}, where $Y$ is the number of attempts until the first transmission, $p$ is the probability that the transmitter will transmit its code and $k$ is the number attempts until the first transmission for which you want to know the probability.
+		\begin{equation}
+			\label{eq:cdf-geometric}
+			\text{CDF:  Pr}(Y \le k) = 1 - (1 - p)^k
+		\end{equation}
+		
+		We want this probability, for a given $k$, to be as high as possible but as we see from the CDF (\autoref{fig:cdf-n=7-num-of-tries}), the probability that a transmitter transmits at least once goes asymptotically to $1$, so we cannot choose the probability $1$.
+		So we choose again a number that is as good as $1$, namely $1 - \epsilon_1$.
+		We can now express $k$ as can be seen in \autoref{eq:reverse-cdf-geometric}.
+
+		\begin{equation}
+			\label{eq:reverse-cdf-geometric}
+			k = \frac{\ln\epsilon_1}{\ln(1 - p)}
+		\end{equation}
+
+		So after $k$ attempts the probability that a transmitter will have transmitted its code at least once is $1 - \epsilon_1$.
+		This holds for one transmitter, but since each transmitter works in parallel and each random variable is independent and identically distributed, this distribution holds for the entire system with $N$ transmitters.
+
+		\autoref{eq:total-time-tx} gives the lower bound of the total time needed for all the transmitters to transmit at least once.
+		But this is a lower bound which is not realistic as this bound does not take into account that the transmitter will actually transmit its code.
+		From the cumulative distribution function (\autoref{fig:cdf-n=7-num-of-tries}) at the y-axis we can see that if we want to have a probability of for example 90 \% for each transmitter to transmit at least once, we need approximately 150 tries. 
+		Which is significantly more than the $\frac{N}{m} = \frac{129}{2} = 65$ times we saw above.
+
+		Now we can give a better estimation of the total time it will take, see \autoref{eq:better-total-time-tx}.
+
+		\begin{equation}
+			\label{eq:better-total-time-tx}
+			t \ge \frac{L}{f} \times k = \frac{L}{f} \times \frac{\ln(\epsilon_1)}{\ln(1 - p)}
+		\end{equation}
+
+
+
+		
+
+		
+
+		
+
+		
+		
 
 
 
