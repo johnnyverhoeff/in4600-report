@@ -29,8 +29,7 @@
 
 % for url's use "\url{http://www.google.com/}"
 \usepackage{url}
-\usepackage[plainpages=false]{hyperref}
-
+\usepackage[plainpages=false]{hyperref} 
 
 
 \usepackage{enumitem}
@@ -63,9 +62,6 @@
 }
 
 
-%\usepackage[toc,page]{appendix}
-
-
 
 
 
@@ -76,17 +72,18 @@
 \newcommand{\reportEmail}{j.s.c.j.verhoeff@student.tudelft.nl}
 \newcommand{\reportUrlEmail}{\href{mailto:\reportEmail}{\reportEmail}}
 \newcommand{\reportMSC}{Embedded Systems} %{Embedded Systems}{Computer Engineering}{Computer Science}{Electrical Engineering}
-\newcommand{\reportDate}{\today} %TODO: Dit is de datum van uitgifte van final versie aan de afstudeer commissie
-\newcommand{\presentationDate}{\today} %TODO: Dit is de datum van de afstudeerpresentatie
+\newcommand{\reportDate}{\today} %TODO: Dit is de datum van uitgifte van final versie aan de afstudeer commissie 
+\newcommand{\presentationDate}{\today} %TODO: Dit is de datum van de afstudeerpresentatie 
 \newcommand{\graduationCommittee}{
-TODO GRADUATION COMMITTEE & Delft University of Technology \\
-TODO GRADUATION COMMITTEE & Delft University of Technology \\
-} % The order of listing the names: Graduation prof, supervisor(s), others ordered by title + alphabetical
-%examples:
-%prof. dr. ir. H. J. Sips (chair) & Delft University of Technology \\
-%ir. dr. D. H. J. Epema           & Delft University of Technology \\
+
+Chair: Prof. dr. K.G. Langendoen, Faculty EEMCS, TU Delft \\
+Committee member: dr. ir. L.M. Ramirez Elizondo, Faculty DCE\&S, TU Delft \\ 
+Committee member: dr. ir. M.A. Z\'u\~niga Zamalloa, Faculty EEMCS, TU Delft \\
+
+
+} 
 \newcommand{\reportAbstract}{TODO ABSTRACT}
-\newcommand{\reportKeywords}{VLC, CDMA}
+\newcommand{\reportKeywords}{TODO KEYWORDS}
 
 % For pdflatex
 \pdfinfo{
@@ -137,7 +134,7 @@ TODO GRADUATION COMMITTEE & Delft University of Technology \\
 
 % PREFACE: page v
 \include{chapters/preface}
-% EMPTY PAGE: page
+% EMPTY PAGE: page vi
 \cleardoublepage
 
 % TABLE OF CONTENTS: starting at page vii
@@ -149,38 +146,27 @@ TODO GRADUATION COMMITTEE & Delft University of Technology \\
 \setcounter{page}{1}
 
 
+\setlength{\parskip}{\baselineskip}%
+%\setlength{\parindent}{0pt}%
 
 
 % INTRODUCTION: page 1
-\include{chapters/introduction}
+\include{chapters/introduction_chapters/introduction}
 
 % CHAPTERS ... For instance: History/Prior Work, Design/Implementation, Experiments
 \include{chapters/chapter_2}
 
-\include{chapters/CDMA/CDMA}
-\include{chapters/enc-dec-theory}
-\include{chapters/enc-dec-practice}
-
-% chapter  (end)
-
 % CONCLUSIONS AND FUTURE WORK
 \include{chapters/conclusionsandfuturework}
-
-
-\appendix
-\include{chapters/appendix_dc_testbed}
-
-%\begin{appendices}
-%	\include{appendix_a}
-%\end{appendices}
-
-
 
 % BIBLIOGRAPHY
 %#define SORTED 1
 \bibliographystyle{bib/latex8}
 \bibliography{bib/mycollection}
 
+%\appendix
 
+%\include{appendix_a}
 
 \end{document}
+
