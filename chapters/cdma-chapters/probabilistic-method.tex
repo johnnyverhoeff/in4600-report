@@ -1,0 +1,76 @@
+% !TeX root = ../../thesis.tex
+
+\section{Probabilistic Method}
+\label{sec:probabilistic-method}
+
+In the previous sections, interference was discussed when using a CDMA approach.
+When there are too many transmitters on the same channel, at the same time, the interference can be so great that it destroys the one transmitter which you are looking for.
+This is not a problem for Orthogonal sequences, since they have no cross correlation (See \autoref{sec:orthogonal-sequences}).
+But this is an issue for Gold sequences. \todo{Should also mention PN sequences in general, and then the table with the calculated cross correlation per length ????}
+As stated in \autoref{subsec:gold-sequences}, the cross correlation of Gold sequences is bounded by $t(n)$, see \autoref{eq:gold-t(n)}.
+This means that the maximum number of transmitters can be calculated such that not to much interference will occur. 
+Meaning that when the correlation process starts, see \autoref{sec:mapping-problem}), no false-positives and/or false-negatives will occur.
+
+
+A threshold $T$ must be set for which we will accept or reject a correlation as being a valid result.
+When a particular code sequence is present in the received signal, the correlation will be equal to the length of the code, $L$.
+To prevent false negatives, meaning there is a code sequence present in the received signal but it is lost due to too much interference from other code sequences, the correlation result needs to be higher than the threshold $T$.
+The correlation result itself is equal to $R = L + \displaystyle\sum_{t = 0} ^ {L - 1} \Bigg\{ c_0(t) \times  \displaystyle\sum_{i = 1} ^ {m} c_i(t) \Bigg\} $ (See \autoref{sec:mapping-problem}).
+Assuming the worst case scenario and each correlation with each other code sequence will be the negative of the absolute maximum cross correlation $t(n)$, the correlation is: $R = L - m \times t(n)$, where $m$ is the number of transmitters.
+The correlation needs to be higher than the threshold $T$ to prevent false negatives, so we get the following equation \autoref{eq:gold-max-tx-pt1}.
+
+\begin{equation}
+	\label{eq:gold-max-tx-pt1}
+	R = L - m \times t(n) > T
+\end{equation}
+
+Now to also prevent false positives, meaning there is no code sequence $c_0(t)$ present but due to interference the correlation result suggests that it is present, we get \autoref{eq:gold-max-tx-pt2}.
+
+
+\begin{equation}
+	\label{eq:gold-max-tx-pt2}
+	R = m \times t(n) < T
+\end{equation}
+
+If we equalize \autoref{eq:gold-max-tx-pt1} and \autoref{eq:gold-max-tx-pt2}, we can calculate what $m$ and $T$ are.
+The results can be seen in \autoref{eq:m} and \autoref{eq:T}, respectively.
+
+
+\begin{equation}
+	\label{eq:m}
+	m = \frac{L}{2 \times t(n)}
+\end{equation}
+
+\begin{equation}
+	\label{eq:T}
+	T = \frac{L}{2}
+\end{equation}
+
+
+Using the equations above, a table can be compiled showing the maximum number of simultaneous transmitters for which it is guarantied that there will be no false-positives and/or false-negatives when decoding the incoming signal.
+The table can be seen in \autoref{tbl:correlation-gold-families}.
+ \cite{holmes2007spread}
+
+
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{ | l | l | l | l | l |  }
+
+		\hline
+		LFSR size (n) 	& Code length (L)	& Number of codes (C)	& Cross-corr. ($|t(n)|$) 	& $m$	\\ \hline
+
+		3				& 7					& 9						& 5							& 0.70	\\ \hline
+		4				& 15				& 17					& 9							& 0.83	\\ \hline
+		5				& 31				& 33					& 9							& 1.72	\\ \hline
+		6				& 63				& 65					& 17						& 1.85	\\ \hline
+		7				& 127				& 129					& 17						& 3.74	\\ \hline
+		%8				& 255				& 257					& 33						& 3.86	\\ \hline is not a preferred pair for because mod 4 etc...			
+		9				& 511				& 513					& 33						& 7.74	\\ \hline%
+		10				& 1023				& 1025					& 65						& 7.87	\\ \hline	%
+		%
+
+	\end{tabular}
+	\caption{Table containing the maximum number of simultaneous transmitters $m$, such that to destructing interference takes place.}
+	\label{tbl:correlation-gold-families}
+\end{table}
