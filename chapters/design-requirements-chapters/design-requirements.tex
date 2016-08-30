@@ -1,0 +1,83 @@
+% !TeX root = ../../thesis.tex
+
+\chapter{Design Requirements}
+\label{chp:design-requirements}
+
+In this chapter the requirements in both hardware and software will be explained.
+First the software side and then the hardware side will be detailed.
+Buildings traditionally only have AC power wired, but there is also research being done \todo{Citation needed, from NL or other origin ???} in using DC power in buildings. 
+Therefor each section will also contain the implications on using DC or AC.
+
+
+	\section{Encoding}
+
+	To be able to distinguish multiple lights from each other, which are all connected in parallel, each light must have a unique identification sequence of some sort.
+	Furthermore, that identification sequence must somehow be transmitter to a receiver, which will be the smart meter.
+
+
+	If the transmission of the identification sequence is done with OOK (on-off keying) in a VLC manner, that encoding will also propagate through the current that is drawn.
+	That current flows through the smart meter and then the light source which draws that current can be identified by its unique identification sequence. 
+
+
+	A problem rises when more than one light source is sending its identification sequence.
+	Since the lights are connected in parallel, the current that flows through the smart meter will be the sum of all the current that is drawn by all the light sources.
+	This means that the light sources, which are effectively transmitters, interfere with each other.
+	Because of that interference the unique identification sequences which are assigned to each light source, need to be carefully selected.
+
+
+	The field of telecommunications already faced similar issues: For example multiple cellphones transmitting to the same base station, at the same time, at the same frequency. 
+	The solutions was to use codes that do not posses a high cross-correlation, but do have a high auto-correlation.
+	The specific codes are called Orthogonal codes and Pseudo random noise codes.
+	The exact properties, benefits and drawbacks and how they can be used in both DC and AC environments will be discussed in \todo{Chapter reference}.
+
+
+
+
+	\section{LED Modulator}
+
+	A piece of hardware is needed to modulate a commercial LED.
+	This hardware needs to translate the unique identification sequence that is assigned to each light source and modulate the LED.
+	The modulation needs to be done in such a way that the sum or the superimposition of the current of all lights can be measured at the smart meter.  
+	The hardware should also allow for fast modulating to avoid seeing flickering effects.
+
+
+	For the design of this hardware, or when using pre-designed hardware, the way the identification sequence translates to the current drawn needs to be taken in mind. 
+	Especially with AC since the applied voltage is continuously switching from positive to negative.
+
+
+
+	\section{Smart Meter}
+
+	The smart meter needs to be able to detect relatively small current changes.
+	More concretely, it needs to be able to detect the current change when even a single light is modulating, while multiple other lights are on.
+
+	When selecting a method of measuring the current these thing need to be taken into consideration:
+
+	\begin{itemize}
+		\item The speed at which the current can be sampled needs to be high enough to be able to correctly sample the current as the LEDs are modulating.
+
+		\item The accuracy of the samples being taken needs to be high enough, so that the modulating of one LED can be detected with consistency.
+		So the noise must be low.
+
+		\item The applied voltage to the microprocessor cannot be higher than the rated voltage of that microprocessor. This means that the sensitivity (mV / A) of the measuring method needs to be chosen in such a way that the microprocessor will not be damaged.
+		The microprocessor cannot handle the negative current, in the case of AC. So an intermediary step needs to take place here to convert it to something the microprocessor can handle.
+
+	\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
