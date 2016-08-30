@@ -1,6 +1,7 @@
 % !TeX root = ../../thesis.tex
 
 \section{Pseudorandom Noise Sequences}
+\label{sec:pn-sequences}
 
 PN sequences are sequences which look like they are randomly generated but they are easily generated in software or hardware.
 They are generated with linear shift registers of length $n$.
@@ -125,6 +126,7 @@ This means a code length of 4095 chips.
 
 
 \subsection{Gold Sequences}
+\label{subsec:gold-sequences}
 
 Gold sequences are a type of PN sequence. 
 They are created by using two LFS registers as shown in \autoref{fig:gold-lfsr}.
@@ -297,10 +299,10 @@ When $n$ is chosen to be odd, something can be said about the approximate freque
 	\label{tbl:freq-occurence-gold-cross-correlation}
 \end{table}
 
-The Gold sequences posses good auto- and crosscorelation, suitable for a-synchronous usage.
+The Gold sequences posses good auto- and crosscorrelation, suitable for a-synchronous usage.
 \todo{Also state that this is extra good, because the LEDs/transmitters cannot be synchronized ???}
 Also the codes scale well.
-With a LFSR of $n$, the sequence length is $L = 2^n - 1$ and the number of sequences is $C = 2^n + 1$.
+With a LFSR of length $n$, the sequence length is $L = 2^n - 1$ and the number of sequences is $C = 2^n + 1$.
 
 \todo{What information is really needed and which (like this table) is not necessary}
 

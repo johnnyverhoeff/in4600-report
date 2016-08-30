@@ -1,0 +1,96 @@
+% !TeX root = ../../thesis.tex
+
+\section{Mapping Problem}
+\label{sec:mapping-problem}
+
+The coding methods as discussed in \autoref{sec:orthogonal-sequences} and \autoref{sec:pn-sequences} are used in the field of telecommunication.
+Since these signals are analog radio waves, the symbols are $+1$ and $-1$.
+The orthogonal sequences generated via the Hadamard matrix can already be in this form, but the PN sequences contain only zeros and ones.
+For the use with radio-signals the PN sequence is mapped to a form with $+1$ and $-1$, where the original $0$ is mapped to $+1$ and the original $1$ is mapped to $-1$.
+
+
+
+
+The following proof \todo{Are we calling this a proof ??} shows how to calculate the correlation when the coding sequence consists of $+1$ and $-1$ symbols: 
+
+\begin{proof}
+	Let $s(t)$ be the received signal which is the composed signal of $m$ distinct codes.\\
+	And let $c_i(t)$ be the code sequence $i$, and let $c_1(t)$ be the code for which we want to check if there is information there. \\
+
+	\begin{align*}
+		R(\tau)_{xy} = \displaystyle\sum_{t = 0} ^ {L - 1} x(t) \times y(t + \tau)	\tag{See \autoref{eq:correlation}}
+		\\ \tau = 0,\ x = s(t),\ y = c_1(t)	
+		\\ R(0)_{sc_{1}} = \displaystyle\sum_{t = 0} ^ {L - 1} s(t) \times c_1(t)
+		\\ s(t) = \displaystyle\sum_{i = 1} ^ {m} c_i(t)														
+		\\ R(0)_{sc_{1}} = \displaystyle\sum_{t = 0} ^ {L - 1}  \Bigg\{  c_1(t)	\times \displaystyle\sum_{i = 1} ^ {m} c_i(t) \Bigg\}
+		\\ R(0)_{sc_{1}} = \displaystyle\sum_{t = 0} ^ {L - 1} \Bigg\{ c_1(t) \times c_1(t) + c_1(t) \times  \displaystyle\sum_{i = 2} ^ {m} c_i(t) \Bigg\} 
+		\\ R(0)_{sc_{1}} = \displaystyle\sum_{t = 0} ^ {L - 1} c_1(t) \times c_1(t) + \displaystyle\sum_{t = 0} ^ {L - 1} \Bigg\{ c_1(t) \times  \displaystyle\sum_{i = 2} ^ {m} c_i(t) \Bigg\} 
+		\\ R(0)_{sc_{1}} = L + \displaystyle\sum_{t = 0} ^ {L - 1} \Bigg\{ c_1(t) \times  \displaystyle\sum_{i = 2} ^ {m} c_i(t) \Bigg\} 
+	\end{align*}
+
+\end{proof}
+
+So the result is $L$ plus the sum of all the other correlations. 
+If the orthogonal sequences were used all the other correlations are zero.
+If the Gold sequences were used each of the other correlations could be one of the values stated in \autoref{eq:corsscorr-gold}.
+This is where the multiple access interference shows.
+
+
+
+The above correlation calculation only holds up, when using a coding sequence which has the $+1$ and $-1$ symbols.
+But when having LEDs which are modulating according to a sequence, the current draw is either on or off, a zero or a one.
+This means a different correlation calculation is required.
+First a formula for the mapping from $+1$ to zero and $-1$ to one is needed.
+The formula can be found in \autoref{eq:radio-to-bin}, where $r$ denotes the $+1$ or $-1$ symbols and the outcome $b$ will be our binary value, i.e. $0$ or $1$.
+
+\begin{equation}
+	b = \frac{1 - r}{2}
+	\label{eq:radio-to-bin}
+\end{equation}
+
+
+The previous proof can now be altered to incorporate the fact that the LEDs work with a one and zero state.
+
+
+\begin{proof}
+	Let $s(t)$ be the received signal which is the composed signal of $m$ distinct codes, which have symbols consisting of zero and one, which will be denoted be $c^b_i(t)$\\
+	And let $c^r_i(t)$ be the code sequence $i$, and let $c^r_1(t)$ be the code for which we want to check if there is information there. \\
+	Where $c^r_i(t)$ denotes a code sequence consisting of symbols $-1$ and $+1$.
+
+	\begin{align*}
+	T(\tau)_{xy} = \displaystyle\sum_{t = 0} ^ {L - 1} x(t) \times y(t + \tau)	\tag{See \autoref{eq:correlation}}
+	\\ \tau = 0,\ x = s(t),\ y = c^r_1(t)
+	\\ T(0)_{sc^r_{1}} = \displaystyle\sum_{t = 0} ^ {L - 1} s(t) \times c^r_1(t)	
+	\\ s(t) = \displaystyle\sum_{i = 1} ^ {m} c^b_i(t)
+	\\ T(0)_{sc^r_{1}} = \displaystyle\sum_{t = 0} ^ {L - 1} \Bigg\{  c^r_1(t)	\times \displaystyle\sum_{i = 1} ^ {m} c^b_i(t) 	\Bigg\}
+	\\ T(0)_{sc^r_{1}} = \displaystyle\sum_{t = 0} ^ {L - 1} \Bigg\{  c^r_1(t)	\times \displaystyle\sum_{i = 1} ^ {m} \frac{1 - c^r_i(t)}{2}  	\Bigg\}
+	\\ T(0)_{sc^r_{1}} = \frac{m}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_1(t) - \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1}  \Bigg\{ c^r_1(t) \times \displaystyle\sum_{i = 1} ^ {m} c^r_i(t) \Bigg\}
+	\end{align*}
+
+\end{proof}
+
+This correlation calculation, denoted by $T$ now shows a different result than the previous result $R$.
+Where $R = \displaystyle\sum_{t = 0} ^ {L - 1}  \Bigg\{  c_1(t)	\times \displaystyle\sum_{i = 1} ^ {m} c_i(t) \Bigg\}$ and $T = \frac{m}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_1(t) - \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1}  \Bigg\{ c^r_1(t) \times \displaystyle\sum_{i = 1} ^ {m} c^r_i(t) \Bigg\}$.
+We can write it such that $R$ will become a function of $T$: 
+
+\begin{proof}
+
+	\begin{align*}
+	T = \frac{m}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_1(t) - \frac{1}{2} \times R
+	\\ R = m \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_1(t) - 2 \times T
+	\end{align*}
+
+\end{proof}
+
+The sum of the sequence depends on the sequence used, when using orthogonal codes the sum will be zero, see \autoref{sec:orthogonal-sequences}.
+If the sum is equal to zero, the factor $m$ will not matter.
+However when the sequence used is a PN sequence, the sum will be $-1$, This means: $R = -m - 2 \times T$, and then $m$, the number of signals, is important.
+
+
+
+
+
+
+
+
+
