@@ -1,0 +1,229 @@
+% !TeX root = ../../thesis.tex
+
+\section{Interference Solution}
+\label{sec:interference-solution}
+
+In the previous sections, interference was discussed when using a CDMA approach.
+When there are too many transmitters on the same channel, at the same time, the interference can be so great that it destroys the one transmitter which you are looking for.
+This is not a problem for Orthogonal sequences, since they have no cross correlation (See \autoref{sec:orthogonal-sequences}).
+But this is an issue for Gold sequences. \todo{Should also mention PN sequences in general, and then the table with the calculated cross correlation per length ????}
+As stated in \autoref{subsec:gold-sequences}, the cross correlation of Gold sequences is bounded by $t(n)$, see \autoref{eq:gold-t(n)}.
+This means that the maximum number of transmitters can be calculated such that not to much interference will occur. 
+Meaning that when the correlation process starts, see \autoref{sec:mapping-problem}), no false-positives and/or false-negatives will occur.
+
+
+A threshold $T$ must be set for which we will accept or reject a correlation as being a valid result.
+When a particular code sequence is present in the received signal, the correlation will be equal to the length of the code, $L$.
+To prevent false negatives, meaning there is a code sequence present in the received signal but it is lost due to too much interference from other code sequences, the correlation result needs to be higher than the threshold $T$.
+The correlation result itself is equal to $R = L + \displaystyle\sum_{t = 0} ^ {L - 1} \Bigg\{ c_0(t) \times  \displaystyle\sum_{i = 1} ^ {m} c_i(t) \Bigg\} $ (See \autoref{sec:mapping-problem}).
+Assuming the worst case scenario and each correlation with each other code sequence will be the negative of the absolute maximum cross correlation $t(n)$, the correlation is: $R = L - m \times t(n)$, where $m$ is the number of transmitters.
+The correlation needs to be higher than the threshold $T$ to prevent false negatives, so we get the following equation \autoref{eq:gold-max-tx-pt1}.
+
+\begin{equation}
+	\label{eq:gold-max-tx-pt1}
+	R = L - m \times t(n) > T
+\end{equation}
+
+Now to also prevent false positives, meaning there is no code sequence $c_0(t)$ present but due to interference the correlation result suggests that it is present, we get \autoref{eq:gold-max-tx-pt2}.
+
+
+\begin{equation}
+	\label{eq:gold-max-tx-pt2}
+	R = m \times t(n) < T
+\end{equation}
+
+If we equalize \autoref{eq:gold-max-tx-pt1} and \autoref{eq:gold-max-tx-pt2}, we can calculate what $m$ and $T$ are.
+The results can be seen in \autoref{eq:m} and \autoref{eq:T}, respectively.
+
+
+\begin{equation}
+	\label{eq:m}
+	m = \frac{L}{2 \times t(n)}
+\end{equation}
+
+\begin{equation}
+	\label{eq:T}
+	T = \frac{L}{2}
+\end{equation}
+
+
+Using the equations above, a table can be compiled showing the maximum number of simultaneous transmitters for which it is guarantied that there will be no false-positives and/or false-negatives when decoding the incoming signal.
+The table can be seen in \autoref{tbl:correlation-gold-families}.
+ \cite{holmes2007spread}
+
+
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{ | l | l | l | l | l |  }
+
+		\hline
+		LFSR size (n) 	& Code length (L)	& Number of codes (C)	& Cross-corr. ($|t(n)|$) 	& $m$	\\ \hline
+
+		3				& 7					& 9						& 5							& 0.70	\\ \hline
+		%4				& 15				& 17					& 9							& 0.83	\\ \hline %because mod 4 ....
+		5				& 31				& 33					& 9							& 1.72	\\ \hline
+		6				& 63				& 65					& 17						& 1.85	\\ \hline
+		7				& 127				& 129					& 17						& 3.74	\\ \hline
+		%8				& 255				& 257					& 33						& 3.86	\\ \hline is not a preferred pair for because mod 4 etc...			
+		9				& 511				& 513					& 33						& 7.74	\\ \hline%
+		10				& 1023				& 1025					& 65						& 7.87	\\ \hline	%
+		%
+
+	\end{tabular}
+	\caption{Table containing the maximum number of simultaneous transmitters $m$, such that to destructing interference takes place.}
+	\label{tbl:correlation-gold-families}
+\end{table}
+
+
+
+Not all transmitters can transmit continuously.
+But if we have a system with $m$ transmitters, we could reverse calculate what code length to use such that all transmitter can transmit continuously.
+In \autoref{eq:m}, $m$ is written as a function of $n$.
+We need a $n$ as a function of $m$, so that $L$ can be expressed as a function of $m$.
+The length of the code sequence $L$ as a function of the number of simultaneous transmitters $m$ can be found in \autoref{eq:L-f(m)}.
+For simplification reasons, the cross correlation function $t(n)$ was taken for $n$ odd. 
+The methods used to reverse calculate the equation is beyond the scope of this thesis.
+
+
+\begin{equation}
+	\label{eq:L-f(m)}
+	L = \Bigg(\sqrt{2 \times m^2 + 2 \times m + 1} + \sqrt{2} \times m \Bigg)^2 - 1
+\end{equation} 
+
+
+What we can conclude from \autoref{eq:L-f(m)}, is that $L$ is a polynomial function of $m$.
+This means that the time it takes for a transmitter to transmit this code is also a polynomial function of $m$, assuming a constant modulating frequency $f$. 
+More concretely: The time $t$ it takes to complete one transmission can be found in \autoref{eq:time-for-m-txs}, where $L$ is length of the code, a function of $m$ the number of simultaneous transmitters, and $f$ is the constant modulating frequency in Hz.
+This will guaranty good decoding properties, meaning no false-positives and/or false-negatives and all transmitters can transmit the entire time, simultaneous.
+
+\begin{equation}
+	\label{eq:time-for-m-txs}
+	t = \frac{L}{f}
+\end{equation}
+
+
+Another solution to overcome the interference problem, is to use probabilistic method.
+The benefit of this method is that it can utilize all code sequences in the set, instead of a limited amount of them like in the solution above.
+The drawback is that it is not guarantied that every transmitter will transmit within a certain time and therefor the time it takes for all transmitters to transmit is not guarantied to be within a certain time frame.
+
+
+Each transmitter is given the same probability $p$ for which it will transmit and with probability $1 - p$ it will not transmit, which is a Bernoulli distribution.
+Since there is more than one transmitter which follows a Bernoulli distribution, the number of transmitters which will be transmitting at any point in time, is a Binomial distribution.
+Now that every transmitter has a probability $p$, the following items need to be assessed:
+
+\begin{itemize}
+	\item What should $p$ be in order to guaranty, to a certain degree, that the decoding process will not suffer from interference ?
+	\item Will every transmitter transmit their code, and if so within what time frame ?
+	\item What is the total time for which we can guaranty, to a certain degree, such that every transmitter has transmitter their code at least once ? 
+\end{itemize}
+
+
+\todo{Sources required for the PDF/PMF etc ??}
+
+The probability $p$ must be chosen such that at every point in time the number of transmitters transmitting their sequence will not exceed $m$, in order to not have interference issues.
+The cumulative distribution function for a binomial distribution can be seen in \autoref{eq:cdf-binomial}, where $X$ is the random variable for the number of transmitters at every point in time, $m$ is the maximum number of transmitter to avoid interference issues and $N$ is the total number of transmitters used.
+The probability that $X \le m$ needs to be as high as possible to avoid the interference issue, but as the CDF goes asymptotically to $1$, we cannot choose the probability $1$.
+Instead a value of $1 - \epsilon$ is chosen.
+\autoref{eq:cdf-binomial} is then equalized to $1 - \epsilon$ to find a probability $p$, since every other variable is known.
+With the found probability $p$, the probability that the number of transmitters at every point in time, PR$(X \le m)$, will not exceed $m$ is equal to $1 - \epsilon$.
+
+\begin{equation}
+	\label{eq:cdf-binomial}
+	\text{CDF:  PR}(X \le m) = \displaystyle\sum_{i=0}^{m} \binom Ni \times p^i \times (1 - p)^{N-i}
+\end{equation}
+
+
+
+
+Since every transmitter transmits their code with probability $p$ there is a probability that it will never transmit its code.
+The probability that a transmitter will have transmitted at least once after $k$ attempts, follows a geometric distribution.
+%Because each transmitter is independent and identical, the answer to the question holds for every transmitter. 
+The CDF of a geometric distribution can be expressed as seen in \autoref{eq:cdf-geometric}, where $Y$ is the number of attempts until the first transmission, $p$ is the probability that the transmitter will transmit and $k$ is the number attempts until the first transmission for which you want to know the probability.
+This probability needs to be as high as possible, so that the number of attempts $k$ is as low as possible.
+The CDF goes asymptotically to $1$, so we cannot choose $1$, instead $1 - \epsilon_1$ is chosen.
+$k$ can now be expressed as can be seen in \autoref{eq:reverse-cdf-geometric}, where $k$ is the number of attempts until the first transmission, $p$ is the probability that the transmitter will transmit and $\epsilon_1$ is a very small number.
+
+\begin{equation}
+	\label{eq:cdf-geometric}
+	\text{CDF:  Pr}(Y \le k) = 1 - (1 - p)^k
+\end{equation}
+
+\begin{equation}
+	\label{eq:reverse-cdf-geometric}
+	k = \frac{\ln\epsilon_1}{\ln(1 - p)}
+\end{equation}
+
+So after $k$ attempts the probability that a transmitter will have transmitted at least once, is $1 - \epsilon_1$.
+This holds for one transmitter, but since each transmitter works in parallel and each random variable is independent and identically distributed, this distribution holds for the entire system with $N$ transmitters.
+Now the time it takes for all transmitters to transmit at least once, can be calculated.
+The result can be seen in \autoref{eq:time-for-probabilistic-txs}, where $L$ is the length of the sequence, $f$ is the constant modulating frequency, $k$ is the number of attempts until the first transmission and $p$ is the probability that a transmitter will transmit.
+$L$ and $p$ are effectively functions of $N$, the number of transmitters in the system.
+
+\begin{equation}
+	\label{eq:time-for-probabilistic-txs}
+	t = \frac{L}{f} \times k = \frac{L}{f} \times \frac{\ln(\epsilon_1)}{\ln(1 - p)}
+\end{equation}
+
+This probabilistic method allows to use all the sequences in the same set.
+The drawback is that the time frame for which all transmitters have transmitted, is dependent on the values that are set for $\epsilon$ and $\epsilon_1$.
+In \autoref{tbl:time-as-function-N} the time it takes to let each transmitter transmit at least once, is listed as a function of the number of transmitters in the total system. 
+When both the epsilons are quite small, $\epsilon = \epsilon_1 = 0.001$, the probability of interference is small, but the times grow larger.
+For $\epsilon = \epsilon_1 = 0.1$, the times are smaller, but the probability of interference will be higher.
+A simulation is needed in order to asses if this will give acceptable results.
+
+
+
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{  | l | l | l | }
+
+		\hline
+		Number of transmitters (N)	& Time (t), $\epsilon = \epsilon_1 = 0.001$	& Time (t), $\epsilon = \epsilon_1 = 0.1$		\\ \hline
+
+		9							& 43.5 s									& 0.1 s 										\\ \hline
+		33							& 15.3 s									& 0.4 s											\\ \hline
+		65							& 14.6 s									& 0.8 s											\\ \hline
+		129							& 26.1 s									& 2.1 s											\\ \hline
+		513							& 91.3 s (1.5 min)							& 12.9 s										\\ \hline
+		1025						& 178.2 s	(3.0 min)						& 30.7 s										\\ \hline
+		2049						& 450.8 s	(7.5 min)						& 86.4 s (1.4 min)								\\ \hline
+		8193						& 2672.4 s (44.5 min)						& 617.0 s (10.3 min)							\\ \hline
+		16385						& 6651.4 s (1.8 hour)						& 1644.0 s (27.4 min)							\\ \hline
+		32769						& 17616.9 s (4.9 hour)						& 4577.2 s (1.3 hour)							\\ \hline
+
+
+	\end{tabular}
+	\caption{Table containing time it takes to let each transmitter transmit at least once, as a function of the number of transmitters.}
+	\label{tbl:time-as-function-N}
+\end{table}
+
+%\begin{table}[h]
+%	\centering
+%	\begin{tabular}{ | l | l | l | l | }
+%
+%		\hline
+%		LFSR size (n) 	& Number of transmitters (N)	& Time (t), $\epsilon = \epsilon_1 = 0.001$	& Time (t), $\epsilon = \epsilon_1 = 0.1$		\\ \hline
+%
+%		3				& 9								& 43.5 s									& 0.1 s 										\\ \hline
+%		%4				& 17							& 											& 												\\ \hline
+%		5				& 33							& 15.3 s									& 0.4 s											\\ \hline
+%		6				& 65							& 14.6 s									& 0.8 s											\\ \hline
+%		7				& 129							& 26.1 s									& 2.1 s											\\ \hline
+%		9				& 513							& 91.3 s (1.5 min)							& 12.9 s										\\ \hline
+%		10				& 1025							& 178.2 s	(3.0 min)						& 30.7 s										\\ \hline
+%		11				& 2049							& 450.8 s	(7.5 min)						& 86.4 s (1.4 min)								\\ \hline
+%		13				& 8193							& 2672.4 s (44.5 min)						& 617.0 s (10.3 min)							\\ \hline
+%		14				& 16385							& 6651.4 s (1.8 hour)						& 1644.0 s (27.4 min)							\\ \hline
+%		15				& 32769							& 17616.9 s (4.9 hour)						& 4577.2 s (1.3 hour)							\\ \hline
+%
+%
+%	\end{tabular}
+%	\caption{Table containing time it takes to let each transmitter transmit at least once, as a function of the number of transmitters.}
+%	\label{tbl:time-as-function-N}
+%\end{table}
+
+
+
+
