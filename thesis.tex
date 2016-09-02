@@ -34,6 +34,8 @@
 
 \usepackage{enumitem}
 
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+
 \usepackage{tikz}
 \usetikzlibrary{positioning,arrows}
 
@@ -73,7 +75,7 @@
 \newcommand{\reportUrlEmail}{\href{mailto:\reportEmail}{\reportEmail}}
 \newcommand{\reportMSC}{Embedded Systems} %{Embedded Systems}{Computer Engineering}{Computer Science}{Electrical Engineering}
 \newcommand{\reportDate}{\today} %TODO: Dit is de datum van uitgifte van final versie aan de afstudeer commissie 
-\newcommand{\presentationDate}{\today} %TODO: Dit is de datum van de afstudeerpresentatie 
+\newcommand{\presentationDate}{24th October 2016} %TODO: Dit is de datum van de afstudeerpresentatie 
 \newcommand{\graduationCommittee}{
 
 Chair: Prof. dr. K.G. Langendoen, Faculty EEMCS, TU Delft \\
@@ -151,10 +153,16 @@ Committee member: dr. ir. M.A. Z\'u\~niga Zamalloa, Faculty EEMCS, TU Delft \\
 
 
 % INTRODUCTION: page 1
-\include{chapters/introduction_chapters/introduction}
+\include{chapters/introduction-chapters/introduction}
+
+\include{chapters/state-of-the-art-chapters/state-of-the-art}
+
+\include{chapters/design-requirements-chapters/design-requirements}
+
+\include{chapters/cdma-chapters/cdma}
 
 % CHAPTERS ... For instance: History/Prior Work, Design/Implementation, Experiments
-\include{chapters/chapter_2}
+%\include{chapters/chapter-2}
 
 % CONCLUSIONS AND FUTURE WORK
 \include{chapters/conclusionsandfuturework}
