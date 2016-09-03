@@ -3,16 +3,16 @@
 \chapter{Design Requirements}
 \label{chp:design-requirements}
 
-In this chapter the requirements in both hardware and software will be explained.
+In this chapter, the requirements of both hardware and software will be explained.
 First the software side and then the hardware side will be detailed.
-Buildings traditionally only have AC power wired, but there is also research being done \todo{Citation needed, from NL or other origin ???} in using DC power in buildings. 
+Buildings traditionally only have AC power, but there is also research being done \todo{Citation needed, from NL or other origin ???} in using DC power in buildings. 
 Therefor each section will also contain the implications on using DC or AC.
 
 
 	\section{Encoding}
 
 	To be able to distinguish multiple lights from each other, which are all connected in parallel, each light must have a unique identification sequence of some sort.
-	Furthermore, that identification sequence must somehow be transmitter to a receiver, which will be the smart meter.
+	Furthermore, that identification sequence must somehow be detected and interpreted by a smart-meter.
 
 
 	If the transmission of the identification sequence is done with OOK (on-off keying) in a VLC manner, that encoding will also propagate through the current that is drawn.
@@ -20,7 +20,7 @@ Therefor each section will also contain the implications on using DC or AC.
 
 
 	A problem rises when more than one light source is sending its identification sequence.
-	Since the lights are connected in parallel, the current that flows through the smart meter will be the sum of all the current that is drawn by all the light sources.
+	Since the lights are connected in parallel, the current that flows through the smart meter will be the sum of all the currents that are drawn by all the light sources.
 	This means that the light sources, which are effectively transmitters, interfere with each other.
 	Because of that interference the unique identification sequences which are assigned to each light source, need to be carefully selected.
 
@@ -41,8 +41,9 @@ Therefor each section will also contain the implications on using DC or AC.
 	The hardware should also allow for fast modulating to avoid seeing flickering effects.
 
 
-	For the design of this hardware, or when using pre-designed hardware, the way the identification sequence translates to the current drawn needs to be taken in mind. 
-	Especially with AC since the applied voltage is continuously switching from positive to negative.
+	For the design of this hardware, or when using pre-designed hardware, the way the identification sequence translates to the current draw needs to be taken in mind. 
+	With AC the applied voltage is a sine wave, which from a positive to a negative voltage.
+	So the supplied voltage is never the same and it has a zero crossing, meaning that there will flow no current at that point in time.
 
 
 
@@ -56,11 +57,11 @@ Therefor each section will also contain the implications on using DC or AC.
 	\begin{itemize}
 		\item The speed at which the current can be sampled needs to be high enough to be able to correctly sample the current as the LEDs are modulating.
 
-		\item The accuracy of the samples being taken needs to be high enough, so that the modulating of one LED can be detected with consistency.
-		So the noise must be low.
+		\item The accuracy of the samples being taken needs to be high enough, so that the modulation of one LED can be detected with consistency.
+		In other words, the noise of the samples must be low enough to detect the correct modulation of even one LED.
 
-		\item The applied voltage to the microprocessor cannot be higher than the rated voltage of that microprocessor. This means that the sensitivity (mV / A) of the measuring method needs to be chosen in such a way that the microprocessor will not be damaged.
-		The microprocessor cannot handle the negative current, in the case of AC. So an intermediary step needs to take place here to convert it to something the microprocessor can handle.
+		\item The applied voltage to the microprocessor cannot be higher than the rated voltage of that microprocessor. This means that the sensitivity (mV / A) of the measuring method needs to be chosen in such a way that the output voltage of the measuring method, is within bounds to not damage the microprocessor.
+		The microprocessor cannot handle the negative current, in the case of AC. So an intermediary step needs to take place here to convert it to something the microprocessor can handle, meaning only positive voltages and below the rated voltage of that microprocessor.
 
 	\end{itemize}
 

@@ -12,7 +12,7 @@
 In a world where the vast majority of energy consumed, is provided by unsustainable fossil fuels~\cite{kolter2011redd}, it is needed to know exactly what that energy is being used for. 
 If we know what that energy is being used for, we can determine if we really need it for that device at that particular time.
 If that device is not needed at that time, the energy used to power it, is essentially being wasted.
-
+For example, lights on in a room which is not occupied.
 
 
 
@@ -23,17 +23,34 @@ Energy disaggregation aims to break down the aggregate power consumption of, for
 
 
 
-The method of energy disaggregation has been applied successfully for energy consumers such as refrigerators and HVAC~\cite{kolter2011redd} \cite{spiegel2014energy}.
-But other energy consumers such as lighting has not been so successful~\cite{spiegel2014energy} \cite{batra2015neighbourhood}.
-The reason for this, is that most lighting has no unique signature, which a microwave or a refrigerator do have.
-It is important to be able to disaggregate the energy consumed by lighting, because it is the third largest energy consumer in the average home~\cite{batra2015neighbourhood}.
+Energy disaggregation has been applied successfully to identify the operation of appliances, such as refrigerators and HVAC \cite{kolter2011redd} \cite{spiegel2014energy}.
+But other energy consumers such as lighting has not been so successful \cite{spiegel2014energy} \cite{batra2015neighbourhood}.
+Each appliance in a household draws power in a certain way, this can be thought of as a signature of that appliance.
+As can be seen from \autoref{fig:energy-consumption-house}, appliances such as the washer dryer and the dishwasher can be distinguished from the aggregated power draw.
+But the lighting can not be separated on a per lamp basis.
+The reason for this, is that most lighting has no unique signature, instead almost all lighting has the same signature.
+It is important to be able to disaggregate the energy consumed by lighting, because it is the third largest energy consumer in the average home \cite{batra2015neighbourhood}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{chapters/introduction-chapters/energy-consumption-house.png}
+	\caption{An example of energy consumption of a household over the course of a day \cite{kolter2011redd}.}
+	\label{fig:energy-consumption-house}
+\end{figure}
 
 
 
 
-If every light in a household has a unique signature, that is distinguishable from all other lights, the consumer can get better insight in how the lighting is being used in his household. 
-With that information, lights that are being used to light a room in the middle of the day for example, can be turned off.
+If every light in a household has a unique power draw, that is distinguishable from all other lights, the consumer can get better insight in how the lighting is being used in his household. 
+With that information, lights that are being used to light a room in the middle of the day for example or in an unoccupied room, can be turned off.
 Thereby saving energy and costs.
+
+
+The unique power draw of each light can be managed through VLC (Visible Light Communication).
+If done via VLC, the unique power draw of each light can be seen in the current that the light draws, but also in the light that it emits.
+With this information that is being sent via VLC, the light can act as a beacon for indoor localization.
+\todo{Maybe add sources for VLC indoor localization}
+
 
 
 

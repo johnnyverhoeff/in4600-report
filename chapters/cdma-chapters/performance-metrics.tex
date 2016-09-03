@@ -3,7 +3,7 @@
 \section{Performance Metrics of a CDMA Code}
 \label{sec:performance-metrics-cdma}
 
-To be able to objectively determine which codes is the best for certain environments, metrics are needed to compare the performance of a code.
+To be able to objectively determine which code sequence is the best for certain environments, metrics are needed to compare the performance of a code.
 Such metrics are: auto- and crosscorrelation, length of the code and how many unique codes can be produced which are in the same set, meaning with the same length, so that they can be used together in the same system.
 
 
@@ -19,23 +19,25 @@ When they are two different sequences, we speak of the cross-correlation.
 \end{equation}
 
 
-Another way to calculate the correlation between two sequences is to count the number of agreements and disagrements between the two sequences, see \autoref{eq:correlation-a-d}, this comes in handy when comparing two digital sequences, which both have $0$ and $1$ signal levels.
+%commented out because this will never be used and therefor only adds unnecessary text
 
-\begin{equation}
-	R(\tau) = \text{\# of agreements} - \text{\# of disagreements} 
-	\label{eq:correlation-a-d}
-\end{equation}
+%Another way to calculate the correlation between two sequences is to count the number of agreements and disagreements between the two sequences, see \autoref{eq:correlation-a-d}, this comes in handy when comparing two digital sequences, which both have $0$ and $1$ signal levels.
+
+%\begin{equation}
+%	R(\tau) = \text{\# of agreements} - \text{\# of disagreements} 
+%	\label{eq:correlation-a-d}
+%\end{equation}
 
 
 
 
 The properties of an ideal set of codes should be, that the autocorrelation for each code in the set should be $0$ for each time-shift $\tau \neq 0$, at $\tau = 0$ the autocorrelation should be $L$.
-The ideal cross-correlation properties should $0$ for every time-shift $\tau$, so that no code interferes with any other code, hereby causing no MAI (Mutiple Access Interference).
+The ideal cross-correlation properties should be $0$ for every time-shift $\tau$, so that no code interferes with any other code, hereby causing no MAI (Mutiple Access Interference).
 
 
 
 The length of a code is also of importance, because each chip of the code has to be transmitted.
-The transmission takes time, therefor the time it takes to decode if a light source is on will take longer.
+Assuming a constant modulating frequency, the time it takes to transmit a code sequence is proportinal the the length of that code sequence.
 The length of the code will also determine, to some extent, the number of codes in the same set.
 The number of codes in the same set determines the scalability of the system.
 
