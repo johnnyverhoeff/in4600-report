@@ -4,14 +4,19 @@
 \label{sec:interference-solution}
 
 In the previous sections, interference was discussed when using a CDMA approach.
-When there are too many transmitters on the same channel, at the same time, the interference can be so great that it destroys the one transmitter which you are looking for.
-This is not a problem for Orthogonal sequences, since they have no cross correlation (See \autoref{sec:orthogonal-sequences}).
+When there are too many transmitters on the same channel, at the same time, the interference can be so great that it destroys a code sequence of one or more transmitters.
+This is not a problem for Orthogonal sequences, since they have no cross correlation, when transmitted synchronously (See \autoref{sec:orthogonal-sequences}).
 But this is an issue for Gold sequences. \todo{Should also mention PN sequences in general, and then the table with the calculated cross correlation per length ????}
 As stated in \autoref{subsec:gold-sequences}, the cross correlation of Gold sequences is bounded by $t(n)$, see \autoref{eq:gold-t(n)}.
-This means that the maximum number of transmitters can be calculated such that not to much interference will occur. 
-Meaning that when the correlation process starts, see \autoref{sec:mapping-problem}), no false-positives and/or false-negatives will occur.
+This means that the maximum number of transmitters can be calculated such that not too much interference will occur. 
+With this information two methods can be used to overcome the interference problem.
 
 
+
+\subsection{Continuous Method}
+
+
+One method is to only use so many transmitters in the system that no interference will occur.
 A threshold $T$ must be set for which we will accept or reject a correlation as being a valid result.
 When a particular code sequence is present in the received signal, the correlation will be equal to the length of the code, $L$.
 To prevent false negatives, meaning there is a code sequence present in the received signal but it is lost due to too much interference from other code sequences, the correlation result needs to be higher than the threshold $T$.
@@ -49,7 +54,7 @@ The results can be seen in \autoref{eq:m} and \autoref{eq:T}, respectively.
 
 Using the equations above, a table can be compiled showing the maximum number of simultaneous transmitters for which it is guarantied that there will be no false-positives and/or false-negatives when decoding the incoming signal.
 The table can be seen in \autoref{tbl:correlation-gold-families}.
- \cite{holmes2007spread}
+ %\cite{holmes2007spread}
 
 
 
@@ -71,16 +76,16 @@ The table can be seen in \autoref{tbl:correlation-gold-families}.
 		%
 
 	\end{tabular}
-	\caption{Table containing the maximum number of simultaneous transmitters $m$, such that to destructing interference takes place.}
+	\caption{Table containing the maximum number of simultaneous transmitters $m$, such that no destructive interference takes place.}
 	\label{tbl:correlation-gold-families}
 \end{table}
 
 
 
-Not all transmitters can transmit continuously.
-But if we have a system with $m$ transmitters, we could reverse calculate what code length to use such that all transmitter can transmit continuously.
+Because of this value $m$, not all transmitters can transmit continuously.
+But if we had a system with a total amount of $m$ transmitters, we could reverse calculate what code length to use such that all transmitters can transmit continuously.
 In \autoref{eq:m}, $m$ is written as a function of $n$.
-We need a $n$ as a function of $m$, so that $L$ can be expressed as a function of $m$.
+We need $n$ as a function of $m$, so that $L$ can be expressed as a function of $m$.
 The length of the code sequence $L$ as a function of the number of simultaneous transmitters $m$ can be found in \autoref{eq:L-f(m)}.
 For simplification reasons, the cross correlation function $t(n)$ was taken for $n$ odd. 
 The methods used to reverse calculate the equation is beyond the scope of this thesis.
@@ -93,14 +98,56 @@ The methods used to reverse calculate the equation is beyond the scope of this t
 
 
 What we can conclude from \autoref{eq:L-f(m)}, is that $L$ is a polynomial function of $m$.
-This means that the time it takes for a transmitter to transmit this code is also a polynomial function of $m$, assuming a constant modulating frequency $f$. 
-More concretely: The time $t$ it takes to complete one transmission can be found in \autoref{eq:time-for-m-txs}, where $L$ is length of the code, a function of $m$ the number of simultaneous transmitters, and $f$ is the constant modulating frequency in Hz.
+The time $t$ it takes to complete one transmission can be found in \autoref{eq:time-for-m-txs}, where $L$ is length of the code, a function of $m$, the number of simultaneous transmitters, and $f$ is the constant modulating frequency in Hz.
 This will guaranty good decoding properties, meaning no false-positives and/or false-negatives and all transmitters can transmit the entire time, simultaneous.
+%Also the system is scalable as the time is dependent on a polynomial function of the number of transmitters.
 
 \begin{equation}
 	\label{eq:time-for-m-txs}
 	t = \frac{L}{f}
 \end{equation}
+
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{  | l | l | }
+
+	\hline
+	Number of transmitters (m)	& Time (t)					\\ \hline
+
+
+	%1							& 0.0031 s					\\ \hline
+	%3							& 0.0127 s					\\ \hline
+	%7							& 0.0511 s					\\ \hline 
+	15							& 0.2047 s					\\ \hline
+	31							& 0.8191 s					\\ \hline
+	63							& 3.2767 s					\\ \hline
+	127							& 13.107 s					\\ \hline
+	255							& 52.429 s					\\ \hline
+	511							& 209.72 s (3.5 min)		\\ \hline
+	1023						& 838.86 s (14.0 min)		\\ \hline
+	2047						& 3355.4 s (55.9 min)		\\ \hline
+	4095						& 13421.7 s (3.7 hour)		\\ \hline
+	8191						& 53687.1 s (14.9 hour)		\\ \hline
+	16383						& 214748.4 s (2.5 day)		\\ \hline
+	32767						& 858993.5 s (1.4 week)		\\ \hline
+
+
+
+\end{tabular}
+	\caption{Table containing time it takes to receive each transmission from each transmitter, as a function of the number of transmitters, with a constant modulating frequency $f = 10000$ kHz.}
+	\label{tbl:continous-method-time-as-function-N}
+\end{table}
+
+\autoref{tbl:continous-method-time-as-function-N} states the time needed to receive a transmission from a transmitter as a function of the total number of transmitters in the systems. 
+All the other transmitters in the system will also be transmitting at the same time.
+
+
+
+
+
+\subsection{Probabilistic Method}
+
 
 
 Another solution to overcome the interference problem, is to use probabilistic method.
@@ -167,11 +214,11 @@ $L$ and $p$ are effectively functions of $N$, the number of transmitters in the 
 
 This probabilistic method allows to use all the sequences in the same set.
 The drawback is that the time frame for which all transmitters have transmitted, is dependent on the values that are set for $\epsilon$ and $\epsilon_1$.
-In \autoref{tbl:time-as-function-N} the time it takes to let each transmitter transmit at least once, is listed as a function of the number of transmitters in the total system. 
+In \autoref{tbl:probabilistic-method-time-as-function-N} the time it takes to let each transmitter transmit at least once, is listed as a function of the number of transmitters in the total system. 
 When both the epsilons are quite small, $\epsilon = \epsilon_1 = 0.001$, the probability of interference is small, but the times grow larger.
 For $\epsilon = \epsilon_1 = 0.1$, the times are smaller, but the probability of interference will be higher.
 A simulation is needed in order to asses if this will give acceptable results.
-
+\todo{Prob. do a simulation for this in the eval. sections and reference it.}
 
 
 
@@ -195,8 +242,8 @@ A simulation is needed in order to asses if this will give acceptable results.
 
 
 	\end{tabular}
-	\caption{Table containing time it takes to let each transmitter transmit at least once, as a function of the number of transmitters.}
-	\label{tbl:time-as-function-N}
+	\caption{Table containing time it takes to let each transmitter transmit at least once, as a function of the number of transmitters, with a constant modulating frequency $f = 10000$ kHz.}
+	\label{tbl:probabilistic-method-time-as-function-N}
 \end{table}
 
 %\begin{table}[h]
