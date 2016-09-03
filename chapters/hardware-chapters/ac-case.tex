@@ -1,0 +1,49 @@
+% !TeX root = ../../thesis.tex
+
+\section{AC Environment}
+\label{sec:ac-environment}
+
+In an AC environment, the power supply does not deliver a constant voltage.
+It is a sine wave which goes from a positive voltage to a negative voltage and back again.
+In the Netherlands, the RMS voltage is 230 V with a frequency of 50 Hz.
+In each subsection first existing hardware will be discussed and its flaws for our purpose will be highlighted.
+Then new hardware is proposed to remedy these flaws.
+Finally a testbed will be showcased.
+
+
+
+
+
+\subsection{Modulator}	
+
+SMPS, figures ... wont work super imposed.
+
+New hardware which fill exactly do what we require:
+
+
+	\subsubsection{Triggering}
+	LEDs require a certain voltage before current starts flowing.
+
+	circuit....
+
+
+
+	\subsubsection{Non-intrusive Voltage Source}
+	The above circuit needs a 5v power supply optocouplers blabla.
+	below the cerrtain voltage this voltage source will operate, charing cap.
+
+
+	\subsubsection{Current Source}
+
+	Current source to modulate the led with optocoupler for safe interavtion with uC.
+
+
+\subsection{Current Sampler}
+
+hall effect too noisy, not so sensitive.
+negative current, adding constant voltage to the drawn current
+external ADC -> SPI -> isolation -> uC
+
+
+\subsection{Testbed}
+
