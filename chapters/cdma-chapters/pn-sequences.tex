@@ -229,6 +229,8 @@ When we have the polynomials $p(x)$ and $q(x)$, which are a preferred pair and p
 	\label{fig:gold-lfsr}
 \end{figure}
 
+
+
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{chapters/cdma-chapters/autocorr-gold.eps}
@@ -279,25 +281,31 @@ See \autoref{eq:corsscorr-gold} and \autoref{eq:gold-t(n)} for the cross-correla
 
 From these equations it is clear to see that the absolute maximum cross-correlation is bounded by $t(n)$.
 
-When $n$ is chosen to be odd, something can be said about the approximate frequency of occurrence of the cross-correlation values, see \autoref{tbl:freq-occurence-gold-cross-correlation} \cite{holmes2007spread}.
 
-\begin{table}[h]
-	\centering
-	\begin{tabular}{ | l | l | }
 
-		\hline
-		$R_{xy}(\tau)$ 	& Frequency of occurrence	\\ \hline
+% Taken out because this is not used anywhere....
 
-		$-1$			& 0.5					 	\\ \hline
-		$-t(n)$			& 0.25						\\ \hline
-		$t(n) - 2$		& 0.25						\\ \hline
+%When $n$ is chosen to be odd, something can be said about the approximate frequency of occurrence of the cross-correlation values, see \autoref{tbl:freq-occurence-gold-cross-correlation} \cite{holmes2007spread}.
 
-		
+%\begin{table}[h]
+%	\centering
+%	\begin{tabular}{ | l | l | }
+%
+%		\hline
+%		$R_{xy}(\tau)$ 	& Frequency of occurrence	\\ \hline
+%
+%		$-1$			& 0.5					 	\\ \hline
+%		$-t(n)$			& 0.25						\\ \hline
+%		$t(n) - 2$		& 0.25						\\ \hline
+%
+%		
+%
+%	\end{tabular}
+%	\caption{Table containing the approximate frequency of occurrence for all the cross-correlation values for $n$ odd.}
+%	\label{tbl:freq-occurence-gold-cross-correlation}
+%\end{table}
 
-	\end{tabular}
-	\caption{Table containing the approximate frequency of occurrence for all the cross-correlation values for $n$ odd.}
-	\label{tbl:freq-occurence-gold-cross-correlation}
-\end{table}
+
 
 The Gold sequences are not all balanced like the PN sequences. 
 Roughly half of the sequences in the same set are balanced, sometimes this can be as high as three quarters. \cite{holmes2007spread}
