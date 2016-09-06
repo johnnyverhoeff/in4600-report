@@ -95,7 +95,7 @@ The entire modulator's schematic can be found in \todo{Appendixxx}
 	Since the provided AC is continuously changing its voltage, it must be known when that voltage is high enough in order for the LEDs to start drawing current.
 	When the LEDs are not provided with enough voltage, there is no current draw and without the current draw, there can be no information encoding.
 	The circuit that signals a microprocessor when the voltage is high enough can be found in \autoref{fig:custom-modulator-trigger}.
-	The optocoupler makes sure that the output pin is at a safe voltage for the microprocessor.
+	The optocoupler makes sure that the AC is electrically isolated from the microprocessor.
 	The output pin will be high voltage output, the provided voltage, when the AC voltage is higher than the preset and will be 0 V output when the AC voltage is below that preset.
 	The preset can be determined by the potentiometer.
 
@@ -118,7 +118,7 @@ The entire modulator's schematic can be found in \todo{Appendixxx}
 	  \hfill
 	  \begin{minipage}[b]{0.48\textwidth}
 	    \includegraphics[width=\textwidth]{chapters/hardware-chapters/custom-modulator-voltage-source.JPG}
-	    \caption{Non-disturbing voltage source to power optocouplers.}
+	    \caption{Non-disturbing voltage source to power other parts of the circuit.}
 		\label{fig:custom-modulator-voltage-source}
 	  \end{minipage}
 	\end{figure}
@@ -126,7 +126,7 @@ The entire modulator's schematic can be found in \todo{Appendixxx}
 
 	\subsubsection{Non-disturbing Voltage Source}
 
-	The triggering circuit (\autoref{fig:custom-modulator-trigger}) requires a 5 V power supply in order to drive the optocoupler.
+	The triggering circuit (\autoref{fig:custom-modulator-trigger}) requires a 5 V power supply.
 	This voltage must be provided by a voltage source that will not distort the current draw.
 	Otherwise it might disturb how the code sequence is translated in the current draw.
 
@@ -135,12 +135,12 @@ The entire modulator's schematic can be found in \todo{Appendixxx}
 	The schematic found in \autoref{fig:custom-modulator-voltage-source} provides a stable 5 V output.
 	By only drawing current when there is no encoding being done, the voltage that the AC is providing is low, but still above 5 V.
 	The AC voltage is then being used to charge a capacitor, that goes to a voltage stabilizer.
-	The capacitor can then provide enough power for the optocoupler until the capacitor can be charged again.
+	The capacitor can then provide enough power for the triggering circuit until the capacitor can be charged again.
 
 
 	%\begin{figure}[htb]
 	%	\includegraphics[angle=0,width=\textwidth]{chapters/hardware-chapters/custom-modulator-voltage-source.JPG}
-	%	\caption{Non-disturbing voltage source to power optocouplers.}
+	%	\caption{Non-disturbing voltage source to power other parts of the circuit.}
 	%	\label{fig:custom-modulator-voltage-source}
 	%\end{figure}
 
@@ -203,7 +203,15 @@ The full schematic of the current sampler can be found in \autoref{app:custom-cu
 The full AC testbed consists of three custom LED modulators with three (provided) commercial DC LED fixtures.
 The modulators are connected in parallel. 
 And in series is the custom current sampler to measure the current and decode the information that the modulators encode.
+All micro-controllers are stand-alone.
+In \autoref{fig:ac-test-bed-architectural}, the architectural overview can be seen of this testbed.
 
-%architectural figure ..
+\begin{figure}[htb]
+	\centering
+	\includegraphics[angle=0,width=\textwidth,keepaspectratio]{chapters/hardware-chapters/ac-test-bed-architectural.JPG}
+	\caption{Architectural overview of the AC testbed. Three LED modulators, with switches to turn the LED on and off, are connected in parallel with each other and in series with the current sampler.}
+	\label{fig:ac-test-bed-architectural}
+\end{figure}
+
 
 
