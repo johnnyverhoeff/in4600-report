@@ -37,7 +37,7 @@ plot(corr_not_included_code(start_idx : end_idx));
 
 plot([1 min(end_idx - start_idx + 1, length(corr))],[L/2 L/2]); 
 
-legend('Corr. w/ present code', 'Corr w/ not present code', 'Theshold');
+legend('Corr. w/ present code', 'Corr w/ not present code', 'Threshold');
 hold off;
 
 

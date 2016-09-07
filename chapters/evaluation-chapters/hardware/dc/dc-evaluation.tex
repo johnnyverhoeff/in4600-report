@@ -10,7 +10,7 @@ In \autoref{fig:raw-dc-testbed-adc-data-n=9} the raw ADC from the DC testbed can
 Six LEDs are simultaneous continuously modulating with different starting times.
 From the figure, seven horizontal lines can be seen.
 Each line represents how many LEDs are on, none through six.
-This raw data is already in a form for which we can start calculating the correlation with a Gold sequence.
+This raw data is already in a form for which we can start calculating the correlation with a Gold sequence, no additional signal processing is needed.
 
 In \autoref{fig:correlation-dc-testbed-n=9}, the correlation for one Gold sequence can be seen, which is also one of the sequences used to modulate an LED and the correlation for another Gold sequence can be seen, which is not part of the sequences used to modulate any LED.
 All the correlation results stay below the threshold (See \autoref{eq:T}) except for the noticeable peaks.
@@ -52,13 +52,13 @@ The F-measure for these correlation results can be found in \autoref{fig:f-measu
   \centering
   \begin{minipage}[b]{0.49\textwidth}
     \includegraphics[width=\textwidth]{chapters/evaluation-chapters/hardware/dc/raw-dc-testbed-adc-data-n=7.eps}
-    \caption{Raw ADC data from the DC testbed. With seven distinguishable entries, following the on-state of the combinations of LEDs. With a sequence length of 127.}
+    \caption{Raw ADC data from the DC testbed. With seven distinguishable entries, following the on-state of the combinations of LEDs. With a sequence length of 127  on the DC testbed.}
 	\label{fig:raw-dc-testbed-adc-data-n=7}
   \end{minipage}
   \hfill
   \begin{minipage}[b]{0.49\textwidth}
     \includegraphics[width=\textwidth]{chapters/evaluation-chapters/hardware/dc/correlation-dc-testbed-n=7.eps}
-    \caption{Correlations results from Gold sequences which are and which are not present, with the decision threshold. With a sequence length of 127.}
+    \caption{Correlations results from Gold sequences which are and which are not present, with the decision threshold. With a sequence length of 127 on the DC testbed.}
 	\label{fig:correlation-dc-testbed-n=7}
   \end{minipage}
 \end{figure}
