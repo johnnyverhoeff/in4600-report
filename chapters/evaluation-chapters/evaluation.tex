@@ -1,0 +1,43 @@
+% !TeX root = ../../thesis.tex
+
+\chapter{Evaluation}
+\label{chp:evaluation}
+
+
+In this chapter the designed hardware and software will be evaluated, for both the DC and the AC testbeds.
+After that, simulation will evaluate the scalability of the setups.
+
+When there is a system for which we can classify the results as false/true-positives and false/true-negatives, we can evaluate the system's performance by investigating the precision and recall.
+The definitions of precision and recall can be found in \autoref{eq:precision} and \autoref{eq:recall} respectively, where $tp$ stands for the number of true-positives, $fp$ stand for the number of false-positives and $fn$ stand for the number of false-negatives.
+
+\begin{equation}
+	\label{eq:precision}
+	\text{Precision } = \frac{tp}{tp + fp}
+\end{equation}
+
+\begin{equation}
+	\label{eq:recall}
+	\text{Recall } = \frac{tp}{tp + fn}
+\end{equation}
+
+This method provides two metrics to consider.
+Ideally we want only one metric to consider and draw conclusion based on that.
+We can take the weighted average of the two metrics.
+This is called the F-measure \cite{sokolova2009systematic} and is the harmonic mean of the precision and recall.
+The definition of the F-measure can be seen in \autoref{eq:F-measure}.
+
+\begin{equation}
+	\label{eq:F-measure}
+	F = 2 \times \frac{\text{precision} \times \text{recall}}{\text{precision} + \text{recall}}
+\end{equation}
+
+
+
+
+
+
+
+\input{chapters/evaluation-chapters/hardware/hardware-evaluation}
+
+
+
