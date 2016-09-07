@@ -1,0 +1,21 @@
+close all;
+clear all;
+
+load ac_data;
+
+e = 300;
+
+plotyy(1:e, raw_ac_adc(1:e), 1:e, trigger(1:e));
+hold on; 
+plot([1 e],[mean(raw_ac_adc) mean(raw_ac_adc)], 'cyan');
+
+legend('rawADC', 'mean adc', 'trigger');
+
+
+new_idx = 1;
+
+for idx=1:length(raw_ac_adc)
+    if (trigger(idx) = 0)
+        
+    end;
+end;
