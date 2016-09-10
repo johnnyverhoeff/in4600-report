@@ -21,7 +21,6 @@ These fixtures often come bundled with the correct power supply, which in most c
 In Figures \ref{fig:smps-current-primary-no-load} and \ref{fig:smps-current-primary-with-load} the current signature of a SMPS can be seen, without and with a load attached, respectively.
 From these figures, it is clear to see that without a load, the current is not zero and with a load the current is not a constant.
 This makes determining whether an LED was on or off difficult, especially if multiple of these current signatures will be superimposed.
-\todo{Prob. do better conclusion why this wont work (well).}
 
 
 \begin{figure}
@@ -43,7 +42,7 @@ This makes determining whether an LED was on or off difficult, especially if mul
 
 
 Other commercial LED lighting fixtures can be screwed directly into existing sockets and work directly via the supplied 230 V AC.
-In Figures \ref{fig:commercial-230v-ac-led-on} and \ref{fig:commercial-230v-ac-led-modulating} the current signatures of this commercial 230 V AC LED can be seen, plain on and when modulated, respectively.
+In Figures \ref{fig:commercial-230v-ac-led-on} and \ref{fig:commercial-230v-ac-led-modulating} the current signatures of this commercial 230 V AC LED can be seen, narmally on and when modulated, respectively.
 In order to modulate this LED, changes had to be made to the hardware that drives the actual LEDs.
 In \autoref{app:commercial-230v-ac-modified-schematic} a schematic can be found, which shows the original circuit and what was modified in order to modulate the LED.
 
@@ -57,7 +56,7 @@ In \autoref{app:commercial-230v-ac-modified-schematic} a schematic can be found,
 
 The time that is available to modulate the LED, can be seen in Figure \ref{fig:commercial-230v-ac-led-on}.
 There are two peaks, each peak is 4 ms wide, for a total modulation time of 8 ms.
-The AC has a period of 20 ms, so $\frac{8}{20} = 40$ \% of the time is available for modulation.
+The AC has a period of 20 ms, so $\frac{8}{20} = 40 \%$ of the time is available for modulation.
 The reason for these peaks, is because at that point in time enough voltage is provided by the AC to make all those LEDs in series draw current.
 In Figure \ref{fig:commercial-230v-ac-led-modulating} it can be seen that when the LED is turned off, there is no current draw.
 When the LED is being turned on again, the current draw is not immediate, but takes time.
@@ -85,7 +84,7 @@ This behavior is not desired, especially not when multiple of these current sign
 
 Given the shortcomings of the existing hardware, it was decided to build custom hardware that would behave exactly how it was needed in order to successfully encode information in such a way that the currents could be decoded by a smart-meter.
 In the following subsections each part of the hardware of the custom LED modulator will be explained.
-The entire modulator's schematic can be found in \todo{Appendixxx}
+The entire modulator's schematic can be found in \autoref{app:custom-led-modulator-schematic}.
 
 
 
@@ -98,12 +97,21 @@ The entire modulator's schematic can be found in \todo{Appendixxx}
 	The optocoupler makes sure that the AC is electrically isolated from the microprocessor.
 	The output pin will be high voltage output, the provided voltage, when the AC voltage is higher than the preset and will be 0 V output when the AC voltage is below that preset.
 	The preset can be determined by the potentiometer.
+	The output of the triggering circuit can be seen in \autoref{fig:triggering-circuit-output}.
+	The output is roughly 16 ms high, so $\frac{16}{20} = 80 \%$ of the time is available for modulation.
 
 	%\begin{figure}[htb]
 	%	\includegraphics[angle=0,width=\textwidth]{chapters/hardware-chapters/custom-modulator-trigger.JPG}
 	%	\caption{Triggering circuit to determine when the voltage is sufficiently high enough to start encoding information.}
 	%	\label{fig:custom-modulator-trigger}
 	%\end{figure}
+
+	\begin{figure}[htb]
+		\centering
+		\includegraphics[angle=0,width=0.5\textwidth]{chapters/hardware-chapters/triggering-circuit-output.png}
+		\caption{Ouptut from the triggering circuit. Settings: 2 V/div, 2 ms/div.}
+		\label{fig:triggering-circuit-output}
+	\end{figure}
 	
 
 
@@ -154,14 +162,31 @@ The entire modulator's schematic can be found in \todo{Appendixxx}
 	This will deal with the problems that the other hardware had, as can be seen in Figure \ref{fig:custom-modulator-voltage-source}.
 	The toggling of the current source on and off must be isolated from the microprocessor, to protect the microprocessor in the development stages.
 	The schematic can be found in \autoref{fig:custom-modulator-current-source}.
-	\todo{Maybe add scope measurement of the actual current ....}
+	The current that is drawn by the current source when modulating can be seen in \autoref{fig:current-source-measurement}.
+	As seen in the figure the current goes both positve and negative, because of the AC.
+	The two peaks in the figure are the charging peaks for the capacitors as discussed in \autoref{subsubsec:non-disturbing-voltage-source}.
 
 
-	\begin{figure}[htb]
-		\centering
-		\includegraphics[angle=0,width=0.5\textwidth,keepaspectratio]{chapters/hardware-chapters/custom-modulator-current-source.JPG}
+	%\begin{figure}[htb]
+	%	\centering
+	%	\includegraphics[angle=0,width=0.5\textwidth,keepaspectratio]{chapters/hardware-chapters/custom-modulator-current-source.JPG}
+	%	\caption{Current source to power the commercial LED fixture, can be toggled on and off with a microprocessor.}
+	%	\label{fig:custom-modulator-current-source}
+	%\end{figure}
+
+	\begin{figure}[!tbp]
+	  \centering
+	  \begin{minipage}[b]{0.49\textwidth}
+	    \includegraphics[width=\textwidth]{chapters/hardware-chapters/custom-modulator-current-source.JPG}
 		\caption{Current source to power the commercial LED fixture, can be toggled on and off with a microprocessor.}
 		\label{fig:custom-modulator-current-source}
+	  \end{minipage}
+	  \hfill
+	  \begin{minipage}[b]{0.49\textwidth}
+	    \includegraphics[width=\textwidth]{chapters/hardware-chapters/current-source-measurement.png}
+	    \caption{Current that is drawn by the current source. Measured over an 2.8 Ohm resistor. Settings: 20 mV/div, 2 ms/div.}
+		\label{fig:current-source-measurement}
+	  \end{minipage}
 	\end{figure}
 
 
