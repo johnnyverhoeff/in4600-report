@@ -55,8 +55,10 @@ This means that if a transmitter sends an encoded message with this code and the
 
 
 
-Only a small subset of the codes (COWHC) have $0$ cross-correlation for every time-shift $\tau$, with code length $L$ there are $\log_2 L$ codes in the set, which makes these codes not scalable. Also the autocorrelation does not have a clear peak to identify the code.
+Only a small subset of the codes (COWHC) have $0$ cross-correlation for every time-shift $\tau$.
+With code length $L$ there are $\log_2 L$ codes in the set, which makes these codes not scalable \cite{1182447}. 
+Also the autocorrelation does not have a clear peak to identify the code, because these codes are an unmodified subset of the normal orthogonal sequences for which the autocorrelation has already been shown in \autoref{fig:autocorr-hadamard}.
 
-The entire set of orthogonal codes of length $L$, has $L - 1$ codes in the set which does make it a scalable set.
-But the auto- and crosscorrelation only have the desired properties when the codes are sent synchronously. 
+To conclude: the entire set of orthogonal codes of length $L$, has $L - 1$ codes in the set which does make it a scalable set.
+But the auto- and cross-correlation only have the desired properties when the codes are sent synchronously. 
 \todo{Extra conclusion like: the transmitters/LEDs cannot be synchronized, or does that come later...}

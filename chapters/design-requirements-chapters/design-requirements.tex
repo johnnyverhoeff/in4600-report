@@ -26,9 +26,9 @@ Therefor each section will also contain the implications on using DC or AC.
 
 
 	The field of telecommunications already faced similar issues: For example multiple cellphones transmitting to the same base station, at the same time, at the same frequency. 
-	The solutions was to use codes that do not posses a high cross-correlation, but do have a high auto-correlation.
+	The solution was to use code sequences that do not posses high cross-correlations, but do have high auto-correlations.
 	The specific codes are called Orthogonal codes and Pseudo random noise codes.
-	The exact properties, benefits and drawbacks and how they can be used in both DC and AC environments will be discussed in \todo{Chapter reference}.
+	The exact properties, benefits and drawbacks and how they can be used in both DC and AC environments will be discussed in \autoref{chp:cdma}.
 
 
 
@@ -44,6 +44,8 @@ Therefor each section will also contain the implications on using DC or AC.
 	For the design of this hardware, or when using pre-designed hardware, the way the identification sequence translates to the current draw needs to be taken in mind. 
 	With AC the applied voltage is a sine wave, which from a positive to a negative voltage.
 	So the supplied voltage is never the same and it has a zero crossing, meaning that there will flow no current at that point in time.
+	And when there is no current flow, there can also be no information encoding.
+	This issue must also be taken in mind.
 
 
 

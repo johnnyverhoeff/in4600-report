@@ -17,20 +17,39 @@ Next each sample is subtracted with the mean of all the samples and then the abs
 Now we have the fully processed signal, ready to do correlation calculations with.
 The processed signal can be seen in \autoref{fig:processed-ac-testbed-adc-data}.
 
-\begin{figure}[!tbp]
+
+
+\begin{figure}[tbp]
   \centering
-  \begin{minipage}[b]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{chapters/evaluation-chapters/hardware/ac/raw-ac-testbed-adc-data.eps}
+  \includegraphics[width=\textwidth]{chapters/evaluation-chapters/hardware/ac/raw-ac-testbed-adc-data.eps}
     \caption{Incoming data to the AC current sampler. The raw ADC values are plotted as well as the triggering circuit output. Also the mean of the raw ADC values is plotted. Gold sequence of length 127.}
-	\label{fig:raw-ac-testbed-adc-data}
-  \end{minipage}
-  \hfill
-  \begin{minipage}[b]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{chapters/evaluation-chapters/hardware/ac/processed-ac-testbed-adc-data.eps}
-    \caption{Fully processed ADC values, where four distinguishable levels can be seen. With the on-state from zero to all three LEDs, on the AC testbed.}
-	\label{fig:processed-ac-testbed-adc-data}
-  \end{minipage}
+  \label{fig:raw-ac-testbed-adc-data}
 \end{figure}
+
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\textwidth]{chapters/evaluation-chapters/hardware/ac/processed-ac-testbed-adc-data.eps}
+    \caption{Fully processed ADC values, where four distinguishable levels can be seen. With the on-state from zero to all three LEDs, on the AC testbed.}
+  \label{fig:processed-ac-testbed-adc-data}
+\end{figure}
+
+
+
+%\begin{figure}[!tbp]
+%  \centering
+%  \begin{minipage}[b]{0.49\textwidth}
+%    \includegraphics[width=\textwidth]{chapters/evaluation-chapters/hardware/ac/raw-ac-testbed-adc-data.eps}
+%    \caption{Incoming data to the AC current sampler. The raw ADC values are plotted as well as the triggering circuit output. Also the mean of the raw ADC values is plotted. Gold sequence of length 127.}
+%	\label{fig:raw-ac-testbed-adc-data}
+%  \end{minipage}
+%  \hfill
+%  \begin{minipage}[b]{0.49\textwidth}
+%    \includegraphics[width=\textwidth]{chapters/evaluation-chapters/hardware/ac/processed-ac-testbed-adc-data.eps}
+%    \caption{Fully processed ADC values, where four distinguishable levels can be seen. With the on-state from zero to all three LEDs, on the AC testbed.}
+%	\label{fig:processed-ac-testbed-adc-data}
+%  \end{minipage}
+%\end{figure}
 
 
 In \autoref{fig:correlation-ac-testbed}, the correlation for one Gold sequence can be seen, which is also one of the sequences used to modulate an LED and the correlation for another Gold sequence can be seen, which is not part of the sequences used to modulate any LED.
@@ -43,7 +62,7 @@ So the F-measure is equal to $1$ according \autoref{eq:F-measure}.
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[angle=0,width=0.8\textwidth,keepaspectratio]{chapters/evaluation-chapters/hardware/ac/correlation-ac-testbed.eps}
+	\includegraphics[angle=0,width=\textwidth,keepaspectratio]{chapters/evaluation-chapters/hardware/ac/correlation-ac-testbed.eps}
 	\caption{Correlations results from Gold sequences which are and which are not present, with the decision threshold. With a sequence length of 127 on the AC testbed.}
 	\label{fig:correlation-ac-testbed}
 \end{figure}
