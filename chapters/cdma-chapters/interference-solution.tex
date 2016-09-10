@@ -59,22 +59,42 @@ The table can be seen in \autoref{tbl:correlation-gold-families}.
 
 
 
+%\begin{table}[t]
+%	\centering
+%	\begin{tabular}{ | l | l | l | l | l |  }
+%
+%		\hline
+%		LFSR size (n) 	& Code length (L)	& Number of codes (C)	& Cross-corr. ($|t(n)|$) 	& $m$	\\ \hline
+%
+%		3				& 7					& 9						& 5							& 0.70	\\ \hline
+%		%4				& 15				& 17					& 9							& 0.83	\\ \hline %because mod 4 ....
+%		5				& 31				& 33					& 9							& 1.72	\\ \hline
+%		6				& 63				& 65					& 17						& 1.85	\\ \hline
+%		7				& 127				& 129					& 17						& 3.74	\\ \hline
+%		%8				& 255				& 257					& 33						& 3.86	\\ \hline is not a preferred pair for because mod 4 etc...			
+%		9				& 511				& 513					& 33						& 7.74	\\ \hline%
+%		10				& 1023				& 1025					& 65						& 7.87	\\ \hline	%
+%		%
+%
+%	\end{tabular}
+%	\caption{Table containing the maximum number of simultaneous transmitters $m$, such that no destructive interference takes place.}
+%	\label{tbl:correlation-gold-families}
+%\end{table}
+
 \begin{table}[t]
 	\centering
 	\begin{tabular}{ | l | l | l | l | l |  }
 
 		\hline
-		LFSR size (n) 	& Code length (L)	& Number of codes (C)	& Cross-corr. ($|t(n)|$) 	& $m$	\\ \hline
+		Code length (L)	& Cross-corr. ($|t(n)|$) 	& $m$	\\ \hline
 
-		3				& 7					& 9						& 5							& 0.70	\\ \hline
-		%4				& 15				& 17					& 9							& 0.83	\\ \hline %because mod 4 ....
-		5				& 31				& 33					& 9							& 1.72	\\ \hline
-		6				& 63				& 65					& 17						& 1.85	\\ \hline
-		7				& 127				& 129					& 17						& 3.74	\\ \hline
-		%8				& 255				& 257					& 33						& 3.86	\\ \hline is not a preferred pair for because mod 4 etc...			
-		9				& 511				& 513					& 33						& 7.74	\\ \hline%
-		10				& 1023				& 1025					& 65						& 7.87	\\ \hline	%
-		%
+		7				& 5							& 0.70	\\ \hline
+		31				& 9							& 1.72	\\ \hline
+		63				& 17						& 1.85	\\ \hline
+		127				& 17						& 3.74	\\ \hline		
+		511				& 33						& 7.74	\\ \hline
+		1023			& 65						& 7.87	\\ \hline
+		
 
 	\end{tabular}
 	\caption{Table containing the maximum number of simultaneous transmitters $m$, such that no destructive interference takes place.}
