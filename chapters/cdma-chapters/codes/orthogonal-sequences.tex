@@ -1,7 +1,7 @@
-% !TeX root = ../../thesis.tex
+% !TeX root = ../../../thesis.tex
 
-\section{Orthogonal Sequences}
-\label{sec:orthogonal-sequences}
+\subsection{Orthogonal Sequences}
+\label{subsec:orthogonal-sequences}
 
 Orthogonal sequences, also known as Walsh-Hadamard sequences, are sequences which are created using a Hadamard matrix.
 Hadamard matrices are square $n \times n$ matrices which are recursively generated.
@@ -33,31 +33,32 @@ The matrix can also be filled with binary values: $0$ and $1$. In that case the 
 
 
 
-The Hadamard matrix has the property that every row in the matrix, apart from the first row, is orthogonal to every other row.
+The Hadamard matrix has the property that every row in the matrix, apart from the first row, is orthogonal to every other row, meaning that the cross-correlation is zero.
 And apart from the first row, all other rows have the exact same number of $+1$s and $-1$s, meaning the sum of an entire row is equal to zero.
 
 Hadamard matrices exist for every power of $2$, so the code length is also a power of $2$.
-For $\tau = 0$, the cross-correlation is $0$, but when $\tau \neq 0$ not all the rows are orthogonal anymore.
+For $\tau = 0$, the cross-correlation is $0$, but when $\tau \neq 0$ not all the rows have a zero cross-correlation with all other rows.
 \cite{1182447} proved that an Hadamard matrix of size $2^P$ could be divided into $P + 1$ subsets of rows, where one row could be selected giving $P + 1$ orthogonal rows for each time-shift $\tau$.
 These codes are called Cyclically Orthogonal Walsh Hadamard Codes (COWHC).
 
 All rows of the matrix have the property that the autocorrelation at $\tau = 0$ is equal to $L$.
 But when $\tau \neq 0$, undesirable behavior occurs as can be seen in \autoref{fig:autocorr-hadamard}.
-The autocorrelation function has several high peaks where only one is desired.
+The autocorrelation function has several high peaks where only one is desired, namely at $\tau = 0$.
 This means that if a transmitter sends an encoded message with this code and the receiver does not know when in time the start of the message is, the receiver would get false positives for data.
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=\textwidth]{chapters/cdma-chapters/autocorr-hadamard.eps}
+	\includegraphics[width=\textwidth]{chapters/cdma-chapters/codes/autocorr-hadamard.eps}
 	\caption{Autocorrelation of orthogonal sequence with row index 120 of length 256.}
 	\label{fig:autocorr-hadamard}
 \end{figure}
 
 
 
-Only a small subset of the codes (COWHC) have $0$ cross-correlation for every time-shift $\tau$.
+Only a small subset of the codes (COWHC) have zero cross-correlation for every time-shift $\tau$.
 With code length $L$ there are $\log_2 L$ codes in the set, which makes these codes not scalable \cite{1182447}. 
-Also the autocorrelation does not have a clear peak to identify the code, because these codes are an unmodified subset of the normal orthogonal sequences for which the autocorrelation has already been shown in \autoref{fig:autocorr-hadamard}.
+Also the auto-correlation does not have a clear peak to identify the code, because these codes are an unmodified subset of the original orthogonal sequences.
+For these sequences the auto-correlation has already been shown in \autoref{fig:autocorr-hadamard}.
 
 To conclude: the entire set of orthogonal codes of length $L$, has $L - 1$ codes in the set which does make it a scalable set.
 But the auto- and cross-correlation only have the desired properties when the codes are sent synchronously. 

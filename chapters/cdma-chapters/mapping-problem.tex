@@ -3,7 +3,7 @@
 \section{Mapping Problem}
 \label{sec:mapping-problem}
 
-The coding methods as discussed in \autoref{sec:orthogonal-sequences} and \autoref{sec:pn-sequences} are used in the field of telecommunication.
+The coding methods as discussed in \autoref{subsec:orthogonal-sequences} and \autoref{subsec:pn-sequences} are used in the field of telecommunication.
 Since these signals are analog radio waves, the symbols are $+1$ and $-1$.
 The orthogonal sequences generated via the Hadamard matrix can already be in this form, but the PN sequences contain only zeros and ones.
 For the use with radio-signals the PN sequence is mapped to a form with $+1$ and $-1$, where the original $0$ is mapped to $+1$ and the original $1$ is mapped to $-1$.
@@ -82,10 +82,11 @@ We can write it such that $R$ will become a function of $T$:
 
 \end{proof}
 
-The sum of the sequence depends on the sequence used, when using orthogonal codes the sum will be zero, see \autoref{sec:orthogonal-sequences}.
+The sum of the sequence depends on the sequence used, when using orthogonal codes the sum will be zero, see \autoref{subsec:orthogonal-sequences}.
 If the sum is equal to zero, the factor $m$ will not matter.
 However when the sequence used is a PN sequence or a balanced Gold sequence, the sum will be $-1$, This means: $R = -m - 2 \times T$, and then $m$, the number of signals, is important.
-When using an unbalanced Gold sequence, the sum if that sequence can be calculated on the spot.
+When using an unbalanced Gold sequence, the sum if that sequence is not equal to $-1$.
+All the chips of the unbalanced Gold sequence can be added, in order to find the sum of this particular sequence and use the outcome to calculate the correct correlation value.
 
 
 

@@ -5,7 +5,7 @@
 
 In the previous sections, interference was discussed when using a CDMA approach.
 When there are too many transmitters on the same channel, at the same time, the interference can be so great that it destroys a code sequence of one or more transmitters.
-This is not a problem for Orthogonal sequences, since they have no cross correlation, when transmitted synchronously (See \autoref{sec:orthogonal-sequences}).
+This is not a problem for Orthogonal sequences, since they have no cross correlation, when transmitted synchronously (See \autoref{subsec:orthogonal-sequences}).
 But this is an issue for Gold sequences. \todo{Should also mention PN sequences in general, and then the table with the calculated cross correlation per length ????}
 As stated in \autoref{subsec:gold-sequences}, the cross correlation of Gold sequences is bounded by $t(n)$, see \autoref{eq:gold-t(n)}.
 This means that the maximum number of transmitters can be calculated such that not too much interference will occur. 
@@ -172,7 +172,7 @@ All the other transmitters in the system will also be transmitting at the same t
 
 
 
-Another solution to overcome the interference problem, is to use probabilistic method.
+Another solution to overcome the interference problem, is to use a probabilistic approach.
 The benefit of this method is that it can utilize all code sequences in the set, instead of a limited amount of them like in the solution above.
 The drawback is that it is not guarantied that every transmitter will transmit within a certain time and therefor the time it takes for all transmitters to transmit is not guarantied to be within a certain time frame.
 

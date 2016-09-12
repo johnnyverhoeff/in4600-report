@@ -1,0 +1,39 @@
+% !TeX root = ../../../thesis.tex
+
+\subsection{Comparison of Sequences}
+\label{subsec:comparison-of-sequences}
+
+
+In \autoref{tbl:comparison-sequences} a comparison is made between the CDMA sequences discussed.
+The sequences are compared for the metrics discussed in \autoref{sec:performance-metrics-cdma} in both synchronous as well as a-synchronous environments.
+From this table it is clear that the Gold sequences are the best sequences suited for the environment of disaggregating individual lights, due to their a-synchronous nature, low cross-correlation and one-peaked auto-correlation and their scalability.
+
+
+
+
+
+
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{  | l | l | l | l | }
+
+		\hline
+														& Orthogonal Seq. 			& PN Seq.						& Gold Seq.				\\ \hline
+		Synchronous	Transmission						& \cmark					& \cmark						& \cmark				\\ \hline
+		A-synchronous Transmission						& \xmark					& \cmark						& \cmark				\\ \hline
+		Peaks auto-correlation (synchronous)			& 1							& 1								& 1						\\ \hline
+		Peaks auto-correlation (a-synchronous)			& $> 1$						& 1								& 1						\\ \hline
+		Low cross-correlation (synchronous)				& \cmark					& \cmark						& \cmark				\\ \hline
+		Low cross-correlation (a-synchronous)			& \xmark					& \cmark						& \cmark				\\ \hline
+		Math. bounded cross-correlation (synchronous)	& \cmark					& \xmark						& \cmark				\\ \hline
+		Math. bounded cross-correlation (a-synchronous)	& \xmark					& \xmark						& \cmark				\\ \hline
+		Scalability ($C \propto L$)						& \cmark					& \xmark						& \cmark				\\ \hline				
+
+
+
+	\end{tabular}
+	\caption{Table showing a comparison of the discussed CDMA sequences. }
+	\label{tbl:comparison-sequences}
+
+\end{table}
