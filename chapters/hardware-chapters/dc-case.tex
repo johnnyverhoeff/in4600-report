@@ -67,8 +67,10 @@ If the value of the resistor is chosen such that the maximum voltage will never 
 To test the code sequences with actual hardware, a testbed was created.
 The testbed works on DC and incorporates six individual controllable current sources that power strips of LEDs.
 Each strip has six LEDs in series on them.
+So in total there are 36 LEDs.
 The current is measured by a series resistor en fed to the ADC of a microprocessor.
 The entire schematic can be found in \autoref{app:dc-test-bed-schematic}. 
+An architectural overview can be seen in \autoref{fig:dc-test-bed-architectural}.
 
 
 The current sources and therefor the LEDs can be toggled on and off by a microprocessor.
@@ -81,6 +83,13 @@ These values can directly be used for the state of the LED.
 The Orthogonal sequences will work, but only when the LEDs are synchronized with each other, due to the nature of these sequences (See \autoref{subsec:orthogonal-sequences}.
 However when using the Gold sequences, the LEDs can work without being synchronized with each other.
 An evaluation of this testbed is done \autoref{subsec:dc-testbed-eval}.
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[angle=0,width=\textwidth,keepaspectratio]{chapters/hardware-chapters/dc-test-bed-architectural.JPG}
+  \caption{Architectural overview of the DC testbed. Six LED modulators are connected in parallel with each other and in series with the current sampler.}
+  \label{fig:dc-test-bed-architectural}
+\end{figure}
 
 
 

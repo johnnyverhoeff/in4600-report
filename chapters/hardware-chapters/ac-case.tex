@@ -28,12 +28,12 @@ This makes determining whether an LED was on or off difficult, especially if mul
 	\subfigure[Without a load attached.]{
 		\label{fig:smps-current-primary-no-load}
 		\includegraphics[width=60mm]
-		{chapters/hardware-chapters/smps-current-primary-no-load-cropped.jpg}
+		{chapters/hardware-chapters/smps-current-primary-no-load-cropped-edit.jpg}
 	}
 	\subfigure[With a 33 ohm resistor load attached.]{
 		\label{fig:smps-current-primary-with-load}
 		\includegraphics[width=60mm]
-		{chapters/hardware-chapters/smps-current-primary-with-load-cropped.jpg}
+		{chapters/hardware-chapters/smps-current-primary-with-load-cropped-edit.jpg}
 	}
 
 	\caption{Voltage measured over a 10 ohm series resistor at the primary side, to determine the current flow in two situations of a SMPS, with and without a load attached. Settings: 2 ms/div, 500 mV/div.}
@@ -41,7 +41,7 @@ This makes determining whether an LED was on or off difficult, especially if mul
 
 
 
-Other commercial LED lighting fixtures can be screwed directly into existing sockets and work directly via the supplied 230 V AC.
+Other commercial LED lighting fixtures can be screwed directly into existing sockets and work directly via the supplied 230 V AC \cite{commercial-230v-ac-led-aliexpress}.
 In Figures \ref{fig:commercial-230v-ac-led-on} and \ref{fig:commercial-230v-ac-led-modulating} the current signatures of this commercial 230 V AC LED can be seen, narmally on and when modulated, respectively.
 In order to modulate this LED, changes had to be made to the hardware that drives the actual LEDs.
 In \autoref{app:commercial-230v-ac-modified-schematic} a schematic can be found, which shows the original circuit and what was modified in order to modulate the LED.
@@ -57,22 +57,24 @@ In \autoref{app:commercial-230v-ac-modified-schematic} a schematic can be found,
 The time that is available to modulate the LED, can be seen in Figure \ref{fig:commercial-230v-ac-led-on}.
 There are two peaks, each peak is 4 ms wide, for a total modulation time of 8 ms.
 The AC has a period of 20 ms, so $\frac{8}{20} = 40 \%$ of the time is available for modulation.
+In comparison to a DC environment, the power supply has no period, it is a constant value, therefor modulation can take place the entire time: $100 \%$ of the time is available for modulation.
 The reason for these peaks, is because at that point in time enough voltage is provided by the AC to make all those LEDs in series draw current.
 In Figure \ref{fig:commercial-230v-ac-led-modulating} it can be seen that when the LED is turned off, there is no current draw.
-When the LED is being turned on again, the current draw is not immediate, but takes time.
-This behavior is not desired, especially not when multiple of these current signatures will be superimposed.
+When the LED is being turned on again, the current draw is not immediate, but takes time, a slope can be seen.
+This behavior is not desired, especially not when multiple of these current signatures will be superimposed, it would be better if were to go up immediately.
+The current does drop to zero immediately when the LED is turned off.
 
-\begin{figure}
+\begin{figure}[tb]
 	\centering     %%% not \center
 	\subfigure[LED is on. Settings: 5 ms/div, 1 V/div.]{
 		\label{fig:commercial-230v-ac-led-on}
-		\includegraphics[width=60mm]
+		\includegraphics[angle=0,width=0.3\textwidth,keepaspectratio]
 		{chapters/hardware-chapters/commercial-230v-ac-led-on-cropped.png}
 	}
-	\subfigure[LED is being modulated at 4 kHz with the other signal present in the figure. Settings: 1 ms/div, 5 V/div.]{
+	\subfigure[LED is being modulated at 4 kHz. Settings: 1 ms/div, 5 V/div.]{
 		\label{fig:commercial-230v-ac-led-modulating}
-		\includegraphics[width=60mm]
-		{chapters/hardware-chapters/commercial-230v-ac-led-modulating-cropped.png}
+		\includegraphics[angle=0,width=0.5\textwidth,keepaspectratio]
+		{chapters/hardware-chapters/commercial-230v-ac-led-modulating-partial.png}
 	}
 
 	\caption{Voltage measured over a 22 ohm series resistor at the primary side, to determine the current flow of a commercial 230 V AC LED.}
@@ -83,8 +85,17 @@ This behavior is not desired, especially not when multiple of these current sign
 
 
 Given the shortcomings of the existing hardware, it was decided to build custom hardware that would behave exactly how it was needed in order to successfully encode information in such a way that the currents could be decoded by a smart-meter.
-In the following subsections each part of the hardware of the custom LED modulator will be explained.
 The entire modulator's schematic can be found in \autoref{app:custom-led-modulator-schematic}.
+An overview of the modulator can be seen in \autoref{fig:ac-led-modulator-architectural}.
+In the following subsections each part of the hardware of the custom LED modulator will be explained.
+
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[angle=0,width=0.8\textwidth]{chapters/hardware-chapters/ac-modulator-architectural.JPG}
+	\caption{Architectural overview of the AC LED modulator.}
+	\label{fig:ac-led-modulator-architectural}
+\end{figure}
 
 
 
@@ -108,7 +119,7 @@ The entire modulator's schematic can be found in \autoref{app:custom-led-modulat
 
 	\begin{figure}[htb]
 		\centering
-		\includegraphics[angle=0,width=0.5\textwidth]{chapters/hardware-chapters/triggering-circuit-output.png}
+		\includegraphics[angle=0,width=0.55\textwidth]{chapters/hardware-chapters/triggering-circuit-output-cropped.png}
 		\caption{Ouptut from the triggering circuit. Settings: 2 V/div, 2 ms/div.}
 		\label{fig:triggering-circuit-output}
 	\end{figure}
@@ -159,11 +170,13 @@ The entire modulator's schematic can be found in \autoref{app:custom-led-modulat
 
 
 	For the current to be drawn instantaneously when the microprocessor tells the LED to turn on and to always be the same amount of current, a current source is implemented. 
-	This will deal with the problems that the other hardware had, as can be seen in Figure \ref{fig:custom-modulator-voltage-source}.
+	This will solve the problems that the other solutions have, such as: not a constant current draw, not instantaneous current draw but a slope.
 	The toggling of the current source on and off must be isolated from the microprocessor, to protect the microprocessor in the development stages.
 	The schematic can be found in \autoref{fig:custom-modulator-current-source}.
 	The current that is drawn by the current source when modulating can be seen in \autoref{fig:current-source-measurement}.
 	As seen in the figure the current goes both positve and negative, because of the AC.
+	And the current is a constant current when the current source in on or off.
+	Also there is no visible slope.
 	The two peaks in the figure are the charging peaks for the capacitors as discussed in \autoref{subsubsec:non-disturbing-voltage-source}.
 
 
@@ -183,7 +196,7 @@ The entire modulator's schematic can be found in \autoref{app:custom-led-modulat
 	  \end{minipage}
 	  \hfill
 	  \begin{minipage}[b]{0.49\textwidth}
-	    \includegraphics[width=\textwidth]{chapters/hardware-chapters/current-source-measurement.png}
+	    \includegraphics[width=\textwidth]{chapters/hardware-chapters/current-source-measurement-cropped.png}
 	    \caption{Current that is drawn by the current source. Measured over an 2.8 Ohm resistor. Settings: 200 mV/div, 2 ms/div.}
 		\label{fig:current-source-measurement}
 	  \end{minipage}
@@ -193,7 +206,7 @@ The entire modulator's schematic can be found in \autoref{app:custom-led-modulat
 \subsection{Current Sampler}
 
 To measure AC current there are products on the market.
-One such a product is a `Hall Effect-Based Linear Current Sensor'.
+One such a product is a `Hall Effect-Based Linear Current Sensor' \cite{hall-ac-current-sensor-datasheet}.
 Based on the Hall effect, this sensor outputs a voltage which is linear dependent on the current that goes through the sensor.
 The 230 V AC is magnetically decoupled from the output voltage, due to the Hall effect.
 Since the AC current can be both positive and negative, the output voltage of the sensor is half of the applied $V_{cc}$ when no current is being drawn.
@@ -220,6 +233,14 @@ Just like the LED modulator needs to know when to start encoding.
 So the same triggering circuit is also used for the current sampler.
 
 The full schematic of the current sampler can be found in \autoref{app:custom-current-sampler-schematic}.
+An architectural overview can be seen in \autoref{fig:ac-current-sampler-architectural}.
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[angle=0,width=0.8\textwidth,keepaspectratio]{chapters/hardware-chapters/ac-current-sampler-architectural.JPG}
+	\caption{Architectural overview of the AC current sampler.}
+	\label{fig:ac-current-sampler-architectural}
+\end{figure}
 
 
 
