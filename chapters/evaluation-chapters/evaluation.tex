@@ -6,7 +6,26 @@
 
 In this chapter the designed hardware and software will be evaluated, for both the DC and the AC testbeds.
 After that, simulation will evaluate the scalability of the setups.
-\todo{Explain what Fp Fn Tp Tn are in this context}
+
+
+As explained in \autoref{sec:interference-solution}, the correctional data that is calculated is compared to a threshold.
+This data can be less than or equal to the threshold or it can be greater than the threshold.
+For each of these cases, the data can also be correct or wrong.
+So there are four categories to consider:
+
+
+\begin{itemize}
+
+	\item True Positive: The correlation is above the threshold, meaning the sequence is present in the signal according to the receiver and the transmitter actually did send this sequence.
+
+	\item False Positive: The correlation is above the threshold, meaning the sequence is present in the signal according to the receiver but the transmitter did not send this sequence and due to interference from other sequences the correlation became higher than the set threshold.
+
+	\item True Negative: The correlation is not above the threshold, meaning the sequence is not present in the signal according to the receiver and the transmitter did not send this sequence.
+
+	\item False Negative: The correlation is not above the threshold, meaning the sequence is not present in the signal according to the receiver but the transmitter did send this sequence and due to interference from other sequences the correlation became lower than the set threshold.
+
+
+\end{itemize}
 
 
 

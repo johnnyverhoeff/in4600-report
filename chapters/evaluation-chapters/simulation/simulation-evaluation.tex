@@ -12,6 +12,7 @@ Before the actual simulation itself, parameters such as $\epsilon$ need to be se
 This will determine if interference can occur and therefor the overall accuracy and correctness of the system.
 
 For the rest of this simulation a Gold sequence set with length 127 will be used for the assessment.
+This set has 129 unique Gold sequences.
 
 This simulation does the following: 
 
@@ -36,35 +37,54 @@ This simulation does the following:
 
 
 
-Let's set $\epsilon = 0.1$, meaning that the probability that there will be more than $m$ LEDs modulating for every point in time will be 0.9 or 90 \%.
-Let's set $\epsilon_1 = \epsilon$, meaning the probability that all LEDs will have modulated at least once is equal to 0.9 or 90 \%.
-With these values and the Gold sequence set with length 127, the simulation as described above can begin. 
+Let's set $\epsilon = 0.1$, meaning that the probability that there will be less than or equal to $m$ LEDs modulating for every point in time will be 0.9 or 90 \%, where $m$ is the maximum number of simultaneous transmitters such that no destructive interference takes place.
+Let's also set $\epsilon_1 = \epsilon = 0.1$, meaning the probability that all LEDs will have modulated at least once is equal to 0.9 or 90 \%.
+The Gold sequence with length 127 has 129 unique sequences.
+With these values and the Gold sequence set, the simulation as described above can begin. 
+
+
 
 The results of the simulation can be seen in \autoref{fig:sim-concurrent-tx-and-f-measure-eps=1-n=7}.
-Also note that 17 \% of the transmitters did not transmit their sequence even once.
 In the upper plot the number of concurrent transmitters can be seen. 
-$m$ is also visible here.
-When the number of concurrent transmitters is below the line $m$, it is guarantied that no interference will occur, as proven in \autoref{sec:interference-solution}.
-But when the number of concurrent transmitters is above the line $m$, it is possible that there will be interference but it is not always the case.
+the maximum number of simultaneous transmitters such that no destructive interference takes place, $m$, is also visible here.
+When the number of concurrent transmitters is below or equal to the $m$-line, it is guarantied that no interference will occur, as proven in \autoref{sec:interference-solution}.
+But when the number of concurrent transmitters is above the $m$-line, it is possible that there will be interference but it is not always the case.
 This depends on what the cross correlation with the other sequences is and if they cancel each other out or if they enhance each other.
-From the lower plot it can be seen that whenever the number of concurrent transmitters in the upper plot is below the $m$ line, the F-measure is equal to 1.
+From the lower plot it can be seen that whenever the number of concurrent transmitters in the upper plot is below the $m$-line, the F-measure is equal to 1.
 This means that everything in the decoding process went well, no false-positives and/or false-negatives.
 When the number of concurrent transmitters is above the $m$ line, two things can happen: either there is enough interference to cause false-positives and/or false-negatives, or there is not enough interference and everything will go well.
-Two times the number of concurrent transmitters is so high, it causes interference as can be seen in the F-measure, which has drops at the same run as when the number of concurrent transmitters are too high.
+Five times the number of concurrent transmitters is so high, it causes interference as can be seen in the F-measure, which has drops at the same run as when the number of concurrent transmitters are too high.
+In \autoref{fig:sim-concurrent-tx-and-f-measure-eps=1-n=7} the percentage of transmitters that have transmitted at least once can also be seen.
+After the $k$ runs are simulated, the part of the transmitters that actually transmitted at least once is roughly 90 \%.
+Which is the expected value when $\epsilon_1 = 0.1$.
+$1 - \epsilon_1$ is the probability that a transmitter will have transmitted at least once after $k$ attempts.
+Since all transmitters are independent and identically distributed, this probability holds for all transmitters.
+Also the percentage that the number of concurrent transmitters is above $m$ is roughly equal to 15 \%.
+This number will get closer and closer to $\epsilon$ the more number of runs are done.
+
+
+
+
 
 \begin{figure}[tbp]
 	\centering
 	\includegraphics[width=\textwidth]{chapters/evaluation-chapters/simulation/sim-concurrent-tx-and-f-measure-eps=1-n=7.eps}
-	\caption{Results of the simulation. Upper plot shows the number of concurrent transmitters per run along with $m$. The lower plot shows the F-measure per run.}
+	\caption{Results of the simulation. Upper plot shows the number of concurrent transmitters per run along with $m$ and the percentage of transmitters that have transmitted at least once. The lower plot shows the F-measure per run.}
 	\label{fig:sim-concurrent-tx-and-f-measure-eps=1-n=7}
 \end{figure}
 
-17 \% of the transmitters did not transmit their sequence even once.
-This is due to the relatively high value $\epsilon_1 = 0.1$.
-There were $k = 84$ runs done.
-This results in a time is equal to $\frac{127}{10000} \times 84 = 1.1$ s (See \autoref{eq:time-for-probabilistic-txs}).
-So this was a very fast time and pretty accurate, considering that there were only two drops in the F-measure.
-But a lot of transmitters did not even transmit once.
+
+
+
+
+
+
+
+There were $k = 168$ runs done.
+This results in a time is equal to $\frac{127}{10000} \times 168 = 2.1$ s (See \autoref{eq:time-for-probabilistic-txs}).
+The time corresponds with the theoretical time calculated in \autoref{subsec:probabilistic-method-modulation} as can be seen in \autoref{tbl:probabilistic-method-time-as-function-N}.
+So this was a fast time and pretty accurate, considering that there were only a few drops in the F-measure.
+But roughly 10 \% of the transmitters did not even transmit once.
 
 
 
@@ -78,10 +98,11 @@ But a lot of transmitters did not even transmit once.
 The same simulation is done again, but now with $\epsilon = \epsilon_1 = 0.001$.
 The plots can be seen in \autoref{fig:sim-concurrent-tx-and-f-measure-eps=001-n=7}.
 Note that all transmitters have transmitted at least once.
-Only one time the number of concurrent transmitters goes above the $m$ line, but it does not cause interference as shown be the F-measure, which is a constant 1.
+A couple of times the number of concurrent transmitters goes above the $m$-line, but it does not cause interference as shown be the F-measure, which is a constant 1.
 So with $\epsilon = \epsilon_1 = 0.001$ it is an accurate setup that can use all the sequences in the set.
-But the number of runs is $k = 1023$.
-This results in a time of $\frac{127}{10000} \times 1023 = 13.0$ s (See \autoref{eq:time-for-probabilistic-txs}).
+But the number of runs is $k = 2055$.
+This results in a time of $\frac{127}{10000} \times 2055 = 26.1$ s (See \autoref{eq:time-for-probabilistic-txs}).
+The time corresponds with the theoretical time calculated in \autoref{subsec:probabilistic-method-modulation} as can be seen in \autoref{tbl:probabilistic-method-time-as-function-N}.
 This is still a relative small amount of time, but still 13 times larger than the previous simulation.
 
 
@@ -94,4 +115,8 @@ This is still a relative small amount of time, but still 13 times larger than th
 
  
 
-These simulations show that for the probabilistic method there is a clear trade off between time and accuracy.
+These simulations show that for the probabilistic method there is a clear trade off between time, accuracy and completeness.
+For a given set of sequences, a low value for $\epsilon$ gives high accuracy but the also the a high time.
+A high value for $\epsilon$ gives lower accuracy but the also the time becomes smaller.
+A low value for $\epsilon_1$ yields a high completeness, in terms of transmitters that have transmitted, for the simulation but also makes the time grow larger.
+A simulation with a high value for $\epsilon_1$ will have a low completeness but is also done more quickly.

@@ -2,6 +2,7 @@
 load dc-testbed-raw-and-corr-n=7-N=6;
 
 L = 127;
+%L = 511;
 
 close all;
 
@@ -14,14 +15,15 @@ title('Raw ADC data DC testbed');
 xlabel('Sample');
 ylabel('ADC value');
 
-%hold on;
+hold on;
 
-%for idx = 0:6
-%   plot([1 end_idx - start_idx + 1],[300*idx 300*idx]); 
-%end;
+for idx = 0:6
+   plot([1 end_idx - start_idx + 1],[300*idx 300*idx]); 
+end;
 
 %legend('raw data','0 LEDs on', '1 LEDs on', '2 LEDs on', '3 LEDs on', '4 LEDs on', '5 LEDs on', '6 LEDs on');
-%hold off;
+legend('raw data','0', '1', '2', '3', '4', '5', '6');
+hold off;
 
 
 figure;
