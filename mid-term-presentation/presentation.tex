@@ -40,6 +40,8 @@
 
 
 
+\usepackage{epstopdf}
+
 
 
 
@@ -74,6 +76,8 @@
 \beamertemplatenavigationsymbolsempty
 %\setbeamertemplate{navigation symbols}{}
 
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
 %{\setbeamertemplate{footline}{\usebeamertemplate*{minimal footline}}
 %\begin{frame}\frametitle{\titleTOC}
 %	\tableofcontents
@@ -102,8 +106,6 @@
 		\begin{figure}[t]
 			\centering
 			\includegraphics[width=0.7\textwidth]{../chapters/introduction-chapters/energy-consumption-house.png}
-			%\caption{An example of energy consumption of a household over the course of a day \cite{kolter2011redd}.}
-			%\label{fig:energy-consumption-house}
 		\end{figure}
 
 		% For example here we can see the aggregated energy from a household during a day.
@@ -140,7 +142,7 @@
 
 	\begin{frame}\frametitle{VLC}
 
-		VLC is a communication method which uses normal lighting to transmit data.
+		VLC is a communication method which uses visible light to transmit data.
 
 		\begin{itemize}
 
@@ -183,7 +185,10 @@
 			\resizebox {0.8\textwidth} {!} {
 				\begin{tikzpicture}
 
-					\node[block] (smart_meter) {Smart-meter};				
+					\node[block] (smart_meter) {Smart-meter};	
+
+					\node[block, left = 1cm of smart_meter] (power) {Power};	
+					\draw[line] (power.east) -- (smart_meter.west) node [midway, right] {};		
 
 					% second mod.
 					\node[block, right = 4cm of smart_meter] (second_modulator) {Modulator};
@@ -319,97 +324,246 @@
 	\end{frame}
 
 
-	\begin{frame}\frametitle{Theory To Practice}
-		In theory this works.
 
+
+
+	\begin{frame}\frametitle{Theory To Practice}
+
+		Components for both DC and AC will be investigated: 
+
+		\begin{itemize}
+
+			\item LED modulator
+
+			\item Current sampler (smart-meter)
+
+		\end{itemize}
+		
+	\end{frame}
+
+
+	\begin{frame}\frametitle{DC Hardware}
+
+		Modulator: 
+
+		\begin{itemize}
+
+			\item Constant current source
+
+		\end{itemize}
+
+		Current sampler: 
+
+		\begin{itemize}
+
+			\item Burden resistor with an ADC
+
+		\end{itemize}
 		
 	\end{frame}
 
 
 
 
-	%hardware
+	\begin{frame}\frametitle{AC Hardware}
 
-	\begin{frame}\frametitle{TITLE}
-		DC: use current source per LED for constant and flat current curve, with nice superimposition results
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.6\textwidth]{ac-sine-wave.png}
+		\end{figure}
+
+		AC is not like DC: 
+
+		\begin{itemize}
+
+			\item Supplied voltage is not constant.
+
+			\item Supplied voltage will be both positive and negative.
+
+		\end{itemize}
+
+		%Since this is not so easy to deal with as with DC, first other hw was investigated 
+		
 	\end{frame}
 
-	\begin{frame}\frametitle{TITLE}
-		AC is not constant, LED require certain amount of voltage
+	\begin{frame}\frametitle{AC Hardware}
+
+		\begin{figure}
+			\resizebox {0.8\textwidth} {!} {
+			  \centering
+			  \begin{minipage}[b]{0.48\textwidth}
+			    \includegraphics[width=\textwidth]{../chapters/hardware-chapters/smps-current-primary-with-load-cropped.jpg}
+			    \caption{SMPS}
+			  \end{minipage}
+			  \hfill
+			  \begin{minipage}[b]{0.4\textwidth}
+			    \includegraphics[width=\textwidth]{../chapters/hardware-chapters/commercial-230v-ac-led-on-cropped.png}
+			    \caption{Commercial AC LED}
+			  \end{minipage}
+		  }
+		\end{figure}
+
+		These solutions will not yield nice aggregated signals.
+		
 	\end{frame}
 
-	\begin{frame}\frametitle{TITLE}
-		Detection circuit for a certain amount of voltage for LEDs and current source for constant and flat current curve, with nice superimposition results
-	\end{frame}
+	\begin{frame}\frametitle{AC Hardware}
 
-	\begin{frame}\frametitle{TITLE}
-		DC: use burden resistor with output to adc to measure DC current
-	\end{frame}
+		Design of the AC LED modulator: 
 
-	\begin{frame}\frametitle{TITLE}
-		AC: hall effect too noisy, so also use burden resistor: will produce + and - voltage
-	\end{frame}
+		\begin{itemize}
 
-	\begin{frame}\frametitle{TITLE}
-		AC: burden resistor will produce + and - voltage so add half of adc vcc and then to ADC
-	\end{frame}
+			\item AC Voltage is zero crossing:
+			\begin{itemize}
+				\item Triggering needed to decide when to modulate. %because LEDs need certain amount of voltage before the current starts flowing
+			\end{itemize}
 
-
+			\item AC Voltage is not constant:
+			\begin{itemize}
+				\item Constant current source for LED. %because varying supplied voltage, but still want flat current curve.
+			\end{itemize}
 
 
-	%cdma
+		\end{itemize}
 
-	\begin{frame}\frametitle{TITLE}
-		All LEDs are basically transmitters on same freq. and same time.
-	\end{frame}
-
-	\begin{frame}\frametitle{TITLE}
-		Therefor TDM and FDM are out and CDM is used
-	\end{frame}
-
-	\begin{frame}\frametitle{TITLE}
-		Concept of correlation: auto and cross
-	\end{frame}
-
-	\begin{frame}\frametitle{TITLE}
-		Want low cross correlation with all time shifts and high autocorr. at zero time shift and low autocorr at all other time shifts.
-	\end{frame}
-
-	\begin{frame}\frametitle{TITLE}
-		comparison of orth. pn and gold
-	\end{frame}
-
-
-
-	% testbed
-
-	\begin{frame}\frametitle{TITLE}
-		DC test bed 6 individual LEDs
-	\end{frame}
-
-	\begin{frame}\frametitle{TITLE}
-		AC test bed 3 individual commercial LEDs
-	\end{frame}
-
-	\begin{frame}\frametitle{TITLE}
-		Correlation results with contious method DC
-	\end{frame}
-
-	\begin{frame}\frametitle{TITLE}
-		Correlation results with contious method AC
+		\begin{figure}
+			\resizebox {0.8\textwidth} {!} {
+			  \centering
+			  \begin{minipage}[b]{0.4\textwidth}
+			    \includegraphics[width=\textwidth]{../chapters/hardware-chapters/triggering-circuit-output-cropped.png}
+			    \caption{Triggering output}
+			  \end{minipage}
+			  \hfill
+			  \begin{minipage}[b]{0.4\textwidth}
+			    \includegraphics[width=\textwidth]{../chapters/hardware-chapters/current-source-measurement-cropped.png}
+			    \caption{Constant current source}
+			  \end{minipage}
+		  }
+		\end{figure}
+		
+		
 	\end{frame}
 
 
 
+	\begin{frame}\frametitle{AC Hardware}
+
+		AC Current sampler options:
+
+		\begin{columns}
+			\begin{column}{0.48\textwidth}
+
+				\begin{itemize}
+					\item Hall effect sensor:
+
+					\begin{itemize}
+						\item Sensitivity: 185 mV / A
+						\item Noise: 21 mV
+						\item Output: 15 W LED yields 12 mV 
+					\end{itemize}
+
+					\item Burden resistor:
+
+					\begin{itemize}
+						\item Sensitivity: 2800 mV / A
+						\item No noise 
+						\item Output: 15 W LED yields 183 mV 
+						\item Positive and negative voltage output %because of AC, so add a constant voltage to it and feed to an ADC
+					\end{itemize}
 
 
-	\begin{frame}\frametitle{TITLE}
-		Something with scalabity ??
+				\end{itemize}
+			\end{column}
+			\begin{column}{0.48\textwidth}
+
+				\begin{figure}
+					\centering
+					\includegraphics[width=0.8\textwidth]{hall-effect-sensing}
+				\end{figure}
+
+			\end{column}
+		\end{columns}
+
+
+		
+
+		
+		
 	\end{frame}
 
 
+
+
+	\begin{frame}\frametitle{Testbeds}
+		
+
+		\begin{itemize}
+
+			\item DC testbed has 6 individual controllable LEDs + current sampler. [Pic]
+
+			\item AC testbed has 3 individual controllable LEDs + current sampler. [Pic]
+
+		\end{itemize}
+	\end{frame}
+
+
+
+	\begin{frame}\frametitle{Evaluation DC Testbed}
+
+		\begin{figure}[!tbp]
+		  \centering
+		  \begin{minipage}[b]{0.49\textwidth}
+		    \includegraphics[width=\textwidth]{../chapters/evaluation-chapters/hardware/dc/raw-dc-testbed-adc-data-n=9.eps}
+		  \end{minipage}
+		  \hfill
+		  \begin{minipage}[b]{0.49\textwidth}
+		    \includegraphics[width=\textwidth]{../chapters/evaluation-chapters/hardware/dc/correlation-dc-testbed-n=9.eps}
+		  \end{minipage}
+		\end{figure}
+
+		% On the left hand side the raw data captured by the ADC can be seen.
+		% The 6 LEDs are all modulating according to the code sequences that they were given.
+
+		% On the right hand side the correlation results can be seen with two code sequences
+		% One sequence which is also used for one of the LEDs and one which is not being used
+		% We can only see peaks for the correct code.
+
+	\end{frame}
+
+
+
+	\begin{frame}\frametitle{Evaluation AC Testbed}
+
+		\begin{figure}[!tbp]
+		  \centering
+		  \begin{minipage}[b]{0.4\textwidth}
+		    \includegraphics[width=\textwidth]{../chapters/evaluation-chapters/hardware/ac/raw-ac-testbed-adc-data.eps}
+		  \end{minipage}
+		  \hfill
+		  \begin{minipage}[b]{0.4\textwidth}
+		    \includegraphics[width=\textwidth]{../chapters/evaluation-chapters/hardware/ac/processed-ac-testbed-adc-data.eps}
+		  \end{minipage}
+		  \hfill
+		  \begin{minipage}[b]{0.4\textwidth}
+		    \includegraphics[width=\textwidth]{../chapters/evaluation-chapters/hardware/ac/correlation-ac-testbed.eps}
+		  \end{minipage}
+		\end{figure}
+
+
+		% The first figure shows the raw ADC data with the triggering output.
+		% This signal is processed to be able to correlate the signal just like with the DC testbed
+		% The last figure shows the correlation with a sequence that is present and a sequence that is not present, very similar to the dc testbed.
+
+	\end{frame}
+
+
+
+
+
+
+
 	\begin{frame}\frametitle{TITLE}
-		Conclusion ... ? ? 
+		SIMULATION ???
 	\end{frame}
 
 
