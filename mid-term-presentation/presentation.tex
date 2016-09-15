@@ -562,8 +562,42 @@
 
 
 
-	\begin{frame}\frametitle{TITLE}
-		SIMULATION ???
+	\begin{frame}\frametitle{Simulation}
+		
+		To be able to test larger systems, simulations are used.
+
+		Assuming 129 individual LEDs which follow the probabilistic scheme.
+
+	\end{frame}
+
+
+
+	\begin{frame}\frametitle{Simulation}
+		
+		\begin{figure}[t]
+			\centering
+			\includegraphics[width=0.8\textwidth]{simulation-1.eps}
+		\end{figure}
+
+		% With this probabilistic scheme, the settings are a bit high, which will result in fast times but low completeness and decoding errors.
+		% Every time the number of concurrent transmitters goes above the m line, interference MAY happen, below the line everything will be fine, this is proven.
+		% WHen the interference happens fp and fn may occur and we see the f-measure drop.
+		% for 129 transmitters it takes 2.1 seconds to let 85 % of the transmitters transmit.
+
+	\end{frame}
+
+	\begin{frame}\frametitle{Simulation (2)}
+		
+		\begin{figure}[t]
+			\centering
+			\includegraphics[width=0.8\textwidth]{simulation-2.eps}
+		\end{figure}
+
+		% In this simulation we still have the same number of transmitters, 129, but we require more precision and completeness.
+		% We see that it takes more time to complete: around 26 seconds but 99 % of the transmitters have actually transmitted 
+		% and only one time was there too much interference.
+
+
 	\end{frame}
 
 
