@@ -459,9 +459,22 @@
 
 
 
-	\begin{frame}\frametitle{Theory To Practice}
 
-		Components for both DC and AC will be investigated: 
+
+
+
+
+
+
+
+
+
+
+
+
+	\begin{frame}\frametitle{Hardware Components}
+
+		Components that will be investigated: 
 
 		\begin{itemize}
 
@@ -474,37 +487,15 @@
 	\end{frame}
 
 
-	\begin{frame}\frametitle{DC Hardware}
 
-		Modulator: 
-
-		\begin{itemize}
-
-			\item Constant current source
-
-		\end{itemize}
-
-		Current sampler: 
-
-		\begin{itemize}
-
-			\item Burden resistor with an ADC
-
-		\end{itemize}
-		
-	\end{frame}
-
-
-
-
-	\begin{frame}\frametitle{AC Hardware}
+	\begin{frame}\frametitle{Understanding AC Voltage}
 
 		\begin{figure}
 			\centering
-			\includegraphics[width=0.6\textwidth]{ac-sine-wave.png}
+			\includegraphics[width=0.6\textwidth]{ac-wave.eps}
 		\end{figure}
 
-		AC is not like DC: 
+		AC characteristics:
 
 		\begin{itemize}
 
@@ -513,19 +504,22 @@
 			\item Supplied voltage will be both positive and negative.
 
 		\end{itemize}
-
-		%Since this is not so easy to deal with as with DC, first other hw was investigated 
 		
 	\end{frame}
 
-	\begin{frame}\frametitle{AC Hardware}
+
+
+
+
+
+	\begin{frame}\frametitle{Existing Modulator Hardware}
 
 		\begin{figure}
 			\resizebox {0.8\textwidth} {!} {
 			  \centering
 			  \begin{minipage}[b]{0.48\textwidth}
 			    \includegraphics[width=\textwidth]{../chapters/hardware-chapters/smps-current-primary-with-load-cropped.jpg}
-			    \caption{SMPS}
+			    \caption{Switching Mode Power Supply}
 			  \end{minipage}
 			  \hfill
 			  \begin{minipage}[b]{0.4\textwidth}
@@ -539,38 +533,23 @@
 		
 	\end{frame}
 
-	\begin{frame}\frametitle{AC Hardware}
 
-		Design of the AC LED modulator: 
+
+
+	\begin{frame}\frametitle{Detecting When to Modulate}
 
 		\begin{itemize}
 
-			\item AC Voltage is zero crossing:
-			\begin{itemize}
-				\item Triggering needed to decide when to modulate. %because LEDs need certain amount of voltage before the current starts flowing
-			\end{itemize}
+			\item AC Voltage is zero crossing.
 
-			\item AC Voltage is not constant:
-			\begin{itemize}
-				\item Constant current source for LED. %because varying supplied voltage, but still want flat current curve.
-			\end{itemize}
-
+			\item LEDs require some voltage before the current starts flowing.
 
 		\end{itemize}
+		
 
 		\begin{figure}
-			\resizebox {0.8\textwidth} {!} {
-			  \centering
-			  \begin{minipage}[b]{0.4\textwidth}
-			    \includegraphics[width=\textwidth]{../chapters/hardware-chapters/triggering-circuit-output-cropped.png}
-			    \caption{Triggering output}
-			  \end{minipage}
-			  \hfill
-			  \begin{minipage}[b]{0.4\textwidth}
-			    \includegraphics[width=\textwidth]{../chapters/hardware-chapters/current-source-measurement-cropped.png}
-			    \caption{Constant current source}
-			  \end{minipage}
-		  }
+			\centering
+			\includegraphics[width=0.7\textwidth]{ac-wave-triggering.eps}
 		\end{figure}
 		
 		
@@ -578,7 +557,29 @@
 
 
 
-	\begin{frame}\frametitle{AC Hardware}
+	\begin{frame}\frametitle{Constant Current Draw}
+
+
+		\begin{itemize}
+
+			\item AC Voltage is not constant.
+
+			\item For disaggregation a flat constant current is desired.
+
+		\end{itemize}
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.6\textwidth]{../chapters/hardware-chapters/current-source-measurement-cropped.png}
+			\caption{Constant current source}
+		\end{figure}
+
+
+	\end{frame}
+
+
+
+	\begin{frame}\frametitle{Smart meter}
 
 		AC Current sampler options:
 
@@ -592,6 +593,7 @@
 						\item Sensitivity: 185 mV / A
 						\item Noise: 21 mV
 						\item Output: 15 W LED yields 12 mV 
+						\item Noise $>$ output: not a viable option.
 					\end{itemize}
 
 					\item Burden resistor:
@@ -626,67 +628,73 @@
 
 
 
-	\begin{frame}\frametitle{Testbeds}
+	\begin{frame}\frametitle{Recap}
 		
+		Goals: 
 
 		\begin{itemize}
 
-			\item DC testbed has 6 individual controllable LEDs + current sampler. [Pic]
+			\item Codes for LEDs that can be identified when used with other codes.
 
-			\item AC testbed has 3 individual controllable LEDs + current sampler. [Pic]
+			\item Detection and identification must be done in a timely manner.
 
 		\end{itemize}
 	\end{frame}
 
 
 
-	\begin{frame}\frametitle{Evaluation DC Testbed}
 
-		\begin{figure}[!tbp]
-		  \centering
-		  \begin{minipage}[b]{0.49\textwidth}
-		    \includegraphics[width=\textwidth]{../chapters/evaluation-chapters/hardware/dc/raw-dc-testbed-adc-data-n=9.eps}
-		  \end{minipage}
-		  \hfill
-		  \begin{minipage}[b]{0.49\textwidth}
-		    \includegraphics[width=\textwidth]{../chapters/evaluation-chapters/hardware/dc/correlation-dc-testbed-n=9.eps}
-		  \end{minipage}
+
+	\begin{frame}\frametitle{Setup for Hardware Evaluation}
+		
+
+		\begin{itemize}
+
+			\item The setup consists of 3 individual controllable commercial LEDs + current sampler.
+
+			\item All LEDs are transmitting continuously with a code that support at least 3 concurrent transmitters.
+
+			\item The goal is to identify a LED as being on without seeing interference from the other LEDs.
+
+			\item Another goal is to check if another code which is not used for any LED, can be identified. This should NOT be the case, because this LED is not present.
+
+
+		\end{itemize}
+	\end{frame}
+
+
+
+
+	\begin{frame}\frametitle{Raw ADC Data}
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.8\textwidth]{ac-raw-data.eps}
 		\end{figure}
 
-		% On the left hand side the raw data captured by the ADC can be seen.
-		% The 6 LEDs are all modulating according to the code sequences that they were given.
+	\end{frame}
 
-		% On the right hand side the correlation results can be seen with two code sequences
-		% One sequence which is also used for one of the LEDs and one which is not being used
-		% We can only see peaks for the correct code.
+	\begin{frame}\frametitle{Processed ADC Data}
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.8\textwidth]{ac-processed-data.eps}
+		\end{figure}
+
+	\end{frame}
+
+	\begin{frame}\frametitle{Identifying LEDs}
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.8\textwidth]{correlation-results.eps}
+		\end{figure}
 
 	\end{frame}
 
 
 
-	\begin{frame}\frametitle{Evaluation AC Testbed}
 
-		\begin{figure}[!tbp]
-		  \centering
-		  \begin{minipage}[b]{0.4\textwidth}
-		    \includegraphics[width=\textwidth]{../chapters/evaluation-chapters/hardware/ac/raw-ac-testbed-adc-data.eps}
-		  \end{minipage}
-		  \hfill
-		  \begin{minipage}[b]{0.4\textwidth}
-		    \includegraphics[width=\textwidth]{../chapters/evaluation-chapters/hardware/ac/processed-ac-testbed-adc-data.eps}
-		  \end{minipage}
-		  \hfill
-		  \begin{minipage}[b]{0.4\textwidth}
-		    \includegraphics[width=\textwidth]{../chapters/evaluation-chapters/hardware/ac/correlation-ac-testbed.eps}
-		  \end{minipage}
-		\end{figure}
-
-
-		% The first figure shows the raw ADC data with the triggering output.
-		% This signal is processed to be able to correlate the signal just like with the DC testbed
-		% The last figure shows the correlation with a sequence that is present and a sequence that is not present, very similar to the dc testbed.
-
-	\end{frame}
 
 
 
