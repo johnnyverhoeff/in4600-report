@@ -31,7 +31,13 @@
         %(\tikzlastnode.east) edge (\tikzlastnode.west)
         }
     },
-  dot/.style={draw,circle,minimum size=2mm,inner sep=0pt,outer sep=0pt,fill=black}
+  dot/.style={draw,circle,minimum size=2mm,inner sep=0pt,outer sep=0pt,fill=black},
+  XOR/.style={draw,circle,append after command={
+        [shorten >=\pgflinewidth, shorten <=\pgflinewidth,]
+        (\tikzlastnode.north) edge (\tikzlastnode.south)
+        (\tikzlastnode.east) edge (\tikzlastnode.west)
+        }
+    }
 }
 
 \usepackage{pifont}% http://ctan.org/pkg/pifont
@@ -129,7 +135,7 @@
 
 			\item Instead there are many lights with the same signature.
 
-			\item Still important to be able to disaggregate individual lights. % Because it is the third largest power consumer in an average household.
+			\item Still important to be able to disaggregate individual lights: Lighting consumes 19 \% of the power in an average household.
 
 		\end{itemize}
 
@@ -146,34 +152,16 @@
 
 		\begin{itemize}
 
+			\item This data can be unique IDs for LED beacons used for indoor localization.
+
 			\item This data will also propagate through the current draw.
 
-			\item By choosing the data carefully, each light can be identified by its unique current draw.
+			\item Can we construct these IDs in such a way that the aggregated current can be disaggregated by a smart-meter ?
 
 		\end{itemize}
 
 	\end{frame}
 
-
-
-
-
-
-	\begin{frame}\frametitle{Encoding}
-		%Easiest way to use VLC is with OOK
-
-		Most common way to use VLC with LEDs, is with On-off keying (OOK).
-
-		\begin{itemize}
-
-			\item LEDs will be turning on and off according to the data.
-
-			\item Binary data is 0 and 1 valued.
-
-			\item Correspondence: 0 $\xrightarrow{}$ LED off, 1 $\xrightarrow{}$ LED on.
-
-		\end{itemize}
-	\end{frame}
 
 
 	\begin{frame}\frametitle{Overview}
@@ -219,9 +207,9 @@
 
 		\begin{itemize}
 
-			\item What data to use to modulate the LEDs ?
+			\item What type of codes can be used as IDs for the LEDs ?
 
-			\item Which hardware to use for the modulator and smart-meter ?
+			\item Which hardware is required to modulate and disaggregate these codes ? 
 
 			\item Evaluate the solutions.
 
@@ -232,38 +220,171 @@
 
 
 
-	\begin{frame}\frametitle{CDMA}
-		Metrics to consider of a CDMA sequence:
+
+	
+
+
+
+
+	\begin{frame}\frametitle{Recognizing the IDs}
+		
+		Correlation: Measuring the similarity between a code and a received signal:
+
+		\begin{equation*}
+			R(\tau)_{xy} = \displaystyle\sum_{i = 0} ^ {L - 1} x(i) \times y(i + \tau) {\text{  with $\tau = 0, 1, 2, \dotsc, L$}}
+		\end{equation*}
 
 		\begin{itemize}
 
-			\item Length of the sequence. % each chip of the code has to be transmitted and therefor takes time.
+			\item Auto-correlation: When the signal is present, it should yield a high value.
 
-			\item Number of sequences with the same length. % determines scalability of the system.
-
-
-			\item Correlation: A measure for determining how much a sequence is similar to another sequence.
-			\begin{itemize}
-
-				\item Auto-correlation: Should have one peak, to identify a particular sequence. % To determine if a particular LED's signature is in the received signal.
-
-				\item Cross-correlation: Should be as small as possible, to limit the amount of interference. % Determines the interference that the LEDs have on each other. 
-				%Too much interference and information gets lost.
-			\end{itemize}
+			\item Cross-correlation: When the signal is NOT present, it should yield a low value.
 
 		\end{itemize}
 	\end{frame}
 
 
-	\begin{frame}\frametitle{Comparison CDMA Sequences}
+
+	\begin{frame}\frametitle{Requirements for Codes}
+		
+		\begin{itemize}
+
+			\item Correlation:
+			\begin{itemize}
+
+				\item Auto-correlation should be high.
+
+				\item Cross-correlation should be low.
+
+			\end{itemize}
+
+			\item The ability to work in synchronous and asynchronous scenarios.
+
+			\item The codes should be not too long.
+
+			\item The number of codes should scale well with the length of the code. 
+
+		\end{itemize}
+		
+	\end{frame}
+
+
+
+	\begin{frame}\frametitle{Orthogonal Codes}
+		\begin{itemize}
+
+			\item Creation via Hadamard matrix: 
+			\begin{equation*}
+				H_{2n} = 
+				\begin{bmatrix} 
+					H_n & H_n \\ 
+					H_n & -H_n 
+				\end{bmatrix}
+			\end{equation*}
+
+			\item Auto-correlation is high, only in synchronous scenario.
+
+			\item Cross-correlation is low and math. bounded, only in synchronous scenario.
+
+			\item $C \propto L$
+
+
+		\end{itemize}
 		
 
-		% these are the sequences which I have investigated 
-		% The orthogonal sequences work really well when the transmitters can be synchronized.
-		% But due to the nature of lights, they will transmit a-synchronous.
-		% The other sequences work in a-synch circumstances.
-		% Where the Gold seq. work slight better and have better scalability.
+	\end{frame}
 
+
+	\begin{frame}\frametitle{PN Codes}
+		\begin{itemize}
+			\item Creation of a PN code via LFSR:
+		
+				\begin{figure}[t]
+					\centering
+					\resizebox {0.8\textwidth} {!} {
+						\begin{tikzpicture}
+
+
+							\node[block                  ] (last_register) {$s_{n-1}$};
+							\node[block, right = 1cm of last_register] (second_last_register) {$s_{n-2}$};
+							\draw[line] (last_register.east) -- (second_last_register.west) ;
+
+							\node[block, right = 3cm of second_last_register] (second_register) {$s_{1}$};
+							\node[block, right = 1cm of second_register] (mid_register) {$s_{0}$};
+							\draw[line] (second_register.east) -- (mid_register.west) ;
+
+							\draw[dashed, line] (second_last_register.east) -- (second_register.west) ;
+
+							\node[coordinate, right = 2cm of mid_register] (output_point) {};
+							\draw[line] (mid_register.east) -- (output_point.west) node [midway, above] {output};
+
+							\node[XOR, scale=2, below = 2cm of second_register] (first_xor) {};
+							\draw[line] (second_register.south) -- (first_xor.north) node [midway, right] {$C_1$};
+							\draw[line] (mid_register.south) |- (first_xor.east) node [pos=0.21, right] {$C_0$};
+
+							\node[coordinate, right = 1.5cm of second_last_register] (h) {};
+							\node[XOR, scale=2, below = 2.5cm of h] (mid_xor) {};
+							\draw[line] (first_xor.west) -- (mid_xor.east) ;
+							\draw[dashed, line] (h.south) -- (mid_xor.north) ;
+
+							\node[XOR, scale=2, below = 2cm of second_last_register] (second_last_xor) {};
+							\node[XOR, scale=2, below = 2cm of last_register] (last_xor) {};
+
+							\draw[line] (second_last_register.south) -- (second_last_xor.north) node [midway, right] {$C_{n-2}$};
+							\draw[line] (mid_xor.west) -- (second_last_xor.east) ;
+							
+							\draw[line] (second_last_xor.west) -- (last_xor.east) ;
+							\draw[line] (last_register.south) -- (last_xor.north) node [midway, right] {$C_{n-1}$};
+
+							\node[coordinate, left = 1cm of last_register] (return_point) {};
+							
+							\draw[line] (last_xor.west) -| (return_point) -- (last_register.west) ;
+
+						\end{tikzpicture}
+					}
+				\end{figure}
+
+			\item Auto-correlation is high, in synchronous and asynchronous scenarios.
+
+			\item Cross-correlation: Exhaustive analysis is required.
+
+			\item $C = \frac{1}{n} \prod \{ P_{i} ^ {(\alpha_i - 1)} \times (P_i - 1) \}$ $\rightarrow$ $C \not\propto L$
+
+
+		\end{itemize}
+		
+
+	\end{frame}
+
+
+
+	\begin{frame}\frametitle{Gold Codes}
+		\begin{itemize}
+			\item Creation of a Gold code via two separate LFSRs.
+
+			\item Auto-correlation is high, in synchronous and asynchronous scenarios.
+
+			\item Cross-correlation is low and math. bounded in synchronous and asynchronous scenarios.
+
+			\item $C \propto L$
+
+
+		\end{itemize}
+		
+
+	\end{frame}
+
+
+
+
+
+
+
+
+
+
+	\begin{frame}\frametitle{Comparison of Codes}
+		
 
 		\begin{table}
 			\centering
@@ -271,16 +392,12 @@
 				\begin{tabular}{ | l | l | l | l | }
 
 					\hline
-															& Orthogonal Seq. 			& PN Seq.						& Gold Seq.				\\ \hline
-			Synchronous	Transmission						& \cmark					& \cmark						& \cmark				\\ \hline
-			A-synchronous Transmission						& \xmark					& \cmark						& \cmark				\\ \hline
-			Peaks auto-correlation (synchronous)			& 1							& 1								& 1						\\ \hline
-			Peaks auto-correlation (a-synchronous)			& $> 1$						& 1								& 1						\\ \hline
-			Low cross-correlation (synchronous)				& \cmark					& \cmark						& \cmark				\\ \hline
-			Low cross-correlation (a-synchronous)			& \xmark					& \cmark						& \cmark				\\ \hline
-			Math. bounded cross-correlation (synchronous)	& \cmark					& \xmark						& \cmark				\\ \hline
-			Math. bounded cross-correlation (a-synchronous)	& \xmark					& \xmark						& \cmark				\\ \hline
-			Scalability ($C \propto L$)						& \cmark					& \xmark						& \cmark				\\ \hline		
+																	& Orthogonal 	& PN 		& Gold 		\\ \hline
+					Synchronous	Transmission						& \cmark		& \cmark	& \cmark	\\ \hline
+					A-synchronous Transmission						& \xmark		& \cmark	& \cmark	\\ \hline
+					Math. bounded CC (synch.)						& \cmark		& \xmark	& \cmark	\\ \hline
+					Math. bounded CC (asynch.)						& \xmark		& \xmark	& \cmark	\\ \hline
+					Scalability ($C \propto L$)						& \cmark		& \xmark	& \cmark	\\ \hline		
 
 
 				\end{tabular}
@@ -291,36 +408,51 @@
 
 
 
+
+
 	\begin{frame}\frametitle{Mapping Problem}
-		CDMA sequences are designed for and used in (wireless) telecommunications.
 
 		\begin{itemize}
 
-			\item Due to the use of analog radio signal the symbols are +1 and -1.
+			\item VLC is most commonly used with OOK symbols: 0 (off) and 1 (on).
 
-			\item LEDs can have the two state: Off (0) and On (1).
+			\item Codes explained use symbols: $+1$ and $-1$: $\rightarrow$ balanced around $0$.
 
-			\item Mapping between these two sets of symbols must take place.
+			\item Mapping must take place between these two sets of symbols: $b = \frac{1 - r}{2}$.
 
-			\item This mapping alters the way the correlation is calculated.
+			\item Use this mapping to figure out how to calculate the correlations.
 
 		\end{itemize}
-		
 	\end{frame}
 
 
-	\begin{frame}\frametitle{Probabilistic Scheme}
+
+	\begin{frame}\frametitle{Interference Solution}
+
 		Cross-correlation is not negligible.
 
 		\begin{itemize}
 
-			\item Cross-correlation is a function of the length of the sequence.
+			\item The maximum number of concurrent transmitters $m$ can be calculated, such that no interference will take place : $L = f(m)$.
 
-			\item The maximum number of concurrent transmitters $m$ can be calculated, such that no interference will take place. % which will be a function of the length of the sequence.
-
-			\item A probability $p$ is assigned to each transmitter based on the sequence and the time frame and completeness that the user requires.
+			\item Other way: probabilistic approach.
 
 		\end{itemize}
+
+
+	\end{frame}
+
+
+	\begin{frame}\frametitle{Probabilistic Approach}
+
+		\begin{itemize}
+
+			\item Accuracy: determines the accuracy in identifying which LEDs are on and off. And outputs a probability $p$ for which the LEDs will modulate.
+
+			\item Approximate the time it will take to successfully identify all LEDs: $t = f(L,\ f,\ p)$
+
+		\end{itemize}
+		
 	\end{frame}
 
 
@@ -588,7 +720,7 @@
 
 	\begin{frame}\frametitle{Simulation (2)}
 		
-		\begin{figure}[t]
+		\begin{figure}[t]=
 			\centering
 			\includegraphics[width=0.8\textwidth]{simulation-2.eps}
 		\end{figure}
