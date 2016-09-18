@@ -445,11 +445,15 @@
 
 	\begin{frame}\frametitle{Probabilistic Approach}
 
+		User determines properties:
+
 		\begin{itemize}
 
-			\item Accuracy: determines the accuracy in identifying which LEDs are on and off. And outputs a probability $p$ for which the LEDs will modulate.
+			\item Accuracy ($1 - \epsilon$): determines the accuracy in identifying which LEDs are on and off. And outputs a probability $p$ for which the LEDs will modulate.
 
-			\item Approximate the time it will take to successfully identify all LEDs: $t = f(L,\ f,\ p)$
+			\item If each LED has a probability $p$ of transmitting, it may happen that it will not transmit at all: User specifies the probability of transmitting within a certain amount of steps $1 - \epsilon_1$.
+
+			\item Approximate the time it will take to successfully identify all LEDs: $t = f(L,\ f,\ p,\ \epsilon_1) = \frac{L}{f} \times \frac{\ln(\epsilon_1)}{\ln(1 - p)}$
 
 		\end{itemize}
 		
@@ -654,7 +658,7 @@
 
 			\item All LEDs are transmitting continuously with a code that support at least 3 concurrent transmitters.
 
-			\item The goal is to identify a LED as being on without seeing interference from the other LEDs.
+			\item The goal is to identify an LED as being on without seeing interference from the other LEDs.
 
 			\item Another goal is to check if another code which is not used for any LED, can be identified. This should NOT be the case, because this LED is not present.
 
@@ -712,31 +716,21 @@
 
 
 
-	\begin{frame}\frametitle{Simulation}
+	\begin{frame}\frametitle{Fast Simulation But Inaccurate}
 		
 		\begin{figure}[t]
 			\centering
 			\includegraphics[width=0.8\textwidth]{simulation-1.eps}
 		\end{figure}
 
-		% With this probabilistic scheme, the settings are a bit high, which will result in fast times but low completeness and decoding errors.
-		% Every time the number of concurrent transmitters goes above the m line, interference MAY happen, below the line everything will be fine, this is proven.
-		% WHen the interference happens fp and fn may occur and we see the f-measure drop.
-		% for 129 transmitters it takes 2.1 seconds to let 85 % of the transmitters transmit.
-
 	\end{frame}
 
-	\begin{frame}\frametitle{Simulation (2)}
+	\begin{frame}\frametitle{Slow Simulation But Accurate}
 		
 		\begin{figure}[t]=
 			\centering
 			\includegraphics[width=0.8\textwidth]{simulation-2.eps}
 		\end{figure}
-
-		% In this simulation we still have the same number of transmitters, 129, but we require more precision and completeness.
-		% We see that it takes more time to complete: around 26 seconds but 99 % of the transmitters have actually transmitted 
-		% and only one time was there too much interference.
-
 
 	\end{frame}
 
