@@ -49,21 +49,39 @@ end;
 adc_dsp = abs(adc_dsp - mean(adc_dsp));
 
 figure;
-plot(time_vector, adc_dsp(1:e) .* 4 ./ 4095 ./ 2.8 .* 1000);
+yyaxis left;
+plot(time_vector, adc_dsp(1:e));
+ %.* 4 ./ 4095 ./ 2.8 .* 1000
 title('Processed ADC Values');
 xlabel('Time (ms)');
-%ylabel('Scaled ADC Values');
+ylabel('Processed ADC Values');
+ylim([0 max(adc_dsp(1:e))]);
+
+
+
+yyaxis right;
+ylim([0 max(adc_dsp(1:e))* 4 / 4095 / 2.8 * 1000]);
 ylabel('Current (mA)');
+
+
 
 figure;
 hold on;
-plot(time_vector, corr(1:e) ./ L);
-plot(time_vector, corr_not_included_code(1:e) ./ L);
-plot([time_vector(1) time_vector(end)],[1/2 1/2]);
+%plot(time_vector, corr(1:e) ./ L);
+%plot(time_vector, corr_not_included_code(1:e) ./ L);
+%plot([time_vector(1) time_vector(end)],[1/2 1/2]);
+plot(time_vector, corr(1:e));
+plot(time_vector, corr_not_included_code(1:e));
+plot([time_vector(1) time_vector(end)],[L/2 L/2]);
 
-title('Identifying LED');
+%title('Identifying LED');
+title('Correlation');
 xlabel('Time (ms)');
-ylabel('Code similarity');
-legend('Similarity w/ present code', 'Similarity w/ not present code', 'Threshold');
+%ylabel('Code similarity');
+%legend('Similarity w/ present code', 'Similarity w/ not present code', 'Threshold');
+ylabel('Correlation');
+legend('Correlation w/ present code', 'Correlation w/ not present code', 'Threshold');
+
+
 
 hold off;

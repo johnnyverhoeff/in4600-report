@@ -7,6 +7,47 @@ In this chapter, the requirements of both hardware and software will be explaine
 First the software side and then the hardware side will be detailed.
 Buildings traditionally only have AC power, but there is also research being done \todo{Citation needed, from NL or other origin ???} in using DC power in buildings. 
 Therefor each section will also contain the implications on using DC or AC.
+In \autoref{fig:overview-diagram} a block diagram can be seen how all components interact with each other.
+
+
+\begin{figure}[h]
+	\centering
+	\resizebox {\textwidth} {!} {
+		\begin{tikzpicture}
+
+			\node[block] (smart_meter) {Smart-meter};	
+
+			\node[block, left = 1cm of smart_meter] (power) {Power};	
+			\draw[line] (power.east) -- (smart_meter.west) node [midway, right] {};		
+
+			% second mod.
+			\node[block, right = 4cm of smart_meter] (second_modulator) {Modulator};
+			\node[LED, right = 0.5cm of second_modulator] (second_led) {LED};
+			\draw[line] (second_modulator.east) -- (second_led.west) node [midway, right] {};
+
+			% first mod.
+			\node[block, above = 1cm of second_modulator] (first_modulator) {Modulator};
+			\node[LED, right = 0.5cm of first_modulator] (first_led) {LED};
+			\draw[line] (first_modulator.east) -- (first_led.west) node [midway, right] {};
+
+			% third mod.
+			\node[block, below = 1cm of second_modulator] (third_modulator) {Modulator};
+			\node[LED, right = 0.5cm of third_modulator] (third_led) {LED};
+			\draw[line] (third_modulator.east) -- (third_led.west) node [midway, right] {};
+
+			\node[dot, right = 2.5cm of smart_meter] (CP) {};
+
+			\draw (smart_meter.east) -- (CP) node [pos=0.3, above] {0222};
+
+			\draw (CP) |- (first_modulator.west) node  [pos=0.75, above] {0011};
+			\draw (CP) |- (second_modulator.west) node [pos=0.75, above] {0110};
+			\draw (CP) |- (third_modulator.west) node  [pos=0.75, below] {0101};
+
+		\end{tikzpicture}
+	}
+	\caption{Block diagram how each component interacts with other components.}
+	\label{fig:overview-diagram}
+\end{figure}
 
 
 	\section{Encoding}
@@ -37,13 +78,13 @@ Therefor each section will also contain the implications on using DC or AC.
 
 	A piece of hardware is needed to modulate a commercial LED.
 	This hardware needs to translate the unique identification sequence that is assigned to each light source and modulate the LED.
-	The modulation needs to be done in such a way that the sum or the superimposition of the current of all lights can be measured at the smart meter.  
+	The modulation needs to be done in such a way that the aggregated current of all lights can be measured at the smart meter.  
 	The hardware should also allow for fast modulating to avoid seeing flickering effects.
 
 
 	For the design of this hardware, or when using pre-designed hardware, the way the identification sequence translates to the current draw needs to be taken in mind. 
 	With AC the applied voltage is a sine wave, which from a positive to a negative voltage.
-	So the supplied voltage is never the same and it has a zero crossing, meaning that there will flow no current at that point in time.
+	So the supplied voltage is never the same and it is zero crossing, meaning that there no current will flow at that point in time.
 	And when there is no current flow, there can also be no information encoding.
 	This issue must also be taken in mind.
 

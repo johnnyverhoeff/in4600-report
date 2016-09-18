@@ -110,20 +110,30 @@ In the following subsections each part of the hardware of the custom LED modulat
 	The preset can be determined by the potentiometer.
 	The output of the triggering circuit can be seen in \autoref{fig:triggering-circuit-output}.
 	The output is roughly 16 ms high, so $\frac{16}{20} = 80 \%$ of the time is available for modulation.
+	
 
-	%\begin{figure}[htb]
-	%	\includegraphics[angle=0,width=\textwidth]{chapters/hardware-chapters/custom-modulator-trigger.JPG}
-	%	\caption{Triggering circuit to determine when the voltage is sufficiently high enough to start encoding information.}
-	%	\label{fig:custom-modulator-trigger}
-	%\end{figure}
+	In \autoref{fig:triggering-circuit-output-2} the trigger output can be seen along with the incoming 230 V AC voltage.
+	The trigger setpoint voltage is set to $100$ V.
+	And the triggering output can be seen going from the logical outputs $0$ and $1$.
 
-	\begin{figure}[htb]
-		\centering
-		\includegraphics[angle=0,width=0.55\textwidth]{chapters/hardware-chapters/triggering-circuit-output-cropped.png}
+
+
+	\begin{figure}[!tbp]
+	  \centering
+	  \begin{minipage}[b]{0.39\textwidth}
+	    \includegraphics[width=\textwidth]{chapters/hardware-chapters/triggering-circuit-output-cropped.png}
 		\caption{Ouptut from the triggering circuit. Settings: 2 V/div, 2 ms/div.}
 		\label{fig:triggering-circuit-output}
+	  \end{minipage}
+	  \hfill
+	  \begin{minipage}[b]{0.49\textwidth}
+	    \includegraphics[width=\textwidth]{chapters/hardware-chapters/ac-wave-triggering.eps}
+		\caption{AFASF}
+		\label{fig:triggering-circuit-output-2}
+	  \end{minipage}
 	\end{figure}
 	
+
 
 
 	%Both figure side by side to save space...

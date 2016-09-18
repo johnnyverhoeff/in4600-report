@@ -36,7 +36,8 @@ ylim([-2 2]);
 
 ylabel('Trigger output');
 
-
+title('Triggering Circuit Output');
+xlabel('Time (ms)');
 
 legend('AC', '0 V', '+100 V', '-100 V', 'Trigger');
 %legend('AC', '0 V');

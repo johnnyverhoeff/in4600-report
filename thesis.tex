@@ -81,7 +81,14 @@
         (\tikzlastnode.north) edge (\tikzlastnode.south)
         (\tikzlastnode.east) edge (\tikzlastnode.west)
         }
-    }
+    },
+    LED/.style={draw,circle,append after command={
+        [shorten >=\pgflinewidth, shorten <=\pgflinewidth,]
+        %(\tikzlastnode.north) edge (\tikzlastnode.south)
+        %(\tikzlastnode.east) edge (\tikzlastnode.west)
+        }
+    },
+  dot/.style={draw,circle,minimum size=2mm,inner sep=0pt,outer sep=0pt,fill=black},
 }
 
 
