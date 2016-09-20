@@ -48,6 +48,8 @@
 
 \usepackage{epstopdf}
 
+\usepackage{multicol}
+
 
 
 
@@ -125,7 +127,7 @@
 
 
 
-	\begin{frame}\frametitle{Lighting Energy}
+	\begin{frame}\frametitle{Energy Consumption Lighting}
 
 		Individual lights cannot be disaggregated (yet).
 
@@ -146,7 +148,7 @@
 
 
 
-	\begin{frame}\frametitle{VLC}
+	\begin{frame}\frametitle{VLC Piggybacking}
 
 		VLC is a communication method which uses visible light to transmit data.
 
@@ -160,11 +162,19 @@
 
 		\end{itemize}
 
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.6\textwidth]{vlc-indoor-positioning.jpg}
+		\end{figure}
+
+
+
 	\end{frame}
 
 
 
-	\begin{frame}\frametitle{Overview}
+	\begin{frame}\frametitle{Contributions}
 
 		%Smart-meter will measure aggregated current draw of all LEDs.
 
@@ -207,9 +217,9 @@
 
 		\begin{itemize}
 
-			\item What type of codes can be used as IDs for the LEDs ?
+			\item Investigation of codes that can be used.
 
-			\item Which hardware is required to modulate and disaggregate these codes ? 
+			\item Design of hardware to modulate and sample the current.
 
 			\item Evaluate the solutions.
 
@@ -219,7 +229,27 @@
 
 
 
+	\begin{frame}\frametitle{Code Investigation}
 
+		\begin{itemize}
+
+			\item Code Theory.
+			\begin{itemize}
+
+				\item How to recognize the IDs ?
+
+				\item Requirements for the codes.
+
+				\item Analyzing and comparison of codes.
+			\end{itemize}
+
+			\item Symbol mapping problem.
+
+			\item Interference solution.
+
+		\end{itemize}
+
+	\end{frame}
 
 	
 
@@ -260,7 +290,7 @@
 
 			\item The ability to work in synchronous and asynchronous scenarios.
 
-			\item The codes should be not too long.
+			\item The codes should be not too long, the system should be able to identify an ID in a timely manner.
 
 			\item The number of codes should scale well with the length of the code. 
 
@@ -282,11 +312,39 @@
 				\end{bmatrix}
 			\end{equation*}
 
-			\item Auto-correlation is high, only in synchronous scenario.
 
-			\item Cross-correlation is low and math. bounded, only in synchronous scenario.
+			\noindent
+			\begin{minipage}{.5\linewidth}
+				\begin{equation*}
+					H_{1} = 
+					\begin{bmatrix} 
+						1
+					\end{bmatrix}
+				\end{equation*}
+			\end{minipage}%
+			\begin{minipage}{.5\linewidth}
+				\begin{equation*}
+					H_{2} = 
+					\begin{bmatrix} 
+						1 & 1 \\ 
+						1 & -1
+					\end{bmatrix}
+				\end{equation*}
+			\end{minipage}
 
-			\item $C \propto L$
+	
+			\item Properties:
+				\begin{itemize}
+
+
+
+				\item Auto-correlation is high, only in synchronous scenario.
+
+				\item Cross-correlation is low and math. bounded, only in synchronous scenario.
+
+				\item Number of codes $C \propto L$, the length of code, so it scales well.
+
+			\end{itemize}
 
 
 		\end{itemize}
@@ -344,12 +402,15 @@
 					}
 				\end{figure}
 
-			\item Auto-correlation is high, in synchronous and asynchronous scenarios.
+			\item Properties:
 
-			\item Cross-correlation: Exhaustive analysis is required.
+			\begin{itemize}
+				\item Auto-correlation is high, in synchronous and asynchronous scenarios.
 
-			\item $C = \frac{1}{n} \prod \{ P_{i} ^ {(\alpha_i - 1)} \times (P_i - 1) \}$ $\rightarrow$ $C \not\propto L$
+				\item Cross-correlation: Exhaustive analysis is required.
 
+				\item Number of codes $C = \frac{1}{n} \prod \{ P_{i} ^ {(\alpha_i - 1)} \times (P_i - 1) \}$ $\rightarrow$ $C \not\propto L$, does not scale well.
+			\end{itemize}
 
 		\end{itemize}
 		
@@ -359,14 +420,20 @@
 
 
 	\begin{frame}\frametitle{Gold Codes}
+
 		\begin{itemize}
-			\item Creation of a Gold code via two separate LFSRs.
+			\item Creation of a Gold code via two LFSRs with the output connected to each other.
 
-			\item Auto-correlation is high, in synchronous and asynchronous scenarios.
+			\item Properties:
+			\begin{itemize}
 
-			\item Cross-correlation is low and math. bounded in synchronous and asynchronous scenarios.
+				\item Auto-correlation is high, in synchronous and asynchronous scenarios.
 
-			\item $C \propto L$
+				\item Cross-correlation is low and math. bounded in synchronous and asynchronous scenarios.
+
+				\item Number of codes $C \propto L$, the length of code, so it scales well.
+
+			\end{itemize}
 
 
 		\end{itemize}
@@ -414,13 +481,25 @@
 
 		\begin{itemize}
 
-			\item VLC is most commonly used with OOK symbols: 0 (off) and 1 (on).
+			\item Problem:
 
-			\item Codes explained use symbols: $+1$ and $-1$: $\rightarrow$ balanced around $0$.
+			\begin{itemize}
 
-			\item Mapping must take place between these two sets of symbols: $b = \frac{1 - r}{2}$.
+				\item Codes explained are used with wireless communication that use symbols: $+1$ and $-1$: $\rightarrow$ balanced around $0$, multiple signals will still be balanced around $0$.
 
-			\item Use this mapping to figure out how to calculate the correlations.
+				\item VLC is most commonly used with OOK symbols: 0 (LED Off) and 1 (LED On) $\rightarrow$ NOT balanced around $0$, multiple signals will influence the balance.
+
+				
+			\end{itemize}
+
+			\item Solution:
+			\begin{itemize}
+
+				\item Mapping must take place between these two sets of symbols: $b = \frac{1 - r}{2}$: $-1 \rightarrow 1$ and $+1 \rightarrow 0$.
+
+				\item Input this mapping into the correlation formula to correct for this issue.
+
+			\end{itemize}
 
 		\end{itemize}
 	\end{frame}
@@ -429,13 +508,22 @@
 
 	\begin{frame}\frametitle{Interference Solution}
 
-		Cross-correlation is not negligible.
+		Cross-correlation is not negligible, therefor there will be interference. The amount of interference must be limited to still get accurate results.
 
 		\begin{itemize}
 
-			\item The maximum number of concurrent transmitters $m$ can be calculated, such that no interference will take place : $L = f(m)$.
+			\item CC is math. bounded meaning that the maximum number of concurrent transmitters $m$ can be calculated, such that no interference will take place. Based on these $m$ LEDs we can calculate what code length to use: $L \propto m^2$.
 
-			\item Other way: probabilistic approach.
+			\begin{itemize}
+				\item With modulating frequency $f = 10$ kHz:
+				\item Example: System with $m = 7$ LEDs $\rightarrow L = 1023$ $\rightarrow t = 0.05$ s.
+				\item Example: System with $m = 1023$ LEDs $\rightarrow L = 2^{23} = 8388608$ $\rightarrow t = 14$ min.
+			\end{itemize}
+
+			\item Arguably quadratic dependency is not scalable, proposition of another way: probabilistic approach.
+			\begin{itemize}
+				\item Example: System with $1025$ LEDs $\rightarrow L = 1023$.
+			\end{itemize}
 
 		\end{itemize}
 
@@ -445,31 +533,24 @@
 
 	\begin{frame}\frametitle{Probabilistic Approach}
 
-		User determines properties:
+		With this approach the trade-off must be made by the user between time and accuracy.
 
 		\begin{itemize}
 
 			\item Accuracy ($1 - \epsilon$): determines the accuracy in identifying which LEDs are on and off. And outputs a probability $p$ for which the LEDs will modulate.
 
-			\item If each LED has a probability $p$ of transmitting, it may happen that it will not transmit at all: User specifies the probability of transmitting within a certain amount of steps $1 - \epsilon_1$.
+			\item Since all LEDs have a probability $p$ of transmitting, it may happen that they do not transmit within a certain time.
 
-			\item Approximate the time it will take to successfully identify all LEDs: $t = f(L,\ f,\ p,\ \epsilon_1) = \frac{L}{f} \times \frac{\ln(\epsilon_1)}{\ln(1 - p)}$
+
+			\item Approximate the time it will take to successfully identify most LEDs: $t = f(L,\ f,\ p,\ \epsilon) = \frac{L}{f} \times \frac{\ln(\epsilon)}{\ln(1 - p)}$
+
+			\begin{itemize}
+				\item Example: System with $1025$ LEDs $\rightarrow L = 1023$ $\rightarrow t = 6$ min for high accuracy or $t = 50$ s for slightly lower accuracy.
+			\end{itemize}
 
 		\end{itemize}
 		
 	\end{frame}
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -478,13 +559,29 @@
 
 	\begin{frame}\frametitle{Hardware Components}
 
-		Components that will be investigated: 
+		Things that will be investigated: 
 
 		\begin{itemize}
 
-			\item LED modulator
+			\item Difference between DC and AC.
 
-			\item Current sampler (smart-meter)
+			\item LED modulator:
+
+			\begin{itemize}
+				\item Existing LED modulator solutions.
+				\item Design of custom modulator:
+				\begin{itemize}
+					\item Zero crossing issue.
+					\item Non constant voltage issue.
+				\end{itemize}
+
+			\end{itemize}
+
+			\item Current sampler (smart-meter):
+			\begin{itemize}
+				\item Existing current sample option.
+				\item Custom solution.
+			\end{itemize}
 
 		\end{itemize}
 		
@@ -492,11 +589,20 @@
 
 
 
-	\begin{frame}\frametitle{Understanding AC Voltage}
+	\begin{frame}\frametitle{DC vs AC Voltage}
 
 		\begin{figure}
-			\centering
-			\includegraphics[width=0.6\textwidth]{ac-wave.eps}
+			\resizebox {\textwidth} {!} {
+			  \centering
+			  \begin{minipage}[b]{0.49\textwidth}
+			    \includegraphics[width=\textwidth]{dc-wave.eps}
+			  \end{minipage}
+			  \hfill
+			  \begin{minipage}[b]{0.49\textwidth}
+			    \includegraphics[width=\textwidth]{ac-wave.eps}
+			  \end{minipage}
+			  
+		  }
 		\end{figure}
 
 		AC characteristics:
@@ -522,18 +628,18 @@
 			\resizebox {0.8\textwidth} {!} {
 			  \centering
 			  \begin{minipage}[b]{0.48\textwidth}
-			    \includegraphics[width=\textwidth]{../chapters/hardware-chapters/smps-current-primary-with-load-cropped.jpg}
-			    \caption{Switching Mode Power Supply}
+			    \includegraphics[width=\textwidth]{../chapters/hardware-chapters/smps-current-primary-no-load-cropped.jpg}
+			    \caption{Switching Mode Power Supply without load}
 			  \end{minipage}
 			  \hfill
-			  \begin{minipage}[b]{0.4\textwidth}
-			    \includegraphics[width=\textwidth]{../chapters/hardware-chapters/commercial-230v-ac-led-on-cropped.png}
-			    \caption{Commercial AC LED}
+			  \begin{minipage}[b]{0.48\textwidth}
+			    \includegraphics[width=\textwidth]{../chapters/hardware-chapters/smps-current-primary-with-load-cropped.jpg}
+			    \caption{Switching Mode Power Supply with load}
 			  \end{minipage}
 		  }
 		\end{figure}
 
-		These solutions will not yield nice aggregated signals.
+		Very hard to distinguish and will not yield nice aggregated results when multiple of these SMPS will be used.
 		
 	\end{frame}
 
@@ -633,14 +739,79 @@
 
 
 	\begin{frame}\frametitle{Recap}
+
+		\begin{figure}
+			\centering
+			\resizebox {0.8\textwidth} {!} {
+				\begin{tikzpicture}
+
+					\node[block] (smart_meter) {Smart-meter};	
+
+					\node[block, left = 1cm of smart_meter] (power) {Power};	
+					\draw[line] (power.east) -- (smart_meter.west) node [midway, right] {};		
+
+					% second mod.
+					\node[block, right = 4cm of smart_meter] (second_modulator) {Modulator};
+					\node[LED, right = 0.5cm of second_modulator] (second_led) {LED};
+					\draw[line] (second_modulator.east) -- (second_led.west) node [midway, right] {};
+
+					% first mod.
+					\node[block, above = 1cm of second_modulator] (first_modulator) {Modulator};
+					\node[LED, right = 0.5cm of first_modulator] (first_led) {LED};
+					\draw[line] (first_modulator.east) -- (first_led.west) node [midway, right] {};
+
+					% third mod.
+					\node[block, below = 1cm of second_modulator] (third_modulator) {Modulator};
+					\node[LED, right = 0.5cm of third_modulator] (third_led) {LED};
+					\draw[line] (third_modulator.east) -- (third_led.west) node [midway, right] {};
+
+					\node[dot, right = 2.5cm of smart_meter] (CP) {};
+
+					\draw (smart_meter.east) -- (CP) node [pos=0.3, above] {0222};
+
+					\draw (CP) |- (first_modulator.west) node  [pos=0.75, above] {0011};
+					\draw (CP) |- (second_modulator.west) node [pos=0.75, above] {0110};
+					\draw (CP) |- (third_modulator.west) node  [pos=0.75, below] {0101};
+
+				\end{tikzpicture}
+			}
+		\end{figure}
 		
-		Goals: 
+
+		Explained: 
 
 		\begin{itemize}
 
-			\item Codes for LEDs that can be identified when used with other codes.
+			\item Coding theory and which codes to use with the hardware.
 
-			\item Detection and identification must be done in a timely manner.
+			\item Each hardware element on its own.
+
+		\end{itemize}
+
+	\end{frame}
+
+
+	\begin{frame}\frametitle{Evaluation Outline}
+		
+
+		\begin{itemize}
+
+			\item Hardware evaluation:
+			\begin{itemize}
+
+				\item Describe the setup.
+				\item Explain the results.
+			
+			\end{itemize}
+
+			\item Simulation:
+			\begin{itemize}
+				\item Describe the simulation.
+				\item Discuss the results.
+			\end{itemize}
+
+
+
 
 		\end{itemize}
 	\end{frame}
@@ -654,13 +825,23 @@
 
 		\begin{itemize}
 
-			\item The setup consists of 3 individual controllable commercial LEDs + current sampler.
+			\item Setup: 
+			\begin{itemize}
+				\item The setup consists of 3 commercial LEDs + current sampler.
 
-			\item All LEDs are transmitting continuously with a code that support at least 3 concurrent transmitters.
+				\item 4 distinct codes will be used, 3 for the LEDs and one will represent an LED in an off state.
 
-			\item The goal is to identify an LED as being on without seeing interference from the other LEDs.
+				\item All LEDs are transmitting continuously with a code that support at least $m \ge 3$ concurrent transmitters.
+			\end{itemize}
 
-			\item Another goal is to check if another code which is not used for any LED, can be identified. This should NOT be the case, because this LED is not present.
+			\item Goals:
+			\begin{itemize}
+				\item Identifying an LED as being on without seeing interference from the other LEDs in a timely manner.
+
+				\item Verify that the fourth code cannot be identified as being on. 
+
+			\end{itemize}
+
 
 
 		\end{itemize}
@@ -708,31 +889,65 @@
 
 	\begin{frame}\frametitle{Simulation}
 		
-		To be able to test larger systems, simulations are used.
+		To be able to test larger systems, a software simulation is used: 
 
-		Assuming 129 individual LEDs which follow the probabilistic scheme.
+		\begin{itemize}
+
+			\item Assuming 129 individual LEDs which follow the probabilistic scheme.
+
+			\item Each LED has its probability $p$ and for each point in time it is determined how many LEDs will be transmitting.
+
+			\item Those LEDs will then transmit its code.
+
+			\item The aggregated signal with all the code is then checked to try to identify if any LEDs are on.
+		\end{itemize}
+
+		
 
 	\end{frame}
 
 
 
-	\begin{frame}\frametitle{Fast Simulation But Inaccurate}
+	\begin{frame}\frametitle{Fast but Inaccurate Simulation}
 		
-		\begin{figure}[t]
+		\begin{figure}
 			\centering
 			\includegraphics[width=0.8\textwidth]{simulation-1.eps}
 		\end{figure}
 
 	\end{frame}
 
-	\begin{frame}\frametitle{Slow Simulation But Accurate}
+	\begin{frame}\frametitle{Slow but Accurate Simulation}
 		
-		\begin{figure}[t]=
+		\begin{figure}
 			\centering
 			\includegraphics[width=0.8\textwidth]{simulation-2.eps}
 		\end{figure}
 
 	\end{frame}
+
+
+
+
+
+
+
+	\begin{frame}\frametitle{Conclusion}
+
+		\begin{itemize}
+
+			\item Codes have been investigated.
+
+			\item Hardware is designed to encode and decode these codes.
+
+			\item The software and hardware is evaluated along with a simulation for scalability.
+
+		\end{itemize}
+		
+		
+
+	\end{frame}
+
 
 
 
