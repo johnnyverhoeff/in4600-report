@@ -506,29 +506,39 @@
 
 
 
+
+
 	\begin{frame}\frametitle{Interference Solution}
 
 		Cross-correlation is not negligible, therefor there will be interference. The amount of interference must be limited to still get accurate results.
 
 		\begin{itemize}
 
-			\item CC is math. bounded meaning that the maximum number of concurrent transmitters $m$ can be calculated, such that no interference will take place. Based on these $m$ LEDs we can calculate what code length to use: $L \propto m^2$.
+			\item Continuous Method: Allows to transmit with all LEDs continuously.
 
-			\begin{itemize}
-				\item With modulating frequency $f = 10$ kHz:
-				\item Example: System with $m = 7$ LEDs $\rightarrow L = 1023$ $\rightarrow t = 0.05$ s.
-				\item Example: System with $m = 1023$ LEDs $\rightarrow L = 2^{23} = 8388608$ $\rightarrow t = 14$ min.
-			\end{itemize}
+			\item Probabilistic Approach: Each LED will have a probability to transmit.
 
-			\item Arguably quadratic dependency is not scalable, proposition of another way: probabilistic approach.
-			\begin{itemize}
-				\item Example: System with $1025$ LEDs $\rightarrow L = 1023$.
-			\end{itemize}
 
 		\end{itemize}
 
 
 	\end{frame}
+
+
+	\begin{frame}\frametitle{Continuous Method}
+
+		Cross-correlation is math. bounded with Gold codes, bounded meaning that the maximum number of concurrent transmitters $m$ can be calculated, such that no interference will take place.
+
+		\begin{itemize}
+			\item Based on these $m$ LEDs we can calculate what code length to use: $L \propto m^2$.
+			\item With modulating frequency $f = 10$ kHz:
+			\item Example: System with $m = 7$ LEDs $\rightarrow L = 1023$ $\rightarrow t = 0.05$ s.
+			\item Example: System with $m = 1023$ LEDs $\rightarrow L = 2^{23} = 8388608$ $\rightarrow t = 14$ min.
+		\end{itemize}
+
+
+	\end{frame}
+
 
 
 	\begin{frame}\frametitle{Probabilistic Approach}
