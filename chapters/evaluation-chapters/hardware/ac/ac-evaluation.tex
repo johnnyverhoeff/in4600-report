@@ -4,7 +4,7 @@
 
 
 The AC testbed has three LEDs, as explained in \autoref{subsec:ac-testbed}.
-Therefor three Gold codes will be used.
+Therefor three Gold codes will be used, plus on extra code to represent an LED in an off state.
 From \autoref{tbl:correlation-gold-families}, we can see that for $m = 3$, the number of simultaneous transmitters such that no destructive interference takes place, requires a code length of 127 or higher.
 With the AC testbed the experiments have been performed with a constant modulation frequency of 10 kHz.
 Two successive samples are $\frac{1}{10000} = 0.1$ ms apart, except for when the triggering circuit detects that no modulation or sampling can take place anymore.
@@ -13,7 +13,6 @@ In that case the sampling and modulation is paused until the triggering circuit 
 
 In \autoref{fig:raw-ac-testbed-adc-data} the incoming signals to the current sampler can be seen.
 The raw data from the ADC can be seen as well as the output of the triggering circuit.
-Also the mean of the ADC values are plotted for signal processing later on.
 The large peaks that can be seen are the charging currents of the capacitor for the voltage sources as discussed in \autoref{subsubsec:non-disturbing-voltage-source}.
 
 When only the signal is considered when the output from the triggering circuit is low, the charging peaks are all filtered out.
@@ -56,9 +55,11 @@ The processed signal can be seen in \autoref{fig:processed-ac-testbed-adc-data} 
 %\end{figure}
 
 
-In \autoref{fig:correlation-ac-testbed}, the correlation for one Gold sequence can be seen, which is also one of the sequences used to modulate an LED and the correlation for another Gold sequence can be seen, which is not part of the sequences used to modulate any LED.
+In \autoref{fig:correlation-ac-testbed}, the correlation for one Gold sequence can be seen, which is also one of the sequences used to modulate an LED and the correlation for the extra Gold sequence can be seen, which is not part of the sequences used to modulate any LED and represent an extra LED in an off state.
 All the correlation results stay below the threshold (See \autoref{eq:T}) except for the noticeable peaks.
 These peaks occur when the correlation is calculated when there is no time shift as already shown in \autoref{fig:autocorr-gold}.
+The peaks indicate that for this particular code and LED is turned on, and this LED is actually on.
+The other correlation results show that every result is below the threshold, meaning that the LED which this code represent is in an off state, which is also the case.
 
 Since all the correlation levels are below the threshold, and the peaks are above the threshold, every result is correct.
 There are only true positives and true negatives.

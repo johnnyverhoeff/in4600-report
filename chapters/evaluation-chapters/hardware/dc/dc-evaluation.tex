@@ -4,7 +4,7 @@
 \label{subsec:dc-testbed-eval}
 
 The DC testbed has six LEDs, as explained in \autoref{subsec:dc-testbed}.
-Therefor six Gold codes will be used.
+Therefor six Gold codes will be used for the LEDs with a seventh code used to represent an LED in an off state.
 From \autoref{tbl:correlation-gold-families}, we can see that for $m = 6$, where $m$ is the number of simultaneous transmitters such that no destructive interference takes place, requires a code length of 511 or higher.
 With the DC testbed the experiments have been performed with a constant modulation frequency of 1 kHz.
 Every two successive samples are $\frac{1}{1000} = 1$ ms apart.
@@ -16,9 +16,11 @@ From the figure, seven horizontal lines can be seen.
 Each line represents how many LEDs are on, none through six.
 This raw data is already in a form for which we can start calculating the correlation with a Gold sequence, no additional signal processing is needed.
 
-In \autoref{fig:correlation-dc-testbed-n=9}, the correlation for one Gold sequence can be seen, which is also one of the sequences used to modulate an LED and the correlation for another Gold sequence can be seen, which is not part of the sequences used to modulate any LED.
-All the correlation results stay below the threshold (See \autoref{eq:T}) except for the noticeable peaks.
+In \autoref{fig:correlation-dc-testbed-n=9}, the correlation for one Gold sequence can be seen, which is also one of the sequences used to modulate an LED and the correlation for the extra Gold sequence can be seen, which is not part of the sequences used to modulate any LED and represent the LED is an off state.
+All the correlation results from the Gold code used to modulate and LED with, stay below the threshold (See \autoref{eq:T}) except for the noticeable peaks.
+These peaks indicate that the LED is on, which in fact is the case.
 These peaks occur when the correlation is calculated when there is no time shift as already shown in \autoref{fig:autocorr-gold}.
+The correlation results from the extra code all stay below the threshold, meaning the LED represented by this code is off, which is that case.
 
 Since all the correlation levels are below the threshold, and the peaks are above the threshold, every result is correct.
 There are only true positives and true negatives.

@@ -38,9 +38,6 @@ And apart from the first row, all other rows have the exact same number of $+1$s
 
 Hadamard matrices exist for every power of $2$, so the code length is also a power of $2$.
 For $\tau = 0$, the cross-correlation is $0$, but when $\tau \neq 0$ not all the rows have a zero cross-correlation with all other rows.
-\cite{1182447} proved that an Hadamard matrix of size $2^P$ could be divided into $P + 1$ subsets of rows, where one row could be selected giving $P + 1$ orthogonal rows for each time-shift $\tau$.
-These codes are called Cyclically Orthogonal Walsh Hadamard Codes (COWHC).
-
 All rows of the matrix have the property that the autocorrelation at $\tau = 0$ is equal to $L$.
 But when $\tau \neq 0$, undesirable behavior occurs as can be seen in \autoref{fig:autocorr-hadamard}.
 The autocorrelation function has several high peaks where only one is desired, namely at $\tau = 0$.
@@ -55,11 +52,22 @@ This means that if a transmitter sends an encoded message with this code and the
 
 
 
+
+
+To conclude: the entire set of orthogonal codes of length $L$, has $L - 1$ codes in the set which does make it a scalable set.
+But the auto- and cross-correlation only have the desired properties when the codes are sent synchronously. 
+
+
+
+
+\subsubsection{Cyclically Orthogonal Walsh Hadamard Codes}
+
+
+\cite{1182447} proved that an Hadamard matrix of size $2^P$ could be divided into $P + 1$ subsets of rows, where one row could be selected giving $P + 1$ orthogonal rows for each time-shift $\tau$.
+These codes are called Cyclically Orthogonal Walsh Hadamard Codes (COWHC).
 Only a small subset of the codes (COWHC) have zero cross-correlation for every time-shift $\tau$.
 With code length $L$ there are $\log_2 L$ codes in the set, which makes these codes not scalable \cite{1182447}. 
 Also the auto-correlation does not have a clear peak to identify the code, because these codes are an unmodified subset of the original orthogonal sequences.
 For these sequences the auto-correlation has already been shown in \autoref{fig:autocorr-hadamard}.
 
-To conclude: the entire set of orthogonal codes of length $L$, has $L - 1$ codes in the set which does make it a scalable set.
-But the auto- and cross-correlation only have the desired properties when the codes are sent synchronously. 
-\todo{Extra conclusion like: the transmitters/LEDs cannot be synchronized, or does that come later...}
+These codes do not scale well and have the same auto-correlation problems as the normal Orthogonal codes as described in \autoref{subsec:orthogonal-sequences}.

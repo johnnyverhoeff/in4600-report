@@ -1,13 +1,13 @@
-%load dc-testbed-raw-and-corr-n=9-N=6;
-load dc-testbed-raw-and-corr-n=7-N=6;
+load dc-testbed-raw-and-corr-n=9-N=6;
+%load dc-testbed-raw-and-corr-n=7-N=6;
 
-L = 127;
-%L = 511;
+%L = 127;
+L = 511;
 
 close all;
 
 start_idx = 1; %400
-end_idx = 2000;%length(corr); % 1200
+end_idx = length(corr); % 1200
 
 f = 1000;
 
@@ -15,7 +15,7 @@ time_vector = (0:(end_idx-1)) ./ f;
 
 
 plot(time_vector, raw(start_idx : end_idx))
-title('Raw ADC data DC testbed');
+title(['Raw ADC data DC testbed, L = ' num2str(L)]);
 xlabel('Time (s)');
 ylabel('ADC value');
 
@@ -40,22 +40,22 @@ hold off;
 figure;
 
 plot(time_vector, corr(start_idx : end_idx));
-title('Correlation');
+title(['Correlation, L = ' num2str(L)]);
 xlabel('Time (s)');
 ylabel('Correlation');
 
 hold on;
 
-plot(time_vector, corr_not_included_code(start_idx : end_idx));
+plot(time_vector, corr_not_included_code(start_idx : end_idx), 'black');
 
-plot([time_vector(1) time_vector(end)],[L/2 L/2]); 
+plot([time_vector(1) time_vector(end)],[L/2 L/2], 'red'); 
 
 legend('Corr. w/ present code', 'Corr w/ not present code', 'Threshold');
 hold off;
 
 
-%idx_first_tp = 511;%95;
-idx_first_tp = 95;
+idx_first_tp = 511;%95;
+%idx_first_tp = 95;
 tp = 0;
 fp = 0;
 tn = 0;
@@ -102,7 +102,7 @@ recall = tp / (tp + fn);
 
 figure;
 plot(time_vector, f);
-title('F-Measure')
+title(['F-Measure, L = ' num2str(L)])
 xlabel('Time (s)');
 ylabel('F-Measure');
 

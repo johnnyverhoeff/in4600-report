@@ -6,7 +6,8 @@
 In the previous sections, interference was discussed when using a CDMA approach.
 When there are too many transmitters on the same channel, at the same time, the interference can be so great that it destroys a code sequence of one or more transmitters.
 This is not a problem for Orthogonal sequences, since they have no cross correlation, when transmitted synchronously (See \autoref{subsec:orthogonal-sequences}).
-But this is an issue for Gold sequences. \todo{Should also mention PN sequences in general, and then the table with the calculated cross correlation per length ????}
+But this is an issue for Gold sequences. 
+\todo{Should also mention PN sequences in general, and then the table with the calculated cross correlation per length ????}
 As stated in \autoref{subsec:gold-sequences}, the cross correlation of Gold sequences is bounded by $t(n)$, see \autoref{eq:gold-t(n)}.
 This means that the maximum number of transmitters can be calculated such that not too much interference will occur. 
 With this information two methods can be used to overcome the interference problem.
@@ -241,8 +242,9 @@ The time in the table is for a constant modulation frequency chosen to be 10 kHz
 The expected number of transmitters that have transmitter at least once after $k$ attempts is equal to $E = N \times (1 - \epsilon_1)$
 When both the epsilons are quite small, $\epsilon = \epsilon_1 = 0.001$, the probability of interference is small, the times grow larger and the expected number of transmitters that have transmitter at least once will be high. 
 For $\epsilon = \epsilon_1 = 0.1$, the times are smaller, the probability of interference will be higher and the expected number of transmitters that have transmitter at least once will be lower. 
-A simulation is needed in order to asses what values of $\epsilon$ and $\epsilon_1$ will give acceptable results.
-\todo{Prob. do a simulation for this in the eval. sections and reference it.}
+A simulation will be performed in order to asses what values of $\epsilon$ and $\epsilon_1$ will give acceptable results.
+The results of the simulation can be found in \autoref{sec:simulation-evaluation}
+
 
 
 

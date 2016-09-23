@@ -5,8 +5,9 @@
 
 The following two section will describe the evaluation of the designed hardware and software.
 All attached LEDs will be modulating with a different Gold code per LED, from the same set.
+An extra code will be used to represent an LED in an off state.
 The raw ADC signal will be showed as well as the steps to process that signal to be able to do correlation calculations with, if necessary.
-Next, the correlation graph will be showed for a Gold code that is present in the received signal as well as the correlation graph for a Gold code from the same set which is not present in the received signal.
+Next, the correlation graph will be showed for a Gold code that is being used to modulate one of the LEDs, with the sampled current signal as well as the correlation graph for the extra Gold code from the same set which is not being used for any LED. So this code should stay below the threshold at all times indicating that this LED is off.
 Finally the F-measure will be showed for these correlation graphs.
 
 
