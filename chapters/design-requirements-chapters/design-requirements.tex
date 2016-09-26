@@ -69,9 +69,16 @@ In \autoref{fig:overview-diagram} a block diagram can be seen how all components
 	The field of telecommunications already faced similar issues: For example multiple cellphones transmitting to the same base station, at the same time, at the same frequency. 
 	The solution was to use code sequences that do not posses high cross-correlations, but do have high auto-correlations.
 	The specific codes are called Orthogonal codes and Pseudo random noise codes.
-	We also want these code to work in a synchronous and asynchronous manner.
-	Because multiple lights in a single room can be all switched on together, this is a synchronous case.
-	But when there are multiple lights in multiple rooms they need not be turned on or off at the same time, this is the asynchronous case.
+	The following requirements for the codes that will be used must be met:
+	\begin{itemize}
+		\item The codes need to work in a synchronous and asynchronous manner. Because multiple lights in a single room can be all switched on together, this is a synchronous case.	But when there are multiple lights in multiple rooms they need not be turned on or off at the same time, this is the asynchronous case.
+
+		\item The codes should not be too long, because the system must identify each LED as being on or off in a timely manner.
+
+		\item The method to create these codes should also produce a number of codes that is proportional to the length of code for the scalability of the system.
+	\end{itemize}
+	
+
 	The exact properties, benefits and drawbacks and how they can be used in both DC and AC environments will be discussed in \autoref{chp:cdma}.
 
 
@@ -86,10 +93,11 @@ In \autoref{fig:overview-diagram} a block diagram can be seen how all components
 
 
 	For the design of this hardware, or when using pre-designed hardware, the way the identification sequence translates to the current draw needs to be taken in mind. 
-	With AC the applied voltage is a sine wave, which from a positive to a negative voltage.
+	When DC is used the voltage is constant in time so the manner in which the encoding information from the LED translated into the current draw will be time-independent.
+	But when using AC the applied voltage is a sine wave, so it is not constant in time and the voltage will also be positive and negative.
 	So the supplied voltage is never the same and it is zero crossing, meaning that there no current will flow at that point in time.
 	And when there is no current flow, there can also be no information encoding.
-	This issue must also be taken in mind.
+	For these problems in the AC domain, a combination of hardware and software will be used to get around these problems.
 
 
 
