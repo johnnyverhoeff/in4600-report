@@ -100,6 +100,7 @@ In the following subsections each part of the hardware of the custom LED modulat
 
 
 	\subsubsection{Triggering}
+	\label{subsubsec:triggering}
 
 	LEDs require a certain voltage to be present before they start to draw current.
 	Since the provided AC is continuously changing its voltage, it must be known when that voltage is high enough in order for the LEDs to start drawing current.
@@ -177,17 +178,59 @@ In the following subsections each part of the hardware of the custom LED modulat
 
 
 	\subsubsection{Current Source}
+	\label{subsubsec:current-source}
 
 
 	For the current to be drawn instantaneously when the microprocessor tells the LED to turn on and to always be the same amount of current, a current source is implemented. 
-	This will solve the problems that the other solutions have, such as: not a constant current draw, not instantaneous current draw but a slope.
-	The toggling of the current source on and off must be isolated from the microprocessor, to protect the microprocessor in the development stages.
+	This will solve the problems that the other solutions have, such as: a non-constant current draw and a non-instantaneous current draw but a slope.
+	The toggling of the current source on and off must be isolated from the microprocessor, to protect the microprocessor in the development stages, for this an optocoupler is used.
 	The schematic can be found in \autoref{fig:custom-modulator-current-source}.
 	The current that is drawn by the current source when modulating can be seen in \autoref{fig:current-source-measurement}.
-	As seen in the figure the current goes both positve and negative, because of the AC.
+	As seen in the figure the current goes both positive and negative, because of the AC.
 	And the current is a constant current when the current source in on or off.
 	Also there is no visible slope.
 	The two peaks in the figure are the charging peaks for the capacitors as discussed in \autoref{subsubsec:non-disturbing-voltage-source}.
+
+
+	However, this solution also has a drawback.
+	The current source will make sure a constant amount of current will flow through the LEDs.
+	The current that flows through the LEDs will cause a voltage difference over the LEDs.
+	This is the voltage the LEDs need in order to be turned on, as discussed in \autoref{subsubsec:triggering}.
+	The rest of the voltage that the AC delivers will have to go somewhere.
+	This voltage will be dissipated over the current source.
+	This means that some energy is now being wasted, because essentially too much voltage is provided by the AC, we have a need for much less.
+
+	One solution for this is using a transformer.
+	This will scale down the voltage, but it will still remain a sinusoidal wave.
+	But the same amount of voltage is still required by the LEDs.
+	And if the sine wave now has a smaller amplitude, the time that is left for modulation will also be much smaller.
+	Another drawback is that the transformer will deform the distinct current pattern that we are trying to create, as now ideal transformer exist.
+
+	Another solution was thought of and also implemented in the circuit boards but due to lack of time it was not further experimented with.
+	The solution is made up out of two parts: A capacitor and a zero-crossing opto-triac.
+	The capacitor is place in series with incoming AC to the rectifying bridge.
+	And the opto-triac is parallel to this capacitor.
+	The schematic can be seen in \autoref{fig:ac-capacitor-triac}.
+	The capacitor with AC acts as a kind of resistor so it will limit the power that is dissipated by the current source, but the capacitor itself will not dissipate any power.
+	However by limiting the power that the current source will dissipate the amplitude of the sine will also become smaller and then there is much less time available to modulate.
+	This is were the zero-crossing triac comes in.
+	Whenever it is decided to start modulating, the microcontroller activates the triac and then it will short-circuit the capacitor when the voltage is zero, so that no current will flow through the triac and thereby not damaging the triac.
+	Now the capacitor is bypassed and modulation can begin with a large time available for modulation.
+	When the modulation is done, the triac is switched off and the capacitor limits the power once again.
+	The drawback that comes with this is that the capacitor can limit the power by phase-shifting the current as seen from the voltage.
+	But the current will not be phase-shifted when the triac is active.
+	So this solution is a complicated one, but it can solve the problem that the current source is dissipating excessive power.
+	But it also introduces a lot of complexity and there was no more time to evaluate the benefits and drawbacks of this solution.
+
+
+
+
+	\begin{figure}
+		\centering
+		\includegraphics[angle=0,width=0.5\textwidth]{chapters/hardware-chapters/ac-capacitor-triac.JPG}
+		\caption{Schematic to show how the capacitor and opto-triac are connected.}
+		\label{fig:ac-capacitor-triac}
+	\end{figure}
 
 
 	%\begin{figure}[htb]

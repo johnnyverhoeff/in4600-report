@@ -26,30 +26,35 @@ But the simulation showed that even with a high accuracy, the lights could still
 This work is only the first step to disaggregate which lights are on and off.
 There remains more work to be done, below there are ideas for future work.
 
+	\subsection{Power Limiting Capacitor}
 
-\subsection{Other Appliances}
-
-As the testbeds represents a case where only these lights were connected, the question rises: What will happen when other appliances are connected ?
-These could for example be an incandescent light bulb or a refrigerator.
-To answer that question sample data from \cite{kolter2011redd} could be taken to represent some household appliances and added with the data of the modulation shown from the testbeds.
-Then signal filtering techniques could be performed to try and filter the signal from the modulating lights, given the fact that we know that these lights operate at a certain constant frequency.
+	The solution of using a capacitor in order to limit the power dissipated in the current source, introducedin \autoref{subsubsec:current-source} can be further investigated.
+	In particular what the drawbacks or benefits the phase-shifting of current has.
+	And if the triggering circuit will still function properly or what the modifications are that need to be made in order for this scheme to work properly.
 
 
-\subsection{Dimming Lights}
+	\subsection{Other Appliances}
 
-LEDs can be often too bright for a persons liking, so the lights are dimmed.
-Dimming of an LED can be done in two ways: PWM, by lowering the duty cycle and so less power is dissipated by the LED or by limiting the current that flows through the LED.
-Since the LEDs are modulating via an OOK scheme, PWM cannot be used so instead current limiting must be done in order to dim the lights.
-But the CDMA codes are designed to work with each transmitter or LED has the same amplitude or in this case the same current.
-By dimming the LED and changing the current the codes may not work anymore.
-A solution for this can be that each LED will have multiple dimming levels and that for each dimming level other frequencies are used to modulate at.
-A filter can then be used to filter between these LEDs which all have the same amplitude.
+	As the testbeds represents a case where only these lights were connected, the question rises: What will happen when other appliances are connected ?
+	These could for example be an incandescent light bulb or a refrigerator.
+	To answer that question sample data from \cite{kolter2011redd} could be taken to represent some household appliances and added with the data of the modulation shown from the testbeds.
+	Then signal filtering techniques could be performed to try and filter the signal from the modulating lights, given the fact that we know that these lights operate at a certain constant frequency.
 
 
+	\subsection{Dimming Lights}
+
+	LEDs can be often too bright for a persons liking, so the lights are dimmed.
+	Dimming of an LED can be done in two ways: PWM, by lowering the duty cycle and so less power is dissipated by the LED or by limiting the current that flows through the LED.
+	Since the LEDs are modulating via an OOK scheme, PWM cannot be used so instead current limiting must be done in order to dim the lights.
+	But the CDMA codes are designed to work with each transmitter or LED has the same amplitude or in this case the same current.
+	By dimming the LED and changing the current the codes may not work anymore.
+	A solution for this can be that each LED will have multiple dimming levels and that for each dimming level other frequencies are used to modulate at.
+	A filter can then be used to filter between these LEDs which all have the same amplitude.
 
 
 
-%power limiting capacitor...
+
+
 
 
 
