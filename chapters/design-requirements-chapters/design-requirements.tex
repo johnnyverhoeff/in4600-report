@@ -71,6 +71,10 @@ In \autoref{fig:overview-diagram} a block diagram can be seen how all components
 	The specific codes are called Orthogonal codes and Pseudo random noise codes.
 	The following requirements for the codes that will be used must be met:
 	\begin{itemize}
+		\item The codes must have high auto-correlation to be able to identify if an LED is on.
+
+		\item Low cross-correlation is needed in order to have low interference with the other LEDs that are modulating.
+
 		\item The codes need to work in a synchronous and asynchronous manner. Because multiple lights in a single room can be all switched on together, this is a synchronous case.	But when there are multiple lights in multiple rooms they need not be turned on or off at the same time, this is the asynchronous case.
 
 		\item The codes should not be too long, because the system must identify each LED as being on or off in a timely manner.
