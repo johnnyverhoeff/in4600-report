@@ -27,6 +27,7 @@ Energy disaggregation has been applied successfully to identify the operation of
 But other energy consumers such as lighting has not been so successful \cite{spiegel2014energy} \cite{batra2015neighbourhood}.
 Each appliance in a household draws power in a certain way, this can be thought of as a signature of that appliance.
 As can be seen from \autoref{fig:energy-consumption-house}, appliances such as the washer dryer and the dishwasher can be distinguished from the aggregated power draw.
+These appliances can be recognized by their signature, the amount of time they draw power, how large the power draw is and if it has a recurring pattern for example.
 But the lighting can not be separated on a per lamp basis.
 The reason for this, is that most lighting has no unique signature, instead almost all lighting has the same signature.
 It is important to be able to disaggregate the energy consumed by lighting, because it is the third largest energy consumer in the average home \cite{batra2015neighbourhood}.
@@ -47,8 +48,11 @@ Thereby saving energy and costs.
 
 
 The unique power draw of each light can be managed through VLC (Visible Light Communication).
-If done via VLC, the unique power draw of each light can be seen in the current that the light draws, but also in the light that it emits.
 With this information that is being sent via VLC, the light can act as a beacon for indoor localization \cite{Kuo:2014:LIP:2639108.2639109}.
+For example a smart-phone could then locate itself inside a building with good accuracy.
+The ID of the LED beacon which is sent via VLC will also propagate via the current that the LED draws.
+The IDs must be chosen in such a way that a smart-meter is still able to identify them on a per lamp basis.
+
 
 
 
