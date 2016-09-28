@@ -1,0 +1,64 @@
+% !TeX root = ../../thesis.tex
+
+\chapter{Related Work \& Proposed Method}
+\label{chp:related-work}
+
+
+This chapter first describes other methods that may be used in order to dissagregate lights and then the new proposed method is introduced.
+
+
+	\section{Related Work}
+
+
+		This section describes the state-of-the-art in fields which uses power and data in a single cable and how these solutions can be applied to detecting which lights are on or off.
+
+
+
+
+
+		\subsection{Power over Ethernet}
+
+		Power over Ethernet or PoE is a standard which passes DC power along with data on an Ethernet cable \cite{patoka2003power}.
+		With this solution each light becomes a node in a network with an Ethernet cable being connected to the light.
+		The PoE technique provides the power to use the light and the Ethernet standards allows a micro-controller to transmit status information about that light to a central server, for example.
+		The number of lights that can transmit their status is limited by the network protocols used.
+		A drawback is that an Ethernet cable must be used for each light instead of the existing AC wiring.
+		Another drawback is that PoE provides low voltage DC power and so the power dissipated in the cable itself will also be greater than with the existing high voltage AC wiring.
+
+
+
+
+
+		\subsection{Power-line Communication}
+
+		Power-line communication or PLC is a communication method that uses the existing AC wiring to simultaneously carry both data and AC power \cite{1205458}.
+		The obvious benefit is that the existing wiring infrastructure can be used.
+		Data is transmitted wit ha frequency that is much higher than the 50 or 60 Hz AC power frequency in order to ensure that the power wave does not interfere with the data signal.
+		Multiple lights can then transmit their status via for example orthogonal frequency-division multiplexing (OFDM) \cite{hoch2011comparison}.
+
+
+
+
+	\section{Proposed Method}
+
+	The idea for this thesis was to piggyback on Visible Light Communication (VLC).
+	VLC is a short-range optical means of wireless communication using the visible light spectrum.
+	VLC is made possible by the advances in LED technology.
+	The interest in VLC has grown since the widespread deployment of LED lighting fixtures for energy efficiency over the normal incandescent light bulb \cite{rajagopal2012ieee}.
+
+
+	Now that VLC allows lighting fixtures to transmit data, research is being done to make indoor localization more precise than with traditional RF-based approaches \cite{Kuo:2014:LIP:2639108.2639109}.
+	Since the light does not pass through walls and it has less reflection compared to RF, an indoor localization system can be more precise.
+	Each VLC lighting fixture can act like a beacon which transmits an ID of some sort, thereby describing its location inside the building.
+
+
+	Many research papers have successfully recognized home appliances through energy disaggregation with data being collected with a single smart-meter.   
+	Though they succeed in detecting appliances with unique signatures, lighting is put in a group without mentioning the individual lights \cite{kolter2011redd}.
+	The reason for this, is because every light has a very similar power draw and therefor a very similar signature and it can not be reliably disaggregated.
+
+
+	So if the lights are already transmitting IDs to describe their location inside a building with the help of VLC, we can piggyback on VLC by looking at the current signatures that these lights produce.
+	The IDs need to be constructed in such a way that the sum of all these currents can still tell us which of the lights are actually on or off.
+	With this proposed method the lights can still act as beacons for indoor localization because the IDs will still be unique and the current signature of each light will tell us which lights are on and it can be done over the existing DC or AC wiring infrastructure.
+
+
