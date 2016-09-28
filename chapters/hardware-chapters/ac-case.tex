@@ -16,6 +16,19 @@ Finally a testbed will be showcased.
 
 \subsection{Modulator}	
 
+The job that the modulator has to do is the translation from the code sequence, which consists of zeros and ones, to a current draw.
+The ideal translation would be as follows:
+
+\begin{itemize}
+	\item When a `0' has to be transmitted, the current is also zero ampere. 
+	If the current was not zero, for example a `1' was being transmitted, then the current should go immediately down to zero.
+
+	\item When a `1' has to be transmitted, the current must some constant value, it should not fluctuate. 
+	If the current was zero, for example a `0' was being transmitted, then the current should go immediately up to a certain value.
+\end{itemize}
+
+If the translation is done in this manner, the mapping between the code sequence symbols and the current is clear and the multiple of these lights can then be aggregated together.
+
 For commercial LED lighting there are fixtures available which require a DC power supply.
 These fixtures often come bundled with the correct power supply, which in most cases is a SMPS (Switching Mode Power Supply).
 In Figures \ref{fig:smps-current-primary-no-load} and \ref{fig:smps-current-primary-with-load} the current signature of a SMPS can be seen, without and with a load attached, respectively.
@@ -111,6 +124,7 @@ In the following subsections each part of the hardware of the custom LED modulat
 	The preset can be determined by the potentiometer.
 	The output of the triggering circuit can be seen in \autoref{fig:triggering-circuit-output}.
 	The output is roughly 16 ms high, so $\frac{16}{20} = 80 \%$ of the time is available for modulation.
+	Again, in a DC environment 100 \% of the time is available for modulation, so to send the same sequence in AC will take 25 \% longer time.
 	
 
 	In \autoref{fig:triggering-circuit-output-2} the trigger output can be seen along with the incoming 230 V AC voltage.
@@ -123,13 +137,13 @@ In the following subsections each part of the hardware of the custom LED modulat
 	  \centering
 	  \begin{minipage}[b]{0.39\textwidth}
 	    \includegraphics[width=\textwidth]{chapters/hardware-chapters/triggering-circuit-output-cropped.png}
-		\caption{Ouptut from the triggering circuit. Settings: 2 V/div, 2 ms/div.}
+		\caption{Output from the triggering circuit. Settings: 2 V/div, 2 ms/div.}
 		\label{fig:triggering-circuit-output}
 	  \end{minipage}
 	  \hfill
 	  \begin{minipage}[b]{0.49\textwidth}
 	    \includegraphics[width=\textwidth]{chapters/hardware-chapters/ac-wave-triggering.eps}
-		\caption{AFASF}
+		\caption{Output form the triggering circuit alongside the incoming AC voltage.}
 		\label{fig:triggering-circuit-output-2}
 	  \end{minipage}
 	\end{figure}
@@ -186,9 +200,7 @@ In the following subsections each part of the hardware of the custom LED modulat
 	The toggling of the current source on and off must be isolated from the microprocessor, to protect the microprocessor in the development stages, for this an optocoupler is used.
 	The schematic can be found in \autoref{fig:custom-modulator-current-source}.
 	The current that is drawn by the current source when modulating can be seen in \autoref{fig:current-source-measurement}.
-	As seen in the figure the current goes both positive and negative, because of the AC.
-	And the current is a constant current when the current source in on or off.
-	Also there is no visible slope.
+	As seen in the figure the current goes both positive and negative, because of the AC, but the current itself is always a constant value, no matter if the current source is on or off.
 	The two peaks in the figure are the charging peaks for the capacitors as discussed in \autoref{subsubsec:non-disturbing-voltage-source}.
 
 
@@ -198,13 +210,17 @@ In the following subsections each part of the hardware of the custom LED modulat
 	This is the voltage the LEDs need in order to be turned on, as discussed in \autoref{subsubsec:triggering}.
 	The rest of the voltage that the AC delivers will have to go somewhere.
 	This voltage will be dissipated over the current source.
-	This means that some energy is now being wasted, because essentially too much voltage is provided by the AC, we have a need for much less.
+	This means that some energy is now being wasted, because there is more voltage provided by the AC than is needed to power the LEDs.
 
 	One solution for this is using a transformer.
 	This will scale down the voltage, but it will still remain a sinusoidal wave.
 	But the same amount of voltage is still required by the LEDs.
 	And if the sine wave now has a smaller amplitude, the time that is left for modulation will also be much smaller.
-	Another drawback is that the transformer will deform the distinct current pattern that we are trying to create, as now ideal transformer exist.
+	This can be seen in \autoref{fig:trigger-output-lower-transformed}.
+	Here the same voltage is required by the LEDs, 100 V.
+	But the incoming sine wave has a smaller amplitude because a transformer, transformed the 230 V AC to a lower voltage.
+	The time that is now available for modulation is 6 ms, which means that only $\frac{6}{20} = 30$ \% of the time is now available for modulation.
+	Another drawback is that the transformer will deform the distinct current pattern that we are trying to create, as no ideal transformers exist.
 
 	Another solution was thought of and also implemented in the circuit boards but due to lack of time it was not further experimented with.
 	The solution is made up out of two parts: A capacitor and a zero-crossing opto-triac.
@@ -212,7 +228,7 @@ In the following subsections each part of the hardware of the custom LED modulat
 	And the opto-triac is parallel to this capacitor.
 	The schematic can be seen in \autoref{fig:ac-capacitor-triac}.
 	The capacitor with AC acts as a kind of resistor so it will limit the power that is dissipated by the current source, but the capacitor itself will not dissipate any power.
-	However by limiting the power that the current source will dissipate the amplitude of the sine will also become smaller and then there is much less time available to modulate.
+	However by limiting the power that the current source will dissipate the amplitude of the sine will also become smaller and then there is much less time available to modulate, similar to the solution with the transformer as described above.
 	This is were the zero-crossing triac comes in.
 	Whenever it is decided to start modulating, the microcontroller activates the triac and then it will short-circuit the capacitor when the voltage is zero, so that no current will flow through the triac and thereby not damaging the triac.
 	Now the capacitor is bypassed and modulation can begin with a large time available for modulation.
@@ -225,11 +241,27 @@ In the following subsections each part of the hardware of the custom LED modulat
 
 
 
-	\begin{figure}
-		\centering
-		\includegraphics[angle=0,width=0.5\textwidth]{chapters/hardware-chapters/ac-capacitor-triac.JPG}
+	%\begin{figure}
+	%	\centering
+	%	\includegraphics[angle=0,width=0.5\textwidth]{chapters/hardware-chapters/ac-capacitor-triac.JPG}
+	%	\caption{Schematic to show how the capacitor and opto-triac are connected.}
+	%	\label{fig:ac-capacitor-triac}
+	%\end{figure}
+
+
+	\begin{figure}[!tbp]
+	  \centering
+	  \begin{minipage}[b]{0.49\textwidth}
+	    \includegraphics[width=\textwidth]{chapters/hardware-chapters/ac-capacitor-triac.JPG}
 		\caption{Schematic to show how the capacitor and opto-triac are connected.}
 		\label{fig:ac-capacitor-triac}
+	  \end{minipage}
+	  \hfill
+	  \begin{minipage}[b]{0.49\textwidth}
+	    \includegraphics[width=\textwidth]{chapters/hardware-chapters/ac-wave-lower-transformed-triggering.eps}
+	    \caption{Output triggering circuit alongside the output of the AC voltage after a transformer.}
+	    \label{fig:trigger-output-lower-transformed}
+	  \end{minipage}
 	\end{figure}
 
 
