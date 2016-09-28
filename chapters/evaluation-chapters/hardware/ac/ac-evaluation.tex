@@ -19,6 +19,9 @@ When only the signal is considered when the output from the triggering circuit i
 Next each sample is subtracted with the mean of all the samples and then the absolute value is taken.
 Now we have the fully processed signal, ready to do correlation calculations with.
 The processed signal can be seen in \autoref{fig:processed-ac-testbed-adc-data} with the ADC values on the left y-axis and the current on the right y-axis.
+In both the figures for the raw data and the processed data, the x-axis, which is the time axis, has the same values for the beginning and ending.
+But parts of the raw data is filtered out, based on the trigger signal.
+So the extra data-points that can be seen on the processed data figure come from the original raw data signal which is longer than any of the figures shown here.
 
 
 
