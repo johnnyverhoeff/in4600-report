@@ -4,14 +4,70 @@
 \label{chp:related-work}
 
 
-This chapter first describes other methods that may be used in order to dissagregate lights and then the new proposed method is introduced.
+
+% normal energy dissasgregation work with sigatures.
+% normal meters not able to distinguis lightinh .... ?? 
+% meters only used for lighting can say X amount for lighting, but noi finer granularityl
+% some researh able to identify a sigle light, bit no more due to too similar LED signatures.
+
+% other plausbule soluations -> PoE (dont critisze), PLC
+
+% my approach still dissagregtraion instead of node on network, and give the unique signatures with VLC
+
+
+
+
+
+
+
+
+
+
+
+
+
+This chapter first describes state-of-the-art in energy disaggregation research and their results with the disaggregation of individual lights.
+Next, other methods are discussed, which could hypothetically identify for each light in the system, if it is on or off.
+And finally the proposed method is introduced.
 
 
 	\section{Related Work}
 
+		Energy disaggregation can categorize devices such as a refrigerator or washer dryer, but it cannot disaggregate two devices which have the same signature, for example the same lights in different rooms \cite{froehlich2011disaggregated}.
+		In other words, if there is more than one light in a house, and a subset of those lights are one, it cannot be identified which subset of lights are actually on, only that there are some lights on.
 
-		This section describes the state-of-the-art in fields which uses power and data in a single cable and how these solutions can be applied to detecting which lights are on or off.
 
+		\cite{shao2013temporal} has shown that is is able to disaggregate up to three separate lights.
+		The key difference here is that the lights have different power ratings.
+		Because the lights were different and had different power ratings, these light could be disaggregated from each other.
+		Nothing is mentioned about how the disaggregation results would alter, if there were multiple devices used with the same power ratings, for example three identical lights.
+
+
+		\cite{Gupta:2010} tried to disaggregate appliances which were powered with a switching mode power supply (SMPS).
+		These power supplies continuously generate high frequency electromagnetic interference (EMI).
+		Appliances can be distinguished based on the differences between the switching frequencies characteristics of each SMPS.
+		Many lights also use some kind of SMPS, due to the high efficiency of these types of power supplies.
+		It is claimed that two appliances of the same brand and model can be distinguished by looking at the EMI from the SMPS.
+		However it was also observed that the system could not distinguish similar light fixtures when they were installed spatially near each other.
+		The EMI from the power supplies did not have sufficient differences to correctly distinguish between these similar lights. 
+
+
+		
+
+	\section{Hypothetical Methods}
+
+		In this section other methods will be discussed that can potentially identify which lights are on and off, by other means than looking at the energy signature.
+
+
+
+
+
+		\subsection{Power-line Communication}
+
+		Power-line communication or PLC is a communication method that uses the existing AC wiring to simultaneously carry both data and AC power \cite{1205458}.
+		The obvious benefit is that the existing wiring infrastructure can be used.
+		Data is transmitted wit ha frequency that is much higher than the 50 or 60 Hz AC power frequency in order to ensure that the power wave does not interfere with the data signal.
+		Multiple lights can then transmit their status via for example orthogonal frequency-division multiplexing (OFDM) \cite{hoch2011comparison}.
 
 
 
@@ -28,18 +84,8 @@ This chapter first describes other methods that may be used in order to dissagre
 
 
 
-
-		\subsection{Power-line Communication}
-
-		Power-line communication or PLC is a communication method that uses the existing AC wiring to simultaneously carry both data and AC power \cite{1205458}.
-		The obvious benefit is that the existing wiring infrastructure can be used.
-		Data is transmitted wit ha frequency that is much higher than the 50 or 60 Hz AC power frequency in order to ensure that the power wave does not interfere with the data signal.
-		Multiple lights can then transmit their status via for example orthogonal frequency-division multiplexing (OFDM) \cite{hoch2011comparison}.
-
-
-
-
 	\section{Proposed Method}
+
 
 	The idea for this thesis was to piggyback on Visible Light Communication (VLC).
 	VLC is a short-range optical means of wireless communication using the visible light spectrum.
