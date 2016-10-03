@@ -3,15 +3,26 @@
 
 \section{Thesis Contributions}
 
-The aim of this thesis is to propose a combination of hardware and software, so that lights with similar power draw can be distinguished with a single smart-meter.
+The aim of this thesis is to propose a framework consisting of theoretical methods, hardware and software, so that lights with similar power draw can be distinguished with a single smart-meter.
 This thesis takes advantage of advances in two areas: CDMA codes and VLC.
 
 The specific contributions of this thesis are:
 
 \begin{itemize}
-	\item Coding methods are introduced to allow LEDs to communicate via VLC but also control the power they draw, so that the aggregated power consumption can be disaggregated in such a way that it is clear which LED is on and which is off.
 
-	\item Hardware is proposed to allow for the LEDs to propagate their unique signature via either AC or DC. This will be called the modulator. Other hardware is proposed to interpret the aggregated signal from all the LEDs. This signal consists of the superimposition of all these unique signatures. This will be called the smart-meter or current sampler.
+	\item Coding methods are analyzed to allow each LED to have a unique power draw. 
+	These codes make it possible to identify if an LED is on or off, even when multiple LEDs are modulating and thereby interfering with each others unique current signature.
 
-	\item An evaluation of the proposed hardware and software is carried out, with a testbed which uses actual consumer LED light fixtures. For larger scale evaluations, software simulation is used. 
+
+
+
+	\item Hardware is introduced to allow the LEDs to be modulated by a micro controller. 
+	This will allow the LEDs propagate their unique signature via either AC or DC. 
+	And there is also hardware introduced that can sample the current that all the LEDs are drawing, via either AC or DC.
+	The sampled current is then processed by another separate micro controller, which can then state which LEDs are on and which or off.
+
+
+
+
+	\item An evaluation of the proposed hardware and software is carried out, with a testbed which uses standard LED light fixtures. For larger scale evaluations, software simulation is used. 
 \end{itemize}
