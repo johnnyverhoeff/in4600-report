@@ -3,11 +3,18 @@
 \subsection{Gold Sequences}
 \label{subsec:gold-sequences}
 
+The PN sequences gives us a set of codes which is not scalable and suffers from interference issues, but it can work in an asynchronous environment.
+To solve these issues, Gold codes were investigated.
+
 Gold sequences are a type of PN sequence.
-These codes are used for as C/A Code (Coarse Acquisition) in GPS satellites \cite{gold-in-sats}. 
+%These codes are used for as C/A Code (Coarse Acquisition) in GPS satellites \cite{gold-in-sats}. 
 They are created by using two LFS registers as shown in \autoref{fig:gold-lfsr}.
 In this figure there are two vectors $s$ and $t$ and two polynomials $C$ and $D$.
 For a sequence to be constructed in this way that is a Gold sequence, only preferred pairs of polynomials can be used \cite{kedia2012comparative}.
+Only preferred pairs of polynomials will yield a set of codes that will have a three valued cross-correlation function.
+A method for selecting these preferred pairs of polynomials can be found in \cite{1054106}.
+The polynomials are the same as explained for the PN sequences.
+For example, $p(x) = x^3 + x^2 + 1$ and $q(x) = x^3 + x + 1$ are a preferred pair and can be used with two LFS registers of length $3$ in a construction as shown in \autoref{fig:gold-lfsr}.
 When we have the polynomials $p(x)$ and $q(x)$, which are a preferred pair and produce the PN sequences $d_1$ and $d_2$ respectively, the resulting set of Gold codes is defined as can be seen in \autoref{eq:gold-def}, where $T^n$ represent the cyclic shift of $n$ bits.
 
 \begin{equation}
@@ -125,10 +132,11 @@ When we have the polynomials $p(x)$ and $q(x)$, which are a preferred pair and p
 
 
 
-The autocorrelation properties of Gold sequences are not as good as that of the PN sequences, as can be seen from \autoref{fig:autocorr-gold}.
-The autocorrelation of all the Gold sequences are plotted in \autoref{fig:autocorr-gold-3d} to illustrate the autocorrelation of all sequences look like each other.
-Apart from the original two PN sequences the autocorrelation values are not two-valued, but are four-valued.
-See \autoref{eq:autocorr-gold} and \autoref{eq:gold-t(n)} for the autocorrelation properties of Gold sequences.
+The autocorrelation properties of Gold sequences are not as good as that of the PN sequences, as can be seen from \autoref{fig:autocorr-gold} compared to \autoref{fig:autocorr-pn}.
+The autocorrelation of all the Gold sequences are plotted in \autoref{fig:autocorr-gold-3d} to illustrate that the autocorrelation of all sequences look like each other.
+Apart from the original two PN sequences the auto-correlation values can take four values.
+The auto-correlation of a PN sequence can be one of two values, see \autoref{eq:autocorr-pn}.
+See \autoref{eq:autocorr-gold} and \autoref{eq:gold-t(n)} for the auto-correlation properties of Gold sequences, where $n$ is the length of the LFSR.
 
 \begin{equation}
 	\label{eq:autocorr-gold}
@@ -180,7 +188,7 @@ See \autoref{tbl:gold-sequences-C-and-cross-corr} for the cross-correlation for 
 
 \end{table}
 
-As seen from \autoref{tbl:gold-sequences-C-and-cross-corr} the scalability of the Gold sequences is good.
+As seen from \autoref{tbl:gold-sequences-C-and-cross-corr}, the number of codes scales linearly with the code length, so the gold codes are scalable.
 With a LFSR of length $n$, the sequence length is $L = 2^n - 1$ and the number of sequences is $C = 2^n + 1$.
 Compared to the peak cross-correlation of the PN sequences, \autoref{tbl:pn-sequences-C-and-cross-corr}, the peak cross-correlation of the Gold sequences are lower for the same code length, see \autoref{tbl:gold-sequences-C-and-cross-corr}.
 

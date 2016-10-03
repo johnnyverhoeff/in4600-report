@@ -4,8 +4,22 @@
 \label{sec:performance-metrics-cdma}
 
 To be able to objectively determine which code sequence is the best for certain environments, metrics are needed to compare the performance of a sequence.
-Such metrics are: auto- and cross-correlation, length of the code and how many unique codes can be produced which are in the same set, meaning with the same length, so that they can be used together in the same system.
-Also if the codes can be used in a synchronous only or in an a-synchronous environment has to be considered.
+
+
+Such metrics are: 
+
+\begin{itemize}
+
+	\item Auto- and cross-correlation: This will determine how accurate we can detect the ID of an LED in the aggregated signal, and also the amount of interference there will be from the other IDs.
+
+	\item Code length: If the code is too long, the system will not be able to detect an LED in a timely manner.
+
+	\item Number of codes: The number of unique codes that can be used in the same system is important for the scalability.
+
+	\item Asynchronous behavior: It should be also be considered if the codes can be used in a synchronous only or in an a-synchronous environment.
+
+\end{itemize}
+
 
 
 Correlation is a measure for determining how much sequence $X$ is similar to sequence $Y$ and can be found in \autoref{eq:correlation}.
@@ -31,7 +45,10 @@ When they are two different sequences, we speak of the cross-correlation.
 
 
 
-The properties of an ideal set of codes should be, that the autocorrelation for each code in the set should be $0$ for each time-shift $\tau \neq 0$, at $\tau = 0$ the autocorrelation should be $L$, this value would than be a peak value for which we can identify if this code is present in the received signal.
+The properties of an ideal set of codes should be, that the autocorrelation for each code should have a clear peak to identify that this code is present in the signal.
+This peak should only occur when there is no time-shift, so at $\tau = 0$.
+The value of this peak should then be $L$, meaning that each chip of the code is equal to the value in the received signal.
+When there is a time-shift, $\tau \neq 0$, the auto-correlation should be as close to zero as possible.
 If the signal is the sampled current and the code is the ID of a LED, then we can say the LED is on when the auto-correlation peak is seen.
 The ideal cross-correlation properties should be $0$ for every time-shift $\tau$, so that no code interferes with any other code, hereby causing no MAI (Multiple Access Interference).
 
@@ -39,7 +56,8 @@ The ideal cross-correlation properties should be $0$ for every time-shift $\tau$
 
 The length of a code is also of importance, because each chip of the code has to be transmitted.
 Assuming a constant modulating frequency, the time it takes to transmit a code sequence is proportional to the length of that code sequence.
-The length of the code will also determine, to some extent, the number of codes in the same set.
+The length of the code will also determine, to some extent, the number of codes that can be used together in the system.
+These codes are said to be in the same set.
 The number of codes in the same set determines the scalability of the system.
 
 

@@ -5,8 +5,19 @@
 
 \todo{Should I explain differences TDM/FDM/CDMA ??}
 
-This chapter will explain which CDMA sequences are considered and how to measure their performance.
-The way in which these sequences can be constructed is also explained, as are the environments in which they work well and poorly. 
+
+Each LED requires a unique ID.
+When the LEDs are modulating to transmit their IDs, the current of multiple LEDs are aggregated.
+The aggregated current will flow through the smart-meter, in other words, the only information the  smart-meter has, is the aggregated current.
+And from these aggregated IDs, the smart-meter should be able to identify which IDs are present.
+If it can do that, the smart-meter is able to tell which LEDs are on and which or off.
+
+This chapter will explain how these IDs can be constructed by using CDMA codes.
+To see which codes are the best, first the performance metrics are explained.
+Then several codes will be discussed and the performance metrics for each code will be highlighted.
+Finally the codes will be compared to each other.
+
+
 
 \input{chapters/cdma-chapters/performance-metrics}
 

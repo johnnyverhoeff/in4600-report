@@ -3,6 +3,9 @@
 \subsection{Pseudorandom Noise Sequences}
 \label{subsec:pn-sequences}
 
+The main drawback with the orthogonal codes, was that these codes cannot be used in an asynchronous manner.
+To overcome this drawback, PN sequences were investigate which can be used in an asynchronous manner.
+
 PN sequences are sequences which look like they are randomly generated but they are easily generated in software or hardware.
 They are generated with linear shift registers of length $n$.
 The sequences have the following noise-like properties~\cite{mitra2008pseudo}:
@@ -48,10 +51,11 @@ The sequences have the following noise-like properties~\cite{mitra2008pseudo}:
 
 
 PN sequences are generated using a linear feedback shift register (LFSR) \cite{Wang:1988:LFS:52007.52024}.
-\autoref{fig:lfsr} shows an $n$ length LFSR with XOR gates attached to it.
+\autoref{fig:lfsr} shows an $n$ length LFSR with XOR gates attached to each element of the register and a feedback loop into the last element. 
 The LFSR is defined entirely by the feedback function, also called a characteristic polynomial.
 It determines the length and the type of sequence generated.
 The polynomial looks like \autoref{eq:lfsr-polynomial}.
+For example: Given a polynomial $q(x) = x^5 + x^2 + 1$, tells us that the LFSR has length $5$ and that the outputs of elements with number zero and two are XORed and fed back into the last element. 
 
 \begin{equation}
 	\label{eq:lfsr-polynomial}
@@ -109,7 +113,10 @@ The polynomial looks like \autoref{eq:lfsr-polynomial}.
 
 For PN sequences, there exists no formula for the cross-correlation of two different PN sequences. 
 Exhaustive analysis is required to find out which sequences or entire sets have the cross-correlation characteristics that are good enough for the user's application.
-In \autoref{tbl:pn-sequences-C-and-cross-corr} the calculated peak cross-correlations per PN sequences in the same set can be found.
+In \autoref{tbl:pn-sequences-C-and-cross-corr} the calculated peak cross-correlations per PN sequences from the same set can be found.
+For each sequence the cross-correlation is calculated with every other sequence for every time-shift $\tau$. 
+Then the maximum of those cross-correlation is taken and used for the peak cross-correlation.
+For the PN codes the auto-correlation does not have to be calculated, this is already shown in \autoref{eq:autocorr-pn}.
 
 
 
@@ -124,7 +131,7 @@ For a LFSR with $n$ registers, the maximum number of possible codes $C$ is given
 For example when using a LFSR of size $n = 6$, $2^n - 1 = 63$, which can be factored into $3^2 \times 7$.
 Giving $P_1 = 3$, $P_2 = 7$, $\alpha_1 = 2$ and $\alpha_2 = 1$.
 Thus, the maximum number of codes is: $C = \frac{1}{6} \times \{ 3^{2 - 1} \times (3 - 1) \} \times \{ 7^{1 - 1} \times (7 - 1) \} = 6$.
-Another example: Say there are going to be 144 user, so 144 codes are needed. 
+Another example: Say there are going to be 144 LEDs, so 144 codes are needed. 
 This means a code length of 4095 chips.
 For PN sequences of other lengths, see \autoref{tbl:pn-sequences-C-and-cross-corr} for the number of codes.
 
@@ -155,9 +162,9 @@ For PN sequences of other lengths, see \autoref{tbl:pn-sequences-C-and-cross-cor
 \end{table}
 
 
-To conclude: PN sequences have less number of sequences in the same set, compared to orthogonal sequences.
-But the auto- and cross-correlation are better than those of the orthogonal sequences.
-And these auto- and cross-correlation numbers also hold when the sequences are sent asynchronously.
+To conclude: PN sequences have less number of sequences in the same set, compared to orthogonal sequences, so they are less scalable.
+But the PN sequences can be used in an asynchronous manner, with good auto-correlation.
+But the cross-correlation properties causes interference, which limits the amount of transmitters that can transmit concurrently.
 
 
 
