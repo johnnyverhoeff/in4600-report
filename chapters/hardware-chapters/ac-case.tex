@@ -55,9 +55,12 @@ This makes determining whether an LED was on or off difficult, especially if mul
 
 
 Other commercial LED lighting fixtures can be screwed directly into existing sockets and work directly via the supplied 230 V AC \cite{commercial-230v-ac-led-aliexpress}.
-In Figures \ref{fig:commercial-230v-ac-led-on} and \ref{fig:commercial-230v-ac-led-modulating} the current signatures of this commercial 230 V AC LED can be seen, narmally on and when modulated, respectively.
+In Figures \ref{fig:commercial-230v-ac-led-on} and \ref{fig:commercial-230v-ac-led-modulating} the current signatures of this commercial 230 V AC LED can be seen, normally on and when modulated, respectively.
 In order to modulate this LED, changes had to be made to the hardware that drives the actual LEDs.
 In \autoref{app:commercial-230v-ac-modified-schematic} a schematic can be found, which shows the original circuit and what was modified in order to modulate the LED.
+The modifications made, include two FETs to switch the LEDs off and stop the capacitor from charging. 
+With these FETs the entire current flow can be stopped and thereby drawing zero current when we want to modulate a zero symbol.
+The FETs are controller via a micro-controller through an opto-coupler to protect the micro-controller in the development stages.
 
 
 
