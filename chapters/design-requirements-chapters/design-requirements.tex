@@ -3,51 +3,25 @@
 \chapter{Design Requirements}
 \label{chp:design-requirements}
 
-In this chapter, the requirements of both hardware and software will be explained.
-First the software side and then the hardware side will be detailed.
-Buildings traditionally only have AC power, but there is also research being done \todo{Citation needed, from NL or other origin ???} in using DC power in buildings. 
-Therefor each section will also contain the implications on using DC or AC.
-In \autoref{fig:overview-diagram} a block diagram can be seen how all components interact with each other.
 
 
-\begin{figure}[h]
-	\centering
-	\resizebox {\textwidth} {!} {
-		\begin{tikzpicture}
+In \autoref{fig:overview-diagram} a block diagram has already been showed with the components that are needed for the proposed method.
+In this picture multiple lights can be seen.
+We want to monitor which lights are on and off in a timely manner, by only looking at the energy signature of each LED.
+To do this, three things must be investigated: How to construct the IDs, what hardware to use for the modulators and how to sample and process the current.
+First, the requirements for the IDs will be discussed.
+These IDs will be assigned to each LED and these IDs will be transmitted by the LEDs at the same time on the same wire.
+Next, the modulator is discussed. 
+This piece of hardware will be responsible for the translation of the ID into the current that the LED will draw.
+Finally, the smart-meter will be discussed.
+The meter must sample the current that is drawn by all the LEDs.
+And process that data into status indicators for each LED.
 
-			\node[block] (smart_meter) {Smart-meter};	
 
-			\node[block, left = 1cm of smart_meter] (power) {Power};	
-			\draw[line] (power.east) -- (smart_meter.west) node [midway, right] {};		
 
-			% second mod.
-			\node[block, right = 4cm of smart_meter] (second_modulator) {Modulator};
-			\node[LED, right = 0.5cm of second_modulator] (second_led) {LED};
-			\draw[line] (second_modulator.east) -- (second_led.west) node [midway, right] {};
 
-			% first mod.
-			\node[block, above = 1cm of second_modulator] (first_modulator) {Modulator};
-			\node[LED, right = 0.5cm of first_modulator] (first_led) {LED};
-			\draw[line] (first_modulator.east) -- (first_led.west) node [midway, right] {};
 
-			% third mod.
-			\node[block, below = 1cm of second_modulator] (third_modulator) {Modulator};
-			\node[LED, right = 0.5cm of third_modulator] (third_led) {LED};
-			\draw[line] (third_modulator.east) -- (third_led.west) node [midway, right] {};
 
-			\node[dot, right = 2.5cm of smart_meter] (CP) {};
-
-			\draw (smart_meter.east) -- (CP) node [pos=0.3, above] {0222};
-
-			\draw (CP) |- (first_modulator.west) node  [pos=0.75, above] {0011};
-			\draw (CP) |- (second_modulator.west) node [pos=0.75, above] {0110};
-			\draw (CP) |- (third_modulator.west) node  [pos=0.75, below] {0101};
-
-		\end{tikzpicture}
-	}
-	\caption{Block diagram how each component interacts with other components.}
-	\label{fig:overview-diagram}
-\end{figure}
 
 
 	\section{Encoding}
@@ -56,8 +30,16 @@ In \autoref{fig:overview-diagram} a block diagram can be seen how all components
 	Furthermore, that identification sequence must somehow be detected and interpreted by a smart-meter.
 
 
-	If the transmission of the identification sequence is done with OOK (on-off keying) in a VLC manner, that encoding will also propagate through the current that is drawn.
-	That current flows through the smart meter and then the light source which draws that current can be identified by its unique identification sequence. 
+	The most common way to use VLC with LEDs, is to use on-off keying (OOK).
+	OOK works by turning the LED on or off.
+	If a data bit `1' needs to be transmitted, the LED is turned on.
+	If a data bit `0' needs to be transmitted, the LED is turned off.
+	This is how the light that is emitted from the LED, is transmitted to for example a smart-phone.
+	The phone can use the information to localize itself inside a building.
+	Since the LED is turning on and off according to the ID in an OOK fashion, this ID will also propagate in the current that this LED draws.
+	This unique current signature flows through the smart meter.
+	If only a single light is used with an ID, the meter can search for only that ID.
+	If it finds that ID, the light is ON, else the lights is off.
 
 
 	A problem rises when more than one light source is sending its identification sequence.
@@ -66,20 +48,34 @@ In \autoref{fig:overview-diagram} a block diagram can be seen how all components
 	Because of that interference the unique identification sequences which are assigned to each light source, need to be carefully selected.
 
 
-	The field of telecommunications already faced similar issues: For example multiple cellphones transmitting to the same base station, at the same time, at the same frequency. 
-	The solution was to use code sequences that do not posses high cross-correlations, but do have high auto-correlations.
+	To build the necessary codes we borrow from the field of telecommunications.
+	In that field, similar issues occurred: For example multiple cellphones transmitting to the same base station, at the same time, at the same frequency. 
+	The solution was to use code sequences that do not interfere with each other.
 	The specific codes are called Orthogonal codes and Pseudo random noise codes.
 	The following requirements for the codes that will be used must be met:
 	\begin{itemize}
-		\item The codes must have high auto-correlation to be able to identify if an LED is on.
 
-		\item Low cross-correlation is needed in order to have low interference with the other LEDs that are modulating.
+		\item The codes should be detectable with good accuracy:
+		\begin{itemize}
+			\item A code sequence must be able to be detected, even when multiple of these similar yet unique codes are aggregated.
 
-		\item The codes need to work in a synchronous and asynchronous manner. Because multiple lights in a single room can be all switched on together, this is a synchronous case.	But when there are multiple lights in multiple rooms they need not be turned on or off at the same time, this is the asynchronous case.
+			\item The codes must have as little interference as possible with each other, so that a great amount of the LEDs can transmit at the same time and still achieve accurate results when the smart-meter tries to detect which LEDs are transmitting.
+		\end{itemize}
 
-		\item The codes should not be too long, because the system must identify each LED as being on or off in a timely manner.
 
-		\item The method to create these codes should also produce a number of codes that is proportional to the length of code for the scalability of the system.
+		\item The codes need to work in a synchronous and asynchronous manner. 
+		Because multiple lights in a single room can be all switched on together, this is a synchronous case.	
+		But when there are multiple lights in multiple rooms they need not be turned on or off at the same time, this is the asynchronous case.
+
+		\item The system must be scalable:
+		\begin{itemize}
+			\item The codes should not be too long, because the system must identify each LED as being on or off in a timely manner.
+			The longer the code, the longer it takes to transmit this code.
+
+			\item The number of codes that can be used in the same system must scale well.
+			In other words: The method used to construct the codes, should yield a large amount of codes that can be used in the same system.
+		\end{itemize}
+
 	\end{itemize}
 	
 
@@ -92,25 +88,25 @@ In \autoref{fig:overview-diagram} a block diagram can be seen how all components
 
 	A piece of hardware is needed to modulate a commercial LED.
 	This hardware needs to translate the unique identification sequence that is assigned to each light source and modulate the LED.
-	The modulation needs to be done in such a way that the aggregated current of all lights can be measured at the smart meter.  
-	The hardware should also allow for fast modulating to avoid seeing flickering effects.
+	The modulation needs to be done in such a way that the aggregated current of all lights can be measured at the smart-meter.  
+	The hardware should also allow for fast modulation to avoid seeing flickering effects.
 
 
-	For the design of this hardware, or when using pre-designed hardware, the way the identification sequence translates to the current draw needs to be taken in mind. 
-	When DC is used the voltage is constant in time so the manner in which the encoding information from the LED translated into the current draw will be time-independent.
-	But when using AC the applied voltage is a sine wave, so it is not constant in time and the voltage will also be positive and negative.
-	So the supplied voltage is never the same and it is zero crossing, meaning that there no current will flow at that point in time.
-	And when there is no current flow, there can also be no information encoding.
-	For these problems in the AC domain, a combination of hardware and software will be used to get around these problems.
+	For the design of this hardware, or when using pre-designed hardware, the way the identification sequence translates to the current draw needs to be taken in mind.
+	Since OOK is used, the modulator should ideally draw zero current when a `0' data bit is transmitted and draw a certain amount of constant current when a `1' data bit is to be transmitted.
+	This current draw translation should be the case irrespective of using DC or AC.
+	In a DC environment the modulator hardware will get a constant voltage, so there are no extra challenges.
+	But in an AC environment the modulator will get an alternating voltage, which is not constant. 
+	This will introduce multiple challenges, which will be discussed in \autoref{sec:ac-environment}.
 
 
 
 	\section{Smart Meter}
 
 	The smart meter needs to be able to detect relatively small current changes.
-	More concretely, it needs to be able to detect the current change when even a single light is modulating, while multiple other lights are on.
+	More concretely, it needs to be able to detect the current change when even a single light is modulating.
 
-	When selecting a method of measuring the current these thing need to be taken into consideration:
+	When selecting a method of measuring the current these points need to be taken into consideration:
 
 	\begin{itemize}
 		\item The speed at which the current can be sampled needs to be high enough to be able to correctly sample the current as the LEDs are modulating.
@@ -118,8 +114,11 @@ In \autoref{fig:overview-diagram} a block diagram can be seen how all components
 		\item The accuracy of the samples being taken needs to be high enough, so that the modulation of one LED can be detected with consistency.
 		In other words, the noise of the samples must be low enough to detect the correct modulation of even one LED.
 
-		\item The applied voltage to the microprocessor cannot be higher than the rated voltage of that microprocessor. This means that the sensitivity (mV / A) of the measuring method needs to be chosen in such a way that the output voltage of the measuring method, is within bounds to not damage the microprocessor.
-		The microprocessor cannot handle the negative current, in the case of AC. So an intermediary step needs to take place here to convert it to something the microprocessor can handle, meaning only positive voltages and below the rated voltage of that microprocessor.
+		\item The sensitivity of the measuring method needs to be chosen such that an ADC of a micro-controller can measure the current.
+		The sensitivity must not be too low. 
+		In combination with a too low resolution ADC this may cause the failure to detect the modulation of one LED.
+		But the sensitivity must also not be too high.
+		If it is too high, the ADC can be saturated, causing it to only be able to detect two LEDs modulating while the other LEDs are not detected.
 
 	\end{itemize}
 
