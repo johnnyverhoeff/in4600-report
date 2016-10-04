@@ -33,23 +33,31 @@ And finally the proposed method is introduced.
 
 	\section{Related Work}
 
-		Energy disaggregation can categorize devices such as a refrigerator or washer dryer, but it cannot disaggregate two devices which have the same signature, for example the same lights in different rooms \cite{froehlich2011disaggregated}.
+		Energy disaggregation can categorize devices such as a refrigerator or washer dryer, but it cannot disaggregate two devices which have the same signature, for example the same lights in different rooms in the work performed by the authors of \cite{froehlich2011disaggregated}.
 		In other words, if there is more than one light in a house, and a subset of those lights are one, it cannot be identified which subset of lights are actually on, only that there are some lights on.
 
 
-		\cite{shao2013temporal} has shown that is is able to disaggregate up to three separate lights.
+		The authors of \cite{shao2013temporal} have shown that their method is able to disaggregate up to three separate lights.
 		The key difference here is that the lights have different power ratings.
 		Because the lights were different and had different power ratings, these light could be disaggregated from each other.
 		Nothing is mentioned about how the disaggregation results would alter, if there were multiple devices used with the same power ratings, for example three identical lights.
 
 
-		\cite{Gupta:2010} tried to disaggregate appliances which were powered with a switching mode power supply (SMPS).
+		In \cite{Gupta:2010} the authors tried to disaggregate appliances which were powered with a switching mode power supply (SMPS).
 		These power supplies continuously generate high frequency electromagnetic interference (EMI).
 		Appliances can be distinguished based on the differences between the switching frequencies characteristics of each SMPS.
 		Many lights also use some kind of SMPS, due to the high efficiency of these types of power supplies.
 		It is claimed that two appliances of the same brand and model can be distinguished by looking at the EMI from the SMPS.
 		However it was also observed that the system could not distinguish similar light fixtures when they were installed spatially near each other.
 		The EMI from the power supplies did not have sufficient differences to correctly distinguish between these similar lights. 
+
+
+		In \cite{Englert:2016:LAE:2893711.2893724} the authors present a method which correlates the light switching events obtained from a Building Control Network (BCN) with the power measurements on the mains distribution level.
+		Combining these two sources of information allows their system to estimate the electricity consumption for each light individually with an error below 11 \%.
+		They use the BCN to retrieve which lights are being switched on or off and then they look at how the power consumption of the building changes.
+		In this way they can estimate what the power consumption of each individual light is, without having explicit training or manual inputs.
+		The system adapts itself to the characteristics of any building within 8 to 14 days.
+
 
 
 		
@@ -61,12 +69,11 @@ And finally the proposed method is introduced.
 
 
 
-
 		\subsection{Power-line Communication}
 
 		Power-line communication or PLC is a communication method that uses the existing AC wiring to simultaneously carry both data and AC power \cite{1205458}.
 		The obvious benefit is that the existing wiring infrastructure can be used.
-		Data is transmitted wit ha frequency that is much higher than the 50 or 60 Hz AC power frequency in order to ensure that the power wave does not interfere with the data signal.
+		Data is transmitted with a frequency that is much higher than the 50 or 60 Hz AC power frequency in order to ensure that the power wave does not interfere with the data signal.
 		Multiple lights can then transmit their status via for example orthogonal frequency-division multiplexing (OFDM) \cite{hoch2011comparison}.
 
 
@@ -86,25 +93,76 @@ And finally the proposed method is introduced.
 
 	\section{Proposed Method}
 
+	\begin{figure}[h]
+		\centering
+		\resizebox {\textwidth} {!} {
+			\begin{tikzpicture}
 
-	The idea for this thesis was to piggyback on Visible Light Communication (VLC).
+				\node[block] (smart_meter) {Smart-meter};	
+
+				\node[block, left = 1cm of smart_meter] (power) {Power};	
+				\draw[line] (power.east) -- (smart_meter.west) node [midway, right] {};		
+
+				% second mod.
+				\node[block, right = 4cm of smart_meter] (second_modulator) {Modulator};
+				\node[LED, right = 0.5cm of second_modulator] (second_led) {LED};
+				\draw[line] (second_modulator.east) -- (second_led.west) node [midway, right] {};
+
+				% first mod.
+				\node[block, above = 1cm of second_modulator] (first_modulator) {Modulator};
+				\node[LED, right = 0.5cm of first_modulator] (first_led) {LED};
+				\draw[line] (first_modulator.east) -- (first_led.west) node [midway, right] {};
+
+				% third mod.
+				\node[block, below = 1cm of second_modulator] (third_modulator) {Modulator};
+				\node[LED, right = 0.5cm of third_modulator] (third_led) {LED};
+				\draw[line] (third_modulator.east) -- (third_led.west) node [midway, right] {};
+
+				\node[dot, right = 2.5cm of smart_meter] (CP) {};
+
+				\draw (smart_meter.east) -- (CP) node [pos=0.3, above] {0222};
+
+				\draw (CP) |- (first_modulator.west) node  [pos=0.75, above] {0011};
+				\draw (CP) |- (second_modulator.west) node [pos=0.75, above] {0110};
+				\draw (CP) |- (third_modulator.west) node  [pos=0.75, below] {0101};
+
+			\end{tikzpicture}
+		}
+		\caption{Block diagram how each component interacts with other components.}
+		\label{fig:overview-diagram}
+	\end{figure}
+
+
+
+
+	The proposed method aims to still work in legacy buildings, so it must use the legacy AC wiring that is already present.
+	Since the method is aimed at legacy buildings, we cannot rely an a Building Control Network (BCN).
+	A single smart-meter is used to measure the energy usage.
+	The purpose of the smart-meter is to identify which lights are on and which are off.
+	It does this by looking at the the energy signature of each light.
+	But as discussed many lights have the same signature, so it not possible to accurately identify which lights are on using only a smart-meter.
+
+	So besides a smart-meter, smart-lights will also be used.
+	These smart-lights can take advantage of Visible Light Communication (VLC).
 	VLC is a short-range optical means of wireless communication using the visible light spectrum.
 	VLC is made possible by the advances in LED technology.
 	The interest in VLC has grown since the widespread deployment of LED lighting fixtures for energy efficiency over the normal incandescent light bulb \cite{rajagopal2012ieee}.
-
 
 	Now that VLC allows lighting fixtures to transmit data, research is being done to make indoor localization more precise than with traditional RF-based approaches \cite{Kuo:2014:LIP:2639108.2639109}.
 	Since the light does not pass through walls and it has less reflection compared to RF, an indoor localization system can be more precise.
 	Each VLC lighting fixture can act like a beacon which transmits an ID of some sort, thereby describing its location inside the building.
 
+	So the lights are already transmitting IDs to describe their location inside a building with the help of VLC.
+	The ID that a light is transmitting, will also propagate to the current draw.
+	And with the smart-meter, we are looking at the current draw of all attached devices, including these lights.
+	The IDs need to be constructed in such a way that the sum of all these currents, which flows through the smart-meter, can still tell us which of the lights are actually on or off.
+	How these new IDs can be constructed needs be to be investigated.
+	With this proposed method the lights can still act as beacons for indoor localization because the IDs will still be unique.
+	And the current signature of each light will tell us which lights are on and it can be done over the existing wiring infrastructure.
 
-	Many research papers have successfully recognized home appliances through energy disaggregation with data being collected with a single smart-meter.   
-	Though they succeed in detecting appliances with unique signatures, lighting is put in a group without mentioning the individual lights \cite{kolter2011redd}.
-	The reason for this, is because every light has a very similar power draw and therefor a very similar signature and it can not be reliably disaggregated.
-
-
-	So if the lights are already transmitting IDs to describe their location inside a building with the help of VLC, we can piggyback on VLC by looking at the current signatures that these lights produce.
-	The IDs need to be constructed in such a way that the sum of all these currents can still tell us which of the lights are actually on or off.
-	With this proposed method the lights can still act as beacons for indoor localization because the IDs will still be unique and the current signature of each light will tell us which lights are on and it can be done over the existing DC or AC wiring infrastructure.
+	In \autoref{fig:overview-diagram} an overview of the method can be seen.
+	The smart-meter is shown along with multiple LEDs which will be controlled by a piece of hardware called the modulator.
+	The codes or the IDs that will be used can also be seen next to the modulator.
+	The sum of these IDs will then flow as current through the smart-meter, which will sample this aggregated current and in turn be able to identify which of the LEDs is on and which is off.
 
 
