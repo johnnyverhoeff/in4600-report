@@ -134,27 +134,27 @@ This will guaranty good decoding properties, meaning no false-positives and/or f
 
 \begin{table}[t]
 	\centering
-	\begin{tabular}{  | l | l | }
+	\begin{tabular}{  | l | l | l | }
 
 	\hline
-	Number of transmitters (m)	& Time (t)					\\ \hline
+	Number of transmitters (m)	& Code Length (L)		& Time (t)					\\ \hline
 
 
-	%1							& 0.0031 s					\\ \hline
-	%3							& 0.0127 s					\\ \hline
-	7							& 0.0511 s					\\ \hline 
-	15							& 0.2047 s					\\ \hline
-	31							& 0.8191 s					\\ \hline
-	63							& 3.2767 s					\\ \hline
-	127							& 13.107 s					\\ \hline
-	255							& 52.429 s					\\ \hline
-	511							& 209.72 s (3.5 min)		\\ \hline
-	1023						& 838.86 s (14.0 min)		\\ \hline
-	2047						& 3355.4 s (55.9 min)		\\ \hline
-	4095						& 13421.7 s (3.7 hour)		\\ \hline
-	8191						& 53687.1 s (14.9 hour)		\\ \hline
-	16383						& 214748.4 s (2.5 day)		\\ \hline
-	32767						& 858993.5 s (1.4 week)		\\ \hline
+	%1							& 31					& 0.0031 s					\\ \hline
+	%3							& 127					& 0.0127 s					\\ \hline
+	7							& 511					& 0.0511 s					\\ \hline 
+	15							& 2047					& 0.2047 s					\\ \hline
+	31							& 8191					& 0.8191 s					\\ \hline
+	63							& 32767					& 3.2767 s					\\ \hline
+	127							& 131071				& 13.107 s					\\ \hline
+	255							& 524287				& 52.429 s					\\ \hline
+	511							& 2097151				& 209.72 s (3.5 min)		\\ \hline
+	1023						& 8388607				& 838.86 s (14.0 min)		\\ \hline
+	2047						& 33554431				& 3355.4 s (55.9 min)		\\ \hline
+	4095						& 134217727				& 13421.7 s (3.7 hour)		\\ \hline
+	8191						& 536870911				& 53687.1 s (14.9 hour)		\\ \hline
+	16383						& 2147483647			& 214748.4 s (2.5 day)		\\ \hline
+	32767						& 8589934591			& 858993.5 s (1.4 week)		\\ \hline
 
 
 
@@ -236,21 +236,21 @@ The results of the simulation can be found in \autoref{sec:simulation-evaluation
 
 \begin{table}[t]
 	\centering
-	\begin{tabular}{  | l | l | l | }
+	\begin{tabular}{  | l | l | l | l | }
 
 		\hline
-		Number of transmitters (N)	& Time (t), $\epsilon = 0.001$				& Time (t), $\epsilon = 0.1$					\\ \hline
+		Number of transmitters (N)	& Code Length (L) 		& Time (t), $\epsilon = 0.001$				& Time (t), $\epsilon = 0.1$					\\ \hline
 
-		9							& 6.31 s									& 0.06 s 										\\ \hline
-		33							& 2.22 s									& 0.19 s 										\\ \hline
-		65							& 8.91 s									& 0.77 s 										\\ \hline
-		129							& 3.79 s									& 0.93 s  										\\ \hline
-		513							& 13.24 s									& 5.62 s 										\\ \hline
-		1025						& 53.10 s									& 22.50 s 										\\ \hline
-		2049						& 65.36 s (1.09 min)						& 37.64 s										\\ \hline
-		8193						& 387.28 s (6.45 min)						& 268.38 s (4.47 min)							\\ \hline
-		16385						& 1549.95 s	(25.83 min)						& 1074.30 s	(17.90 min)							\\ \hline
-		32769						& 2551.95 s (42.53 min)						& 1989.50 s	(33.16 min)							\\ \hline
+		9							& 7						& 6.31 s									& 0.06 s 										\\ \hline
+		33							& 31					& 2.22 s									& 0.19 s 										\\ \hline
+		65							& 63	 				& 8.91 s									& 0.77 s 										\\ \hline
+		129							& 127					& 3.79 s									& 0.93 s  										\\ \hline
+		513							& 511					& 13.24 s									& 5.62 s 										\\ \hline
+		1025						& 1023					& 53.10 s									& 22.50 s 										\\ \hline
+		2049						& 2047					& 65.36 s (1.09 min)						& 37.64 s										\\ \hline
+		8193						& 8191					& 387.28 s (6.45 min)						& 268.38 s (4.47 min)							\\ \hline
+		16385						& 16383					& 1549.95 s	(25.83 min)						& 1074.30 s	(17.90 min)							\\ \hline
+		32769						& 32767					& 2551.95 s (42.53 min)						& 1989.50 s	(33.16 min)							\\ \hline
 
 
 	\end{tabular}
