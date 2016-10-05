@@ -24,8 +24,7 @@ The correlation results from the extra code all stay below the threshold, meanin
 
 Since all the correlation levels are below the threshold, and the peaks are above the threshold, every result is correct.
 There are only true positives and true negatives.
-So the F-measure is equal to $1$ according \autoref{eq:F-measure}.
-This can also be seen in \autoref{fig:f-measure-dc-testbed-n=9}.
+So the precision, recall and the F-measure are all equal to $1$ according to \autoref{eq:precision}, \autoref{eq:recall} and \autoref{eq:F-measure}, respectively.
 
 \begin{figure}[!tbp]
   \centering
@@ -51,7 +50,8 @@ In the correlation figure, peaks can be seen that cross the threshold line, whic
 They are supposed to be there.
 But also other results can be seen to cross the threshold line.
 These are the false positives, they occur because this code length can not support this much simultaneous transmitters.
-The F-measure for these correlation results can be found in \autoref{fig:f-measure-dc-testbed-n=7}.
+The F-measure in time for these correlation results can be found in \autoref{fig:f-measure-dc-testbed-n=7}.
+And the precision, recall and F-measure can be found in \autoref{fig:eval-metrics-dc-testbed-n=7}.
 
 
 \begin{figure}[!tbp]
@@ -73,14 +73,14 @@ The F-measure for these correlation results can be found in \autoref{fig:f-measu
 \begin{figure}[!tbp]
   \centering
   \begin{minipage}[b]{0.49\textwidth}
-    \includegraphics[width=\textwidth]{chapters/evaluation-chapters/hardware/dc/f-measure-dc-testbed-n=9.eps}
-	\caption{F-Measure of DC testbed correlation (\autoref{fig:correlation-dc-testbed-n=9}), with sequence length of 511.}
-	\label{fig:f-measure-dc-testbed-n=9}
+  	\includegraphics[width=\textwidth]{chapters/evaluation-chapters/hardware/dc/f-measure-dc-testbed-n=7.eps}
+  	\caption{F-Measure of DC testbed correlation (\autoref{fig:correlation-dc-testbed-n=7}), with sequence length of 127.}
+  	\label{fig:f-measure-dc-testbed-n=7}
   \end{minipage}
   \hfill
   \begin{minipage}[b]{0.49\textwidth}
-	\includegraphics[width=\textwidth]{chapters/evaluation-chapters/hardware/dc/f-measure-dc-testbed-n=7.eps}
-	\caption{F-Measure of DC testbed correlation (\autoref{fig:correlation-dc-testbed-n=7}), with sequence length of 127.}
-	\label{fig:f-measure-dc-testbed-n=7}
+    \includegraphics[width=\textwidth]{chapters/evaluation-chapters/hardware/dc/eval-metrics-dc-testbed-n=7.eps}
+    \caption{Evaluation metrics of DC testbed correlation (\autoref{fig:correlation-dc-testbed-n=7}), with sequence length of 127.}
+    \label{fig:eval-metrics-dc-testbed-n=7}
   \end{minipage}
 \end{figure}

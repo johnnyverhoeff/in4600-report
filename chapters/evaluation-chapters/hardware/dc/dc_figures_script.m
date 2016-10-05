@@ -1,8 +1,8 @@
-load dc-testbed-raw-and-corr-n=9-N=6;
-%load dc-testbed-raw-and-corr-n=7-N=6;
+%load dc-testbed-raw-and-corr-n=9-N=6;
+load dc-testbed-raw-and-corr-n=7-N=6;
 
-%L = 127;
-L = 511;
+L = 127;
+%L = 511;
 
 close all;
 
@@ -54,15 +54,16 @@ legend('Corr. w/ present code', 'Corr w/ not present code', 'Threshold');
 hold off;
 
 
-idx_first_tp = 511;%95;
-%idx_first_tp = 95;
+%idx_first_tp = 511;%95;
+idx_first_tp = 95;
 tp = 0;
 fp = 0;
 tn = 0;
 fn = 0;
 
 f = zeros(1, end_idx);
-
+precision  = zeros(1, end_idx);
+recall  = zeros(1, end_idx);
 
 
 for idx=1:end_idx
@@ -85,26 +86,32 @@ for idx=1:end_idx
        end;
    end;
    
-   precision = tp / (tp + fp);
-   recall = tp / (tp + fn);
+   precision(idx) = tp / (tp + fp);
+   recall(idx) = tp / (tp + fn);
    
-   if (precision == 0 && recall == 0)
+   if (precision(idx) == 0 && recall(idx) == 0)
        f(idx) = 1;
    else
-       f(idx) =  2 * precision * recall / (precision + recall);
+       f(idx) =  2 * precision(idx) * recall(idx) / (precision(idx) + recall(idx));
    end;
        
     
 end;
 
-precision = tp / (tp + fp);
-recall = tp / (tp + fn);
 
 figure;
 plot(time_vector, f);
 title(['F-Measure, L = ' num2str(L)])
 xlabel('Time (s)');
 ylabel('F-Measure');
+
+figure;
+data = [precision(end) recall(end) f(end)];
+bar(data);
+set(gca, 'XTickLabel', {'Precision', 'Recall', 'F-measure'});
+title('Evaluation Metrics, L = 127'); 
+
+
 
 
 
