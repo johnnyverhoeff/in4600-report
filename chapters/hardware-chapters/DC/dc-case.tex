@@ -1,0 +1,38 @@
+% !TeX root = ../../../thesis.tex
+
+\section{DC Environment}
+\label{sec:dc-environment}
+
+
+
+
+
+In a DC environment, the code framework works well because the DC power signal is an easy signal to understand and work with.
+For example, in \autoref{fig:dc-voltage-and-current-example} the voltage output of a DC power supply can be seen.
+A load is switched on and off, and the current that flows over time can also be seen in the figure.
+This switching causes the current to be a square wave with sharp edges.
+The current is zero when the load is off and the current is a constant value for when the load is on.
+This is the signal for one load.
+If multiple of these current signatures will be aggregated, it will still be a square wave without distortions.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[angle=0,width=0.5\textwidth]{chapters/hardware-chapters/DC/dc-voltage-and-current-example.eps}
+  \caption{Voltage of a DC power supply, along with the current of a switching load.}
+  \label{fig:dc-voltage-and-current-example}
+\end{figure}
+
+
+
+This is the ideal way the modulator for an LED must work.
+In the next sections, the hardware for the modulator will be explained as well as how the current will be measured to extract the encoded information and finally a testbed will be presented. 
+
+
+
+
+
+\input{chapters/hardware-chapters/DC/dc-modulator/dc-modulator}
+
+\input{chapters/hardware-chapters/DC/dc-current-sampler/dc-current-sampler}
+
+\input{chapters/hardware-chapters/DC/dc-test-bed/dc-test-bed}

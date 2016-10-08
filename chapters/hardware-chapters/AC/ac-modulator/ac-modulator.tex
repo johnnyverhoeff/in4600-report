@@ -1,0 +1,55 @@
+% !TeX root = ../../../../thesis.tex
+
+
+\subsection{Modulator}	
+
+The job of the modulator in an AC environment, is the same as in a DC environment.
+Just like in the DC environment, when a `0' has to be encoded the current should be zero and when a `1' has to be encoded the current should be some constant value.
+The transition between a `0' and `1' should be fast, so that a square wave is created, just like in the DC case.
+
+If the translation is done in this manner, the mapping between the code sequence symbols and the current is clear and the aggregated current drawn by multiple lights will also be a square wave, which will allow for decoding the information.
+Next, existing hardware is investigated if these solutions will translate the IDs into a current draw which is similar to what has just been discussed above. 
+
+
+
+\input{chapters/hardware-chapters/AC/ac-modulator/smps-led/smps-led}
+
+
+
+
+	\begin{figure}
+		\centering
+		\begin{minipage}[b]{0.45\textwidth}
+			\includegraphics[width=\textwidth]{chapters/hardware-chapters/AC/ac-modulator/smps-led/smps-led-and-smps-picture.jpg}
+			\caption{Picture of a commercial LED light fixture with a DC SMPS.}
+			\label{fig:ac-smps-led-and-smps-picture}
+		\end{minipage}
+		\hfill
+		\begin{minipage}[b]{0.45\textwidth}
+			\centering
+			\includegraphics[angle=0,width=0.5\textwidth]{chapters/hardware-chapters/AC/ac-modulator/commercial-230v-ac-led/commercial-ac-led-picture.jpg}
+			\caption{Picture of a commercial 230 V AC LED light fixture.}
+			\label{fig:ac-commercial-230v-ac-led}
+		\end{minipage}
+	\end{figure}
+
+
+
+
+\input{chapters/hardware-chapters/AC/ac-modulator/commercial-230v-ac-led/commercial-230v-ac-led}
+
+
+\input{chapters/hardware-chapters/AC/ac-modulator/custom-hardware/ac-custom-hardware}
+
+
+
+
+
+
+
+
+
+
+
+
+
