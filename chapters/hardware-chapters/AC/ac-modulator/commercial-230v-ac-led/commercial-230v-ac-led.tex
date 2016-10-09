@@ -1,8 +1,6 @@
 % !TeX root = ../../../../../thesis.tex
 
 \subsubsection{230 V AC LED}
-\label{subsubsec:ac-230v-led}
-
 
 
 There also exists LED lighting fixture which work directly with AC, without having an external SMPS.
@@ -16,9 +14,9 @@ Again, we are only looking at how the current signature behaves, at this point w
 In order to modulate the LED so that information is encoded in the current, changes had to be made to the internal hardware of the light fixture.
 In \autoref{app:commercial-230v-ac-modified-schematic} a schematic can be found, which shows the original circuit and what was modified in order to modulate the LED.
 The modifications made, include two transistors to switch the LEDs off and stop the capacitor from charging. 
-With these transistors the entire current flow can be stopped and thereby drawing zero current when we want to modulate a zero symbol.
-When a `1' symbols needs to be modulated, the transistors are turned on, and the LED behaves in a normal manner.
-The transistors are controlled via a micro-controller through an opto-coupler to protect the micro-controller in the development stages.
+With these transistors the entire current flow can be stopped and thereby drawing zero current when we want to modulate a `0' symbol.
+When a `1' symbol needs to be modulated, the transistors are turned on, and the LED behaves in a normal manner.
+The transistors are controlled via a micro-controller through an optocoupler to protect the micro-controller in the development stages.
 
 
 
@@ -53,6 +51,7 @@ Each region will now be explained:
 	This means that a certain voltage is required in order for the LEDs to draw current.
 	The required voltage is available at the start of region A and is no longer available at the end of region A and the current flow stops.
 	The width of the peak is 4 ms.
+	This is because in those 4 ms, there is enough voltage available to power all the LEDs in series. 
 	The height of the peak indicates how much current is drawn.
 
 	\item The start of region B starts when region A stops.
@@ -61,7 +60,7 @@ Each region will now be explained:
 	This is a good property: If the LED is off there is no current flow, exactly what we require.
 
 	\item Region C starts when region B stops.
-	At this point in time, there is enough voltage available for the LEDs to start drawing current.
+	At this point in time, there is enough voltage available for the LEDs to start drawing current again.
 	But the voltage that is now available, is not positive as it was in region A, but is negative.
 	That is why this peak goes the opposite direction of the peak seen in region A.
 	The current that flows is in that case negative, because the voltage is also negative.
@@ -70,18 +69,18 @@ Each region will now be explained:
 \end{itemize}
 
 
-Only in region A and B, the LED can be used to encode information.
+Only in region A and C, the LED can be used to encode information.
 Because in region B, the is no current draw and therefor we cannot modulate information.
-The peaks in region A and B are both 4 ms wide.
+The peaks in region A and C are both 4 ms wide.
 This means that there is 8 ms of time available for modulation in the 20 ms period, so $\frac{8}{20} = 40$ \% of the time is available for encoding the ID with this LED.
-To compare with a DC environment: A DC power supply always supplies a constant voltage, so the LED can always emit light and therefor can always draw current, so 100 \% of the time is available for modulation.
+To compare with a DC environment: In a DC scenario, the power supply always supplies a constant voltage, so the LED can always emit light and therefor can always draw current, so 100 \% of the time is available for modulation.
 If the ID would have a certain length, it would take time $t$ to modulate this ID in a DC environment and time $2.5 \times t$ with this AC LED. 
 
 
 Now that the current signature has been investigated when the LED is on, the LED will be now be turned on and off with a frequency of 4 kHz to investigate how the current signature behaves.
 In Figure \ref{fig:commercial-230v-ac-led-modulating} the current signature can be seen when the LED is being modulated with a frequency of 4 kHz.
 The entire figure takes place inside region A of Figure \ref{fig:commercial-230v-ac-led-on-annotated}.
-If this figure would have been showed for region B of Figure \ref{fig:commercial-230v-ac-led-on-annotated}, the amplitudes would have been negative.
+If this figure would have been showed for region C of Figure \ref{fig:commercial-230v-ac-led-on-annotated}, the amplitudes would have been negative.
 Again, there are three regions highlighted:
 
 \begin{itemize}
@@ -104,7 +103,8 @@ Again, there are three regions highlighted:
 
 
 
-
+From this investigation it can be concluded that this 230 V AC LED is not suitable to map the ID into the current signature which is desired.
+And also the time that would be available for modulation is limited, because there are many LEDs in series which require a high voltage which is only available for a short amount of time.
 
 
 
