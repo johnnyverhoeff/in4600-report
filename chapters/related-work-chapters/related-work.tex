@@ -26,20 +26,21 @@
 
 
 
-This chapter first describes state-of-the-art in energy disaggregation research and their results with the disaggregation of individual lights.
-Next, other methods are discussed, which could hypothetically identify for each light in the system, if it is on or off.
+This chapter first describes the state-of-the-art in energy disaggregation research and their results with the disaggregation of individual lights.
+Next, other methods are discussed, which could hypothetically identify if a light is on or off.
 And finally the proposed method is introduced.
 
 
 	\section{Related Work}
 
-		Energy disaggregation can categorize devices such as a refrigerator or washer dryer, but it cannot disaggregate two devices which have the same signature, for example the same lights in different rooms in the work performed by the authors of \cite{froehlich2011disaggregated}.
-		In other words, if there is more than one light in a house, and a subset of those lights are one, it cannot be identified which subset of lights are actually on, only that there are some lights on.
+		Energy disaggregation can categorize devices such as a refrigerator or washer dryer, but it cannot disaggregate two devices which have the same signature.
+		For example: The same lights in different rooms could not be disaggregated in the work performed by the authors of \cite{froehlich2011disaggregated}.
+		In other words, if there is more than one light in a house, and a subset of those lights are on, it cannot be identified which subset of lights are actually on, only that there are some lights on.
 
 
 		The authors of \cite{shao2013temporal} have shown that their method is able to disaggregate up to three separate lights.
 		The key difference here is that the lights have different power ratings.
-		Because the lights were different and had different power ratings, these light could be disaggregated from each other.
+		Because the lights were different and had different power ratings, these lights could be disaggregated from each other.
 		Nothing is mentioned about how the disaggregation results would alter, if there were multiple devices used with the same power ratings, for example three identical lights.
 
 
@@ -148,21 +149,22 @@ And finally the proposed method is introduced.
 	VLC is made possible by the advances in LED technology.
 	The interest in VLC has grown since the widespread deployment of LED lighting fixtures for energy efficiency over the normal incandescent light bulb \cite{rajagopal2012ieee}.
 
-	Now that VLC allows lighting fixtures to transmit data, research is being done to make indoor localization more precise than with traditional RF-based approaches \cite{Kuo:2014:LIP:2639108.2639109}.
-	Since the light does not pass through walls and it has less reflection compared to RF, an indoor localization system can be more precise.
-	Each VLC lighting fixture can act like a beacon which transmits an ID of some sort, thereby describing its location inside the building.
+	%Now that VLC allows lighting fixtures to transmit data, research is being done to make indoor localization more precise than with traditional RF-based approaches \cite{Kuo:2014:LIP:2639108.2639109}.
+	%Since the light does not pass through walls and it has less reflection compared to RF, an indoor localization system can be more precise.
+	%Each VLC lighting fixture can act like a beacon which transmits an ID of some sort, thereby describing its location inside the building.
 
-	So the lights are already transmitting IDs to describe their location inside a building with the help of VLC.
-	The ID that a light is transmitting, will also propagate to the current draw.
-	And with the smart-meter, we are looking at the current draw of all attached devices, including these lights.
-	The IDs need to be constructed in such a way that the sum of all these currents, which flows through the smart-meter, can still tell us which of the lights are actually on or off.
-	How these new IDs can be constructed needs be to be investigated.
-	With this proposed method the lights can still act as beacons for indoor localization because the IDs will still be unique.
-	And the current signature of each light will tell us which lights are on and it can be done over the existing wiring infrastructure.
+	%So the lights are already transmitting IDs to describe their location inside a building with the help of VLC.
+	The information that a light is transmitting via VLC, will also propagate to the current that the light draws.
+	And with the smart-meter, we are looking at the aggregated current draw of all attached devices, including these lights.
+	The information or ID that the light will be transmitting, needs to be constructed in such a way that the sum of all these currents, which flows through the smart-meter, can still tell us which of the lights are actually on or off.
+	How these IDs can be constructed needs be to be investigated.
+	%With this proposed method the lights can still act as beacons for indoor localization because the IDs will still be unique.
+	The current signature of each light will tell us which lights are on and it can be done over the existing wiring infrastructure.
 
 	In \autoref{fig:overview-diagram} an overview of the method can be seen.
-	The smart-meter is shown along with multiple LEDs which will be controlled by a piece of hardware called the modulator.
-	The codes or the IDs that will be used can also be seen next to the modulator.
+	The smart-meter is shown along with multiple LEDs. %which will be controlled by a piece of hardware called the modulator.
+	The IDs that will be used can also be seen next to the modulator.
+	The modulator will turn the modulate the LED according to the ID
 	The sum of these IDs will then flow as current through the smart-meter, which will sample this aggregated current and in turn be able to identify which of the LEDs is on and which is off.
 
 
