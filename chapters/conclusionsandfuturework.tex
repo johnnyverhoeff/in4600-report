@@ -6,7 +6,7 @@
 	\section{Conclusions}
 
 
-	The aim of this thesis is to find out if lights could be identified as being on or off, through the current signature, with the help of VLC and a single smart-meter.
+	The aim of this thesis is to find out if lights could be identified as being on or off, by measuring the aggregated energy draw of those lights, with the help of VLC and a single smart-meter.
 	CDMA codes have been investigated and compared to see which is the best suited for this scenario.
 	Two solutions have been discussed to overcome the interference problem that comes with these types of codes.
 	When these codes were understood and made usable in software simulations, two practical testbed were developed, for DC and AC, in order to experiment with.
@@ -28,14 +28,14 @@ There remains more work to be done, below there are ideas for future work.
 
 	\subsection{Power Limiting Capacitor}
 
-	The solution of using a capacitor in order to limit the power dissipated in the current source, introduced in \autoref{subsubsec:current-source} can be further investigated.
+	The solution of using a capacitor in order to limit the power dissipated in the current source, introduced in \autoref{subsec:ac-modulator} can be further investigated.
 	In particular what the drawbacks or benefits the phase-shifting of current has.
 	And if the triggering circuit will still function properly or what the modifications are that need to be made in order for this scheme to work properly.
 
 
 	\subsection{Other Appliances}
 
-	As the testbeds represents a case where only these lights were connected, the question rises: What will happen when other appliances are connected ?
+	As the testbeds represent cases where only these lights were connected, the question rises: What will happen when other appliances are connected ?
 	These could for example be an incandescent light bulb or a refrigerator.
 	To answer that question sample data from \cite{kolter2011redd} could be taken to represent some household appliances and added with the data of the modulation shown from the testbeds.
 	Then signal filtering techniques could be performed to try and filter the signal from the modulating lights, given the fact that we know that these lights operate at a certain constant frequency.
