@@ -3,20 +3,25 @@
 \section{Hardware}
 \label{sec:hardware-evaluation}
 
-The following two section will describe the evaluation of the designed hardware and software.
-The LEDs must use a code from the same set.
-This code is programmed in the micro-controller, before they are installed in their position in a room for example.
-The code that is used for the LED can support a certain amount of LEDs.
-When the number of LEDs in the building will increase, for example a new department is built, the total number of LEDs may exceed the number that the code can support.
-In this case the code in all the LEDs can be set to a different code length.
-This may be done via a photo-diode as a receiver for each light, to receive the new code length.
+The following two sections will describe the evaluation of the designed hardware and software, first for the DC testbed and then the AC testbed.
+All LEDs will be assigned an ID that has the same length.
+As discussed in \autoref{chp:cdma}, the correlation calculations only hold when CDMA codes are used from the same set.
+The ID is programmed in the micro-controller before they are installed in their position in a room.
+Based on the length of this ID, a certain amount of LEDs are supported, which is explained in \autoref{sec:interference-solution}.
+But when the number of lights in the building increases, the new total number of lights may exceed the supported number of lights by the length of the IDs that were already assigned to each light.
+When this happens all the IDs must be changed to another ID of a different length that does support the new amount of lights.
+This may be done via a photo-diode as a receiver for each light, to receive the new ID.
 In this way each light can be used again, even when the total number of lights increases.
 
 
-In the following evaluation sections, all attached LEDs will be modulating with a different Gold code per LED, from the same set.
-An extra code will be used to represent an LED in an off state.
-The raw ADC signal will be showed as well as the steps to process that signal to be able to do correlation calculations with, if necessary.
-Next, the correlation graph will be showed for a Gold code that is being used to modulate one of the LEDs, with the sampled current signal as well as the correlation graph for the extra Gold code from the same set which is not being used for any LED. So this code should stay below the threshold at all times indicating that this LED is off.
+In the following evaluation sections, all attached LEDs will be modulating with a different ID per LED.
+This represents the worst case: Every LED is modulating and thereby causing interference.
+Since every LED will be modulating we can evaluate if the state of the LEDs can indeed be identified as being on.
+If this is not the case, this will be classified as a false-negative.
+But for completeness we must also evaluate what happens when the system tries to identify an ID which corresponds to an LED that is off.
+For this reason, an extra ID will be used to represent an LED in an off state.
+The raw ADC signal will be showed as well as the steps that are required in order to process the raw data such that the correlation calculations can be performed.
+Next, the correlation graph will be showed for an ID that is being used to modulate one of the LEDs as well as the correlation graph for the extra ID which represents an LED in an off state. 
 Finally the F-measure will be showed for these correlation graphs.
 
 

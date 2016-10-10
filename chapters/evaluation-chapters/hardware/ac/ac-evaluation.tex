@@ -4,8 +4,8 @@
 \label{subsec:ac-evaluation}
 
 
-The AC testbed has three LEDs, as explained in \autoref{subsec:ac-testbed}.
-Therefor three Gold codes will be used, plus on extra code to represent an LED in an off state.
+The AC testbed has three commercial LEDs, as explained in \autoref{subsec:ac-testbed}.
+Therefor three IDs will be used to be assigned to the LEDs with a fourth ID being used to represent an LED in an off state.
 From \autoref{tbl:correlation-gold-families}, we can see that for $m = 3$, the number of simultaneous transmitters such that no destructive interference takes place, requires a code length of 127 or higher.
 With the AC testbed the experiments have been performed with a constant modulation frequency of 10 kHz.
 Two successive samples are $\frac{1}{10000} = 0.1$ ms apart, except for when the triggering circuit detects that no modulation or sampling can take place anymore.
@@ -14,71 +14,74 @@ In that case the sampling and modulation is paused until the triggering circuit 
 
 In \autoref{fig:raw-ac-testbed-adc-data} the incoming signals to the current sampler can be seen.
 The raw data from the ADC can be seen as well as the output of the triggering circuit.
-The large peaks that can be seen are the charging currents of the capacitor for the voltage sources as discussed in \autoref{subsubsec:non-disturbing-voltage-source}.
+From 2.5 ms until 6 ms in the figure, the charging peaks of the capacitor can be seen as explained in \autoref{subsec:ac-modulator}.
+In the same time window, the output of the triggering circuit can also be seen.
+The triggering output is used to filter out the charging peaks and only the aggregated IDs are left.
+The aggregated IDs can be seen from the window 6 ms until 14 ms.
+This is the window which holds the encoded data and that data is retrieved by using the triggering circuits output to detect when to start and stop looking for the encoded data.
 
-When only the signal is considered when the output from the triggering circuit is low, the charging peaks are all filtered out.
-Next each sample is subtracted with the mean of all the samples and then the absolute value is taken.
-Now we have the fully processed signal, ready to do correlation calculations with.
-The processed signal can be seen in \autoref{fig:processed-ac-testbed-adc-data} with the ADC values on the left y-axis and the current on the right y-axis.
-In both the figures for the raw data and the processed data, the x-axis, which is the time axis, has the same values for the beginning and ending.
-But parts of the raw data is filtered out, based on the trigger signal.
-So the extra data-points that can be seen on the processed data figure come from the original raw data signal which is longer than any of the figures shown here.
-
-
-
-\begin{figure}
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.8\textwidth]{chapters/evaluation-chapters/hardware/ac/raw-ac-testbed-adc-data.eps}
-    \caption{Incoming data to the AC current sampler. The raw ADC values are plotted as well as the triggering circuit output. Gold sequence of length 127.}
+  \caption{Incoming data to the AC current sampler. The raw ADC values are plotted as well as the triggering circuit output. Gold sequence of length 127.}
   \label{fig:raw-ac-testbed-adc-data}
 \end{figure}
 
+As is the case in an AC environment, the current that will flow is both positive and negative.
+In \autoref{subsec:ac-current-sampler} this is explained.
+There it was also explained that the voltage measured over the series resistor is added with a constant reference voltage in order for the ADC to only measure positive voltages.
+The encoded data that is shown in \autoref{fig:raw-ac-testbed-adc-data} is now filtered out with help of the triggering circuit.
+The next step is to subtract the reference voltage from each sample of the encoded data.
+And then the absolute value of the result is considered.
+The result of the processing of the raw ADC data can be seen in \autoref{fig:processed-ac-testbed-adc-data}.
+In this figure the ADC values are on the left y-axis and the current on the right y-axis.
 
-\begin{figure}
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.8\textwidth]{chapters/evaluation-chapters/hardware/ac/processed-ac-testbed-adc-data.eps}
     \caption{Fully processed ADC values, where four distinguishable levels can be seen. With the on-state from zero to all three LEDs, on the AC testbed.}
   \label{fig:processed-ac-testbed-adc-data}
 \end{figure}
 
+In \autoref{fig:processed-ac-testbed-adc-data}, four distinguishable current levels can be seen.
+Just like in the DC evaluation, these distinct current levels come from the IDs that the LEDs are encoding.
+When all the LEDs are encoding a `0', the current is (almost) zero, when one LED is encoding a `1' the current is approximately 100 mA and so on.
+With this processed signal the correlation calculations can be done to identify which LEDs are on and which are off.
 
 
-%\begin{figure}[!tbp]
-%  \centering
-%  \begin{minipage}[b]{0.49\textwidth}
-%    \includegraphics[width=\textwidth]{chapters/evaluation-chapters/hardware/ac/raw-ac-testbed-adc-data.eps}
-%    \caption{Incoming data to the AC current sampler. The raw ADC values are plotted as well as the triggering circuit output. Also the mean of the raw ADC values is plotted. Gold sequence of length 127.}
-%	\label{fig:raw-ac-testbed-adc-data}
-%  \end{minipage}
-%  \hfill
-%  \begin{minipage}[b]{0.49\textwidth}
-%    \includegraphics[width=\textwidth]{chapters/evaluation-chapters/hardware/ac/processed-ac-testbed-adc-data.eps}
-%    \caption{Fully processed ADC values, where four distinguishable levels can be seen. With the on-state from zero to all three LEDs, on the AC testbed.}
-%	\label{fig:processed-ac-testbed-adc-data}
-%  \end{minipage}
-%\end{figure}
+To avoid confusion about the x-axis of \autoref{fig:raw-ac-testbed-adc-data} and \autoref{fig:processed-ac-testbed-adc-data}: The amount of time in both figures is the same, however parts of the raw data of \autoref{fig:raw-ac-testbed-adc-data} are filtered out so why would the time still be the same.
+The time is the same for both figures, because in the processed data which is shown \autoref{fig:processed-ac-testbed-adc-data} was created with the original raw ADC signal.
+And the original raw signal was much longer than the 30 ms shown in this report.
+This means that the amount of encoded data in \autoref{fig:processed-ac-testbed-adc-data} is more than what is shown in \autoref{fig:raw-ac-testbed-adc-data}.
 
 
-In \autoref{fig:correlation-ac-testbed}, the correlation for one Gold sequence can be seen, which is also one of the sequences used to modulate an LED and the correlation for the extra Gold sequence can be seen, which is not part of the sequences used to modulate any LED and represent an extra LED in an off state.
-All the correlation results stay below the threshold (See \autoref{eq:T}) except for the noticeable peaks.
-These peaks occur when the correlation is calculated when there is no time shift as already shown in \autoref{fig:autocorr-gold}.
-The peaks indicate that for this particular code and LED is turned on, and this LED is actually on.
-The other correlation results show that every result is below the threshold, meaning that the LED which this code represent is in an off state, which is also the case.
 
-Since all the correlation levels are below the threshold, and the peaks are above the threshold, every result is correct.
-There are only true positives and true negatives.
-So the F-measure is equal to $1$ according \autoref{eq:F-measure}.
+In \autoref{fig:correlation-ac-testbed}, three graphs are drawn.
+The straight line represents the threshold, which is based on the length of the codes used, see \autoref{sec:interference-solution}.
+The other two graphs represent the outcome of the correlation with the ID of two LEDs.
+One of those IDs is from an LED which is on and the other ID is from the LED which represents an LED in an off state.
+The correlation results from the LED which is in an off state, stay below the threshold for all points in time.
+This is a good result, since being below the threshold line means that the corresponding LED is off, which in this case is actually true.
 
-\begin{figure}[htb]
+The other correlation result shown in \autoref{fig:correlation-ac-testbed} comes from the ID which corresponds to an LED which is on and modulating.
+The results of this correlation show two noticeable peaks which are above the threshold.
+These peaks indicate that the ID is present in the sampled current signal by the smart-meter.
+There are two peaks, because the LED is continuously transmitting its ID and the length of the ID in combination with the modulation frequency can be transmitted two times in the 30 ms window.
+All the peaks mean the same thing: The ID is present in the sampled current signal.
+Since this ID represents an LED which is on, these peaks are correct results as they indicate that the LED is indeed on.
+
+The evaluation as discussed above for the AC testbed has been run in a similar fashion compared to the DC testbed evaluation.
+This evaluation  has been run for more than ten times.
+And for each time the duration of the run was approximately five minutes.
+Each run showed the same results as were shown in \autoref{fig:correlation-ac-testbed}.
+As discussed, all correlation results shown in \autoref{fig:correlation-ac-testbed} are correct.
+This means that there are only true-positives and true-negatives.
+So the precision, recall and the F-measure are all equal to $1$ according to \autoref{eq:precision}, \autoref{eq:recall} and \autoref{eq:F-measure}, respectively.
+
+\begin{figure}[ht]
 	\centering
 	\includegraphics[angle=0,width=\textwidth,keepaspectratio]{chapters/evaluation-chapters/hardware/ac/correlation-ac-testbed.eps}
-	\caption{Correlations results from Gold sequences which are and which are not present, with the decision threshold. With a sequence length of 127 on the AC testbed.}
+	\caption{Correlations results from the IDs to identify which LEDs are on and off, with the decision threshold. With a sequence length of 127 on the AC testbed.}
 	\label{fig:correlation-ac-testbed}
 \end{figure}
-
-
-
-
-
-
 
