@@ -4,15 +4,16 @@
 \label{chp:design-requirements}
 
 
-
-In \autoref{fig:overview-diagram} a block diagram has already been showed with the components that are needed for the proposed method.
-In this picture multiple lights can be seen.
+In this section we introduce the main requirements for our system. The overall architecture has three main components: the codes, the modulator and the meter. 
+These components were shown in \autoref{fig:overview-diagram} 
+In this figure multiple lights can be seen.
 We want to monitor which lights are on and off in a timely manner, by only looking at the energy signature of each LED.
 To do this, three things must be investigated: How to construct the IDs, what hardware to use for the modulators and how to sample and process the current.
 First, the requirements for the IDs will be discussed.
-These IDs will be assigned to each LED and these IDs will be transmitted by the LEDs at the same time on the same wire.
 Next, the modulator is discussed. 
-This piece of hardware will be responsible for the translation of the ID into the current that the LED will draw.
+This piece of hardware will be responsible for the transmission of the ID via VLC.
+This data can be used for applications such as indoor localization.
+This hardware is also responsible for translating the ID into a current signature.
 Finally, the smart-meter will be discussed.
 The meter must sample the current that is drawn by all the LEDs.
 And process that data into status indicators for each LED.
@@ -34,8 +35,7 @@ And process that data into status indicators for each LED.
 	OOK works by turning the LED on or off.
 	If a data bit `1' needs to be transmitted, the LED is turned on.
 	If a data bit `0' needs to be transmitted, the LED is turned off.
-	This is how the light that is emitted from the LED, is transmitted to for example a smart-phone.
-	The phone can use the information to localize itself inside a building.
+	This is how the information is transmitted.
 	Since the LED is turning on and off according to the ID in an OOK fashion, this ID will also propagate in the current that this LED draws.
 	This unique current signature flows through the smart meter.
 	If only a single light is used with an ID, the meter can search for only that ID.
@@ -52,19 +52,19 @@ And process that data into status indicators for each LED.
 	In that field, similar issues occurred: For example multiple cellphones transmitting to the same base station, at the same time, at the same frequency. 
 	The solution was to use code sequences that do not interfere with each other.
 	The specific codes are called Orthogonal codes and Pseudo random noise codes.
-	The following requirements for the codes that will be used must be met:
+	For our scenario, the codes need to satisfy the following requirements:
 	\begin{itemize}
 
 		\item The codes should be detectable with good accuracy:
 		\begin{itemize}
-			\item A code sequence must be able to be detected, even when multiple of these similar yet unique codes are aggregated.
+			\item A code sequence must be able to be detected, even when multiple codes are aggregated.
 
-			\item The codes must have as little interference as possible with each other, so that a great amount of the LEDs can transmit at the same time and still achieve accurate results when the smart-meter tries to detect which LEDs are transmitting.
+			\item The codes must have as little interference as possible with each other, so that a large number of LEDs can transmit at the same time and still achieve accurate results when the smart-meter tries to detect which LEDs are transmitting.
 		\end{itemize}
 
 
 		\item The codes need to work in a synchronous and asynchronous manner. 
-		Because multiple lights in a single room can be all switched on together, this is a synchronous case.	
+		The synchronous case is represented by scenarios where multiple in a single room can be all switched on together.
 		But when there are multiple lights in multiple rooms they need not be turned on or off at the same time, this is the asynchronous case.
 
 		\item The system must be scalable:
@@ -72,23 +72,25 @@ And process that data into status indicators for each LED.
 			\item The codes should not be too long, because the system must identify each LED as being on or off in a timely manner.
 			The longer the code, the longer it takes to transmit this code.
 
-			\item The number of codes that can be used in the same system must scale well.
-			In other words: The method used to construct the codes, should yield a large amount of codes that can be used in the same system.
+			\item The number of codes that can be used must scale well.
+			In other words: The number of codes that can be constructed, should be proportional to the length of the codes.  
+
 		\end{itemize}
 
 	\end{itemize}
 	
 
-	The exact properties, benefits and drawbacks and how they can be used in both DC and AC environments will be discussed in \autoref{chp:cdma}.
+	The exact properties, benefits and drawbacks of the codes and how they can be used in both DC and AC environments will be discussed in \autoref{chp:cdma}.
 
 
 
 
 	\section{LED Modulator}
 
-	A piece of hardware is needed to modulate a commercial LED.
+	A piece of hardware is needed to modulate the commercial LED.
 	This hardware needs to translate the unique identification sequence that is assigned to each light source and modulate the LED.
-	The modulation needs to be done in such a way that the aggregated current of all lights can be measured at the smart-meter.  
+	Contrary to standard VLC, which is only concerned with modulating the light intensity to transmit data, the same data must also be transmitted via the current draw.
+	The modulator must not only turn the light on or off, but it must also make sure that the current that is drawn can be decoded later on by the smart-meter.
 	The hardware should also allow for fast modulation to avoid seeing flickering effects.
 
 
@@ -111,14 +113,16 @@ And process that data into status indicators for each LED.
 	\begin{itemize}
 		\item The speed at which the current can be sampled needs to be high enough to be able to correctly sample the current as the LEDs are modulating.
 
-		\item The accuracy of the samples being taken needs to be high enough, so that the modulation of one LED can be detected with consistency.
-		In other words, the noise of the samples must be low enough to detect the correct modulation of even one LED.
+		\item The noise introduced in the samples must be low enough to detect the correct modulation of even one LED with consistency.
+		%The accuracy of the samples being taken needs to be high enough, so that the modulation of one LED can be detected with consistency.
+		%In other words, the noise of the samples must be low enough to detect the correct modulation of even one LED.
 
-		\item The sensitivity of the measuring method needs to be chosen such that an ADC of a micro-controller can measure the current.
-		The sensitivity must not be too low. 
-		In combination with a too low resolution ADC this may cause the failure to detect the modulation of one LED.
-		But the sensitivity must also not be too high.
-		If it is too high, the ADC can be saturated, causing it to only be able to detect two LEDs modulating while the other LEDs are not detected.
+		\item The sensitivity of the meter must balance a tradeoff between the ability to detect an LED and the likelihood of getting saturated.
+		%The sensitivity of the measuring method needs to be chosen such that an ADC of a micro-controller can measure the current.
+		%The sensitivity must also not be too low. 
+		%In combination with a too low resolution ADC this may cause the failure to detect the modulation of one LED.
+		%But the sensitivity must also not be too high.
+		%If it is too high, the ADC can be saturated, causing it to only be able to detect two LEDs modulating while the other LEDs are not detected.
 
 	\end{itemize}
 
