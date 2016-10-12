@@ -11,15 +11,14 @@
 
 In a world where the vast majority of consumed energy, is provided by unsustainable fossil fuels~\cite{kolter2011redd}, the amount of energy we use must be reduced.
 Reducing energy consumption requires knowing which devices are actually consuming the energy.
-When consumers are given feedback about their energy consumption, energy savings can be made \cite{darby2006effectiveness}. %, up to 15 \% \cite{darby2006effectiveness}.
-%If a consumer knows which devices are actually using energy, it can be decided if that devices really has to be used at that particular time.
-%If that device is not needed at that time, the energy used to power it, is essentially being wasted.
+When consumers are given feedback about their energy consumption, energy savings can be made (up to 15 \% according to \cite{darby2006effectiveness}).
+If a consumer knows which devices are actually using energy, he or she can decide if those devices really need to be used at that particular time.
 If a device is on but it is not being used, the energy used to power it, is essentially wasted.
 For example, lights on in a room which is not occupied.
 
 
 
-Energy meters give an aggregate power consumption, which cannot tell a consumer which specific device consumes how much energy.
+Current energy meters give an aggregate power consumption, which cannot tell a consumer which specific device consumes is responsible for the observed energy consumption or waste thereof.
 This is where energy disaggregation comes in.
 Energy disaggregation aims to break down the aggregate power consumption of, for example a household, to tell the consumer which devices consumes power at which times.
 
@@ -30,7 +29,8 @@ Energy disaggregation has been applied successfully to identify the operation of
 Identifying the energy consumption of other devices such as lighting has not been so successful \cite{spiegel2014energy} \cite{batra2015neighbourhood}.
 Each appliance in a household draws power in a certain way, this can be thought of as a signature of that appliance.
 As can be seen from \autoref{fig:energy-consumption-house}, appliances such as the washer dryer and the dishwasher can be distinguished from the aggregated power draw.
-These appliances can be recognized by their signature: the amount of time they draw power, how large the power draw is and if it has a recurring pattern. %, for example in the case of the refrigerator in \autoref{fig:energy-consumption-house}.
+These appliances can be recognized by their signature: the amount of time they draw power, how large the power draw is and if it has a recurring pattern.
+For example, the refrigerator can be easily recognized due its periodic pattern, captured by the light blue peaks in \autoref{fig:energy-consumption-house}.
 But the lighting can not be disaggregated on a per lamp basis.
 The reason for this, is that most lighting fixtures do not have a unique signature, instead many lights have the same signature.
 Disaggregating the energy consumed by lighting is important, because it is the third largest energy consumer in the average home \cite{batra2015neighbourhood}.
@@ -47,22 +47,27 @@ In the EU as well as in the USA, approximately 11 \% of all the energy produced 
 
 
 
-If every light in a household would have a unique power draw, that is distinguishable from all other lights, the consumer can get better insight about how lighting is being used in his household. 
+If every light in a household would have a unique power draw that is a signature that is distinguishable from all other lights, the consumer can get better insight about how lighting is being used in his household. 
 With this feedback, a consumer can see which individual lights are being used in the middle of the day for example or in an unoccupied room.
 The consumer can then turn the lights off.
 Thereby saving energy and monetary costs.
 
 
 
-Giving each light a unique signature is an almost intractable problem.
+Without adding extra infrastructure, giving each light a unique signature is an almost intractable problem.
 But the advent of smart lights can help with this.
-The unique power draw of each light can be managed through VLC (Visible Light Communication).
+Smart lights can use VLC (Visible Light Communication).
+VLC is a short-range optical means of wireless communication using the visible light spectrum.
+It modulates data by turing the light on and off at high frequencies so that no flickering effects can be seen by the human eye.
+When a light is transmitting data via VLC, leads to changes in the current draw of that light.
+%The unique power draw of each light can be managed through VLC .
 %With this information that is being sent via VLC, the light can act as a beacon for indoor localization \cite{Kuo:2014:LIP:2639108.2639109}.
 %For example a smart-phone could then locate itself inside a building with good accuracy.
 %The ID of the LED beacon which is sent via VLC will also propagate via the current that the LED draws.
-The information that is transmitted using VLC, will also propagate via the current that the LED draws.
-The information that is transmitter must be chosen in such a way that a smart-meter is still able to identify them on a per lamp basis.
-And the current that is drawn must have a shape that can be added with similar patterns so that the smart-meter can make sense of this aggregated current and can start to identify if an LED is on or off.
+%The information that is transmitted using VLC, will also propagate via the current that the LED draws.
+The current signature of a light can then be decoded with a smart-meter.
+And in this way, real-time information of lights in the home building is acquired.
+
 
 
 
