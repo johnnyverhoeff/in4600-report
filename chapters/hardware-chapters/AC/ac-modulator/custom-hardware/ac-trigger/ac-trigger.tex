@@ -5,7 +5,7 @@
 	As discussed before, LEDs need a certain amount of voltage before they draw current.
 	That is why Figure \ref{fig:commercial-230v-ac-led-on-annotated} has two separate regions where it draws current, instead of drawing current continuously.
 	Given the fact that the ID of the LED cannot be transmitted the entire time, due to the voltage issue, we must somehow give the micro-controller a signal for when the modulation can start and stop.
-	If the micro-controller does not have this information, parts of the ID would be encoded when there is no current draw and thus information would be lost, since the encoding of the ID is deon with the current draw itself.
+	If the micro-controller does not have this information, parts of the ID would be encoded when there is no current draw and thus information would be lost, since the encoding of the ID is done with the current draw itself.
 
 	To let the micro-controller know when to start and stop modulating, a triggering circuit is designed.
 	This circuit tells the micro-controller when more than a preset voltage is made available by the AC power.
@@ -28,7 +28,7 @@
 	%\end{figure}
 
 
-	\begin{figure}[h]
+	\begin{figure}[t]
 		\centering
 		\begin{minipage}[b]{0.49\textwidth}
 			\includegraphics[width=\textwidth]{chapters/hardware-chapters/AC/ac-modulator/custom-hardware/ac-trigger/ac-wave-triggering.eps}
@@ -46,7 +46,7 @@
 	In \autoref{fig:triggering-circuit-output-2}, the preset voltage is set at 100 V.
 	When more than 100 V is available the LED will emit light and start drawing current.
 	At that point, around 1 ms in the figure, the triggering circuit will output a logical `1' to the micro-controller, meaning that the encoding of the ID may start.
-	When less than 100 V is available, around 9 ms in the figure, the logical output of the circuit becomes `0', indicating to the micro-controller that it is time to stop encoding the ID, because else information is lost since the LED is not turning on anymore and therefor no longer draws current.
+	When less than 100 V is available, around 9 ms in the figure, the logical output of the circuit becomes `0', indicating to the micro-controller that it is time to stop encoding the ID, else information is lost since the LED is not turning on anymore and therefor no longer draws current.
 	The same happens for the negative part of the sine wave, except the preset is now $-100$ V.
 
 

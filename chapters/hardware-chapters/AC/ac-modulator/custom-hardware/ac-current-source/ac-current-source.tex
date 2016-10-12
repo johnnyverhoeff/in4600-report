@@ -12,7 +12,7 @@
 	An optocoupler is used to electrically isolate and protect the micro-controller from the current source, during the development stages.
 
 
-	\begin{figure}[h]
+	\begin{figure}[ht]
 		\centering
 		\begin{minipage}[b]{0.49\textwidth}
 			\includegraphics[width=\textwidth]{chapters/hardware-chapters/AC/ac-modulator/custom-hardware/ac-current-source/custom-modulator-current-source.JPG}
@@ -53,11 +53,11 @@
 		In both regions the current draw remains constant over time, until the LED is turned off.
 		But in B1, the current is a positive constant and in B2 the current is a negative constant.
 		This is due to the applied AC voltage.
-		In B1 the voltage is positive, so a positive current will flow.
-		And in B2, the voltage is negative, so a negative current will flow.
+		%In B1 the voltage is positive, so a positive current will flow.
+		%And in B2, the voltage is negative, so a negative current will flow.
 
 		\item What happens in regions C1 and C2 is caused by a voltage source, which powers parts of the triggering circuit and the current source.
-		What exactly is happing will be explained in the next section, but for now we can assume that it will not affect the encoding of the ID.
+		What exactly is happening will be explained in the next section, but for now we can assume that it will not affect the encoding of the ID.
 
 	\end{itemize}
 
@@ -66,7 +66,7 @@
 
 	The combination of the trigger circuit and this implementation of a current source allows this solution to detect when to start and stop modulating the LED and it is able to define a specific current draw for the LED.
 	This makes mapping the bits `0' and `1' to current levels zero and some constant, easy.
-	Which in turn makes the detecting of the IDs of the LEDs in the smart-meter which receives an aggregated current, possible.
+	Which in turn makes detecting the IDs of the LEDs in the smart-meter easy. %which receives an aggregated current, possible.
 
 	
 
@@ -80,7 +80,9 @@
 	The current that flows through the LEDs will cause a voltage difference over the LEDs.
 	This is the voltage the LEDs need in order for current to flow, as discussed in the previous sections.
 	In the triggering circuit section, it was explained that the LEDs used, require 100 V before the current will flow, see \autoref{fig:triggering-circuit-output-2}.
-	This voltage is all the voltage that is needed for these LEDs, less voltage and they will not emit light, more voltage will result in power dissipation in some component and will turn into heat.
+	This voltage is all the voltage that is needed for these LEDs.
+	If less voltage is provided, the LEDs will not emit light.
+	But more voltage than necessary will result in power dissipation in some component and will turn into heat.
 	Since the applied AC voltage is rated at 230 V RMS, the excessive voltage has to go somewhere.
 	This voltage will be dissipated over the current source.
 	This means that some energy is being wasted, because there is more voltage provided by the AC than is needed to power the LEDs.
@@ -96,13 +98,13 @@
 
 
 	The current source implementation, as discussed in this section, solves the encoding problems which the other solutions had.
-	But this solutions introduces an efficiency problem.
+	But this solution introduces an efficiency problem.
 	The priority of this thesis was to create a solution which could recognize which LEDs are on and off by only looking at the aggregated energy consumption.
-	The efficiency of this solution has a lower priority, which is why this solution was still chosen to develop.
+	The efficiency of this solution has a lower priority.%, which is why this solution was still chosen to develop.
 	However, attempts have been made to try and solve the efficiency problem.
 	The first attempt involves the use of a transformer and the second attempt uses a capacitor.
 
-	\begin{figure}[h]
+	\begin{figure}[b]
 		\centering
 		\includegraphics[angle=0,width=0.5\textwidth]{chapters/hardware-chapters/AC/ac-modulator/custom-hardware/ac-current-source/ac-wave-lower-transformed-triggering.eps}
 		\caption{Output triggering circuit alongside the output of the AC voltage after a transformer.}
@@ -114,8 +116,7 @@
 	The outputted sine wave of the transformer can be seen in \autoref{fig:trigger-output-lower-transformed}.
 	The LEDs still need the same amount of voltage: 100V.
 	This 100 V threshold can also be seen in \autoref{fig:trigger-output-lower-transformed}.
-	The time that is now available for modulation is limited by the use of the transformer.
-	The time that is now available for modulation is 6 ms, which means that only $\frac{6}{20} = 30$ \% of the time is now available for modulation.
+	The time that is now available for modulation is limited by the use of the transformer, and is 6 ms, which means that only $\frac{6}{20} = 30$ \% of the time is available for modulation.
 	Another drawback of using a transformer, is that the distinct current signature that is made using the ID, is distorted by the transformer, as no ideal transformer exists.
 	For this reason this solution was abandoned.
 
@@ -129,7 +130,7 @@
 	And the optotriac is parallel to this capacitor.
 	The schematic can be seen in \autoref{fig:ac-capacitor-triac}.
 
-	\begin{figure}[h]
+	\begin{figure}[ht]
 		\centering
 		\includegraphics[angle=0,width=0.4\textwidth]{chapters/hardware-chapters/AC/ac-modulator/custom-hardware/ac-current-source/ac-capacitor-triac.JPG}
 		\caption{Schematic to show how the capacitor and optotriac are connected.}

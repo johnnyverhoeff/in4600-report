@@ -9,10 +9,10 @@ The power supply transforms the AC to a DC signal which is used to power the LED
 
 
 
-For this setup it is investigated what the current signature looks like when the LED is on, representing a `1', and when the LED is off,  representing a `0'.
+For this setup we investigate what the current signature looks like when the LED is on, representing a `1', and when the LED is off,  representing a `0'.
 A 10 ohm resistor is placed in series with the SMPS on the AC side and the voltage drop over this resistor is measured.
 So a voltage is measured, but the current that flows can be calculated using Ohm's law: $I = \frac{U}{R}$.
-But since we are investigating how the current signature behaves, it is not needed to have exact numbers on the current draw.
+Since we are investigating how the current signature behaves, it is not needed to have exact numbers on the current draw.
 
 
 
@@ -21,7 +21,7 @@ But since we are investigating how the current signature behaves, it is not need
 
 
 
-\begin{figure}[h]
+\begin{figure}[b]
 	\centering     %%% not \center
 	\subfigure[Encoding a `0', LED off.]{
 		\label{fig:smps-current-primary-no-load}
@@ -45,8 +45,8 @@ But since we are investigating how the current signature behaves, it is not need
 
 In Figures \ref{fig:smps-current-primary-no-load} and \ref{fig:smps-current-primary-with-load} the current signature of the SMPS can be seen, when encoding a `0' (LED off) and when encoding a `1' (LED on), respectively.
 From these figures, it is clear to see that when encoding a zero, the current is not zero and when encoding a `1', the current is not a constant value.
-This makes it difficult to determine what the ID is of this transmitting LED.
-This becomes even more difficult when multiple of these current signatures will be superimposed.
+This makes it difficult to determine what the ID of the transmitting LED is.
+This becomes even more difficult when multiple of these current signatures get superimposed.
 
 
 

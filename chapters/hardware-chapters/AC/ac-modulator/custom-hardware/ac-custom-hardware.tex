@@ -7,11 +7,11 @@
 
 
 
-Given the shortcomings of the existing hardware, it was decided to build custom hardware that would behave exactly how it was needed in order to successfully encode information in such a way that the currents could be decoded by a smart-meter.
+Given the shortcomings of the existing hardware, we decided to build custom hardware that would behave exactly how it was needed in order to successfully encode information in such a way that the currents could be decoded by a smart-meter.
 This means that the current signature should behave very similar to the DC case: For a `0' data bit encoding, the current should be zero and for a `1' data bit encoding, the current should be some constant value.
-The transitions between the symbols must be such, that a square wave of current will be created, just like in the DC case. 
+The transitions between the symbols must be such, that a square wave is created, just like in the DC case. 
 
-\begin{figure}[h]
+\begin{figure}[b]
 	\centering
 	\includegraphics[angle=0,width=0.7\textwidth]{chapters/hardware-chapters/AC/ac-modulator/custom-hardware/ac-modulator-architectural.JPG}
 	\caption{Architectural overview of the AC LED modulator.}

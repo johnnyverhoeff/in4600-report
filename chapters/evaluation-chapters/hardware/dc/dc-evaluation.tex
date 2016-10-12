@@ -16,7 +16,7 @@ From the figure, seven horizontal lines can be seen.
 Each line represents how many LEDs are on: When all LEDs are encoding a `0', the current will also be zero, when only one of the six LEDs is encoding a `1' the current is roughly 50 mA, when exactly two LEDs are encoding a `1', the current is roughly 100 mA, and so on.
 In contrast to the AC case which will be explained in the next section, in the DC case there is only positive current and no trigger signals to consider, so this raw data is already in a form for which we can start calculating the correlation for the ID of an LED.
 
-\begin{figure}[ht]
+\begin{figure}[t]
   \centering
   \begin{minipage}[b]{0.49\textwidth}
     \includegraphics[width=\textwidth]{chapters/evaluation-chapters/hardware/dc/raw-dc-testbed-adc-data-n=9.eps}
@@ -56,7 +56,7 @@ This means that there are only true-positives and true-negatives.
 So the precision, recall and the F-measure are all equal to $1$ according to \autoref{eq:precision}, \autoref{eq:recall} and \autoref{eq:F-measure}, respectively.
 
 
-\begin{figure}[ht]
+\begin{figure}[t]
   \centering
   \begin{minipage}[b]{0.49\textwidth}
     \includegraphics[width=\textwidth]{chapters/evaluation-chapters/hardware/dc/raw-dc-testbed-adc-data-n=7.eps}

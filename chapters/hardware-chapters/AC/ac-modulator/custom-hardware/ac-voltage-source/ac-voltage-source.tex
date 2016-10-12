@@ -22,7 +22,7 @@
 \subparagraph{Non-disturbing Voltage Source}
 
 		
-	The two parts of the custom modulator which solve the translation problem of mapping zeros and ones of the ID into the current draw, have now been explained in the two section above: The triggering circuit and the current source implementation.
+	The two parts of the custom modulator which solve the translation problem of mapping zeros and ones of the ID into the current draw, have now been explained in the prior sections: The triggering circuit and the current source implementation.
 	However, as can be seen from the schematics of these parts (\autoref{fig:triggering-circuit-output-2} and \autoref{fig:custom-modulator-current-source}), a 5 Volt voltage source is required to power parts of these circuits.
 	In this section it will be explained where this voltage comes from and how it is able to provide this voltage while not distorting the distinct current signature of the ID.
 
@@ -36,7 +36,7 @@
 	During 16 ms, the voltage is above 100 V and $20 - 16 = 4$ ms is the time that the voltage is below 100 V.
 	So in 4 ms per period of 20 ms, it is allowed to draw any current necessary to store the required energy to power the trigger and current source circuits.
 	And in the remaining 16 ms per period of 20 ms, this stored energy will be consumed by the triggering circuit and the current source.
-	During this time no current will be drawn to create the stable 5 V output as this is already done in the 4 ms window when the voltage is below 100 V.
+	During this 16 ms no current will be drawn to create the stable 5 V output.% as this is already done in the 4 ms window when the voltage is below 100 V.
 
 	To store the energy that will be used later on, a capacitor is used.
 	The output of this capacitor goes to a voltage stabilizer IC that will ensure a stable 5 V output.
@@ -47,7 +47,7 @@
 	But since no encoding is done in this region, it will not interfere with the encoding.
 	This solution provides a continuous stable 5 V voltage source without distorting the encoding of the ID, since the encoding and the voltage source work in different time sections.
 
-	\begin{figure}[h]
+	\begin{figure}[t]
 		\centering
 		\includegraphics[angle=0,width=0.8\textwidth]{chapters/hardware-chapters/AC/ac-modulator/custom-hardware/ac-voltage-source/custom-modulator-voltage-source.JPG}
 		\caption{Non-disturbing voltage source to power other parts of the circuit.}

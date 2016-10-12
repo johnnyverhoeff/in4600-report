@@ -1,6 +1,7 @@
 % !TeX root = ../../../../../thesis.tex
 
-\subsubsection{230 V AC LED}
+%\subsubsection{230 V AC LED}
+\subsubsection{LEDs powered directly by 230 V AC}
 
 
 There also exists LED lighting fixture which work directly with AC, without having an external SMPS.
@@ -14,13 +15,13 @@ Again, we are only looking at how the current signature behaves, at this point w
 In order to modulate the LED so that information is encoded in the current, changes had to be made to the internal hardware of the light fixture.
 In \autoref{app:commercial-230v-ac-modified-schematic} a schematic can be found, which shows the original circuit and what was modified in order to modulate the LED.
 The modifications made, include two transistors to switch the LEDs off and stop the capacitor from charging. 
-With these transistors the entire current flow can be stopped and thereby drawing zero current when we want to modulate a `0' symbol.
+With these transistors the entire current flow can be stopped thereby drawing zero current when we want to modulate a `0' symbol.
 When a `1' symbol needs to be modulated, the transistors are turned on, and the LED behaves in a normal manner.
 The transistors are controlled via a micro-controller through an optocoupler to protect the micro-controller in the development stages.
 
 
 
-\begin{figure}[h]
+\begin{figure}[t]
 	\centering     %%% not \center
 	\subfigure[LED is constantly on. X-axis: 5 ms/div, Y-axis: 1 V/div.]{
 		\label{fig:commercial-230v-ac-led-on-annotated}
@@ -74,7 +75,7 @@ Because in region B, the is no current draw and therefor we cannot modulate info
 The peaks in region A and C are both 4 ms wide.
 This means that there is 8 ms of time available for modulation in the 20 ms period, so $\frac{8}{20} = 40$ \% of the time is available for encoding the ID with this LED.
 To compare with a DC environment: In a DC scenario, the power supply always supplies a constant voltage, so the LED can always emit light and therefor can always draw current, so 100 \% of the time is available for modulation.
-If the ID would have a certain length, it would take time $t$ to modulate this ID in a DC environment and time $2.5 \times t$ with this AC LED. 
+If the ID would have a certain length, it would take time $t$ to modulate this ID in a DC environment and time $2.5 \times t$ with this AC LED if the ID could not be transmitted inside the 4 ms window. 
 
 
 Now that the current signature has been investigated when the LED is on, the LED will be now be turned on and off with a frequency of 4 kHz to investigate how the current signature behaves.
@@ -85,7 +86,7 @@ Again, there are three regions highlighted:
 
 \begin{itemize}
 
-	\item In region A, the data is being encoded is a `0' and the current draw is also zero.
+	\item In region A, the data being encoded is a `0' and the current draw is also zero.
 	As discussed this is a desired property.
 
 	\item Region B shows the transition from the LED being off to the LED being on.

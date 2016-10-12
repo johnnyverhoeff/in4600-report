@@ -17,12 +17,12 @@ An overview of the AC testbed can be found in \autoref{fig:ac-test-bed-architect
 In the testbed three commercial LEDs are used which are powered by the custom modulators as explained in \autoref{subsec:ac-modulator}.
 Arduino boards are controlling the modulators.
 The modulators are connected in parallel. 
-And in series is the custom current-sampler to measure the current and decode the information that the modulators encode into the current draw.
+And the custom current-sampler is connected in series to measure the current and decode the information that the modulators encode into the current draw.
 The custom current-sampler has its own Arduino board to process the current signal.
 All Arduino board are stand-alone, and are not connected to each other in any way.
 
 
-\begin{figure}[ht]
+\begin{figure}[t]
 	\centering
 	\includegraphics[angle=0,width=0.9\textwidth,keepaspectratio]{chapters/hardware-chapters/AC/ac-test-bed/ac-test-bed-architectural.JPG}
 	\caption{Architectural overview of the AC testbed. Three LED modulators, with switches to turn the LED on and off, are connected in parallel with each other and in series with the current sampler.}
@@ -33,7 +33,7 @@ All Arduino board are stand-alone, and are not connected to each other in any wa
 
 In \autoref{fig:raw-ac-testbed-adc-data-testbed} the raw data that is collected by the smart-meter can be seen.
 The current signal is shown here alongside the trigger output.
-In the raw data the charging peaks of the capacitor of the non-disturbing voltage source can be seen.
+In the raw data the charging peaks of the capacitor can be seen at timestamps: 5, 15 and 25 ms. %of the non-disturbing voltage source
 Note that these peaks indeed do not interfere with the modulated data.
 The modulated data and the charging peaks can be filtered out by the micro-controller with the help of the triggering circuits logical output.
 As discussed in \autoref{subsec:ac-modulator}, the time that is available for modulation is 8 ms in a 10 ms period.
@@ -43,7 +43,7 @@ An evaluation with this testbed will be done in \autoref{subsec:ac-evaluation}.
 
 
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.7\textwidth]{chapters/evaluation-chapters/hardware/ac/raw-ac-testbed-adc-data.eps}
     \caption{Incoming data to the AC current sampler. The raw ADC values are plotted as well as the triggering circuit output.}
