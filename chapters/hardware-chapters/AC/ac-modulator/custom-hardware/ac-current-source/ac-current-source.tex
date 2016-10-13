@@ -32,6 +32,8 @@
 
 	To investigate exactly how the current source implementation performs, a 2.8 Ohm resistor is placed in series with the AC and the current source implementation.
 	A micro-controller will toggle the current source on and off via the optocoupler with a frequency of 500 Hz.
+	This relatively low frequency is chosen to show the distinct on and off states of the current.
+	If a higher frequency was chosen, the on and off state are harder to see on the figure.
 	The voltage drop over the series resistor is measured to determine the current draw.
 	The result of the current draw can be seen in \autoref{fig:current-source-measurement-annotated}.
 
@@ -100,11 +102,11 @@
 	The current source implementation, as discussed in this section, solves the encoding problems which the other solutions had.
 	But this solution introduces an efficiency problem.
 	The priority of this thesis was to create a solution which could recognize which LEDs are on and off by only looking at the aggregated energy consumption.
-	The efficiency of this solution has a lower priority.%, which is why this solution was still chosen to develop.
+	The efficiency of this solution has a lower priority. %, which is why this solution was still chosen to develop.
 	However, attempts have been made to try and solve the efficiency problem.
 	The first attempt involves the use of a transformer and the second attempt uses a capacitor.
 
-	\begin{figure}[b]
+	\begin{figure}[htb]
 		\centering
 		\includegraphics[angle=0,width=0.5\textwidth]{chapters/hardware-chapters/AC/ac-modulator/custom-hardware/ac-current-source/ac-wave-lower-transformed-triggering.eps}
 		\caption{Output triggering circuit alongside the output of the AC voltage after a transformer.}
@@ -139,16 +141,26 @@
 
 	The series capacitor will limit the power that can be consumed by the current source.
 	The capacitor is able to do this by phase shifting the current as seen from the voltage.
-	In this process the current itself will not be distorted as was the case with using a transformer as discussed above and so the distinct current signature will still be intact.
-	The capacitor itself will not dissipate any power and so the efficiency problem can be solved.
-	However by limiting the power that the current source can use, there is much less time available to modulate, similar to the solution with the transformer as described above.
+	%In this process the current itself will not be distorted as was the case with using a transformer as discussed above and so the distinct current signature will still be intact.
+	The voltage drop over the capacitor can be calculated using Ohm's law $U = R \times I$ and the resistance of a capacitor which is called the reactance, $X_c$ measured in ohms.
+	The reactance of a capacitor is dependent on the frequency of the voltage $f$ and the capacitance $C$: $X_c = \frac{1}{\omega \times C} = \frac{1}{2 \times \pi \times f \times C}$.
+	The frequency of the voltage is 50 Hz, because the AC power is rated at 50 Hz.
+	Since a current source is used to power the LED, the current will be a constant value when the LED is on.
+	The voltage drop can be calculated by assuming a current of $0.1$ A and a standard capacitance value of 3.3 $\mu$F.
+	The voltage drop will then be: $U = R \times I = X_c \times I = \frac{1}{2 \times \pi \times f \times C} \times I = \frac{1}{2 \times \pi \times 50 \times 3.3 \times 10^{-6}} \times 0.1 = 96.5$ V.
+	This means that the voltage applied to the modulator circuit will now be lowered by approximately 100 V.
+	Even though there is a voltage drop over the capacitor, the capacitor itself will not dissipate any power.
+	This is because the capacitor has no resistance, the real part of the impedance is zero, but it only has reactance which is the imaginary part of the impedance.
+	Due to the voltage drop the efficiency problem can be solved.
+	However by limiting the voltage that the current source can use, there is much less time available to modulate, similar to the solution with the transformer as described above, see \autoref{fig:trigger-output-lower-transformed}.
 	This is were the zero-crossing triac comes in.
-	Whenever it is decided to start modulating, the micro-controller activates the triac and then it will short-circuit the capacitor.
-	When this happens, effectively the capacitor is no longer connected and it no longer limits the power.
+	If the probabilistic approach is used, the LED is not constantly transmitting its code, instead most of the time it is not modulating.
+	Whenever it is decided to start modulating by the probabilistic approach, the micro-controller activates the triac and then it will short-circuit the capacitor.
+	When this happens, effectively the capacitor is no longer connected and it no longer limits the voltage.
 	And so the time available for modulation is restored to the full 80 \%.
 	When the transmission of the ID of the LED is finished, the triac is switched off and the capacitor limits the power once again.
-	During the transmission of the ID, the current source is dissipating power, but this is only during the transmission of the ID, which is a relative short amount of time.
-	Whenever the LED is not transmitting its ID, the capacitor is limiting the power and thus the efficiency issue is solved.
+	During the transmission of the ID, the current source is dissipating power, but this is only during the transmission of the ID, which is the amount of time to encode the ID.
+	Whenever the LED is not transmitting its ID, the capacitor is limiting the voltage and thus the efficiency issue is solved.
 	But due to time constraints it was not possible to fully investigate this solution with the testbed.	
 
 
