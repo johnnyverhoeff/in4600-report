@@ -1,8 +1,8 @@
-load dc-testbed-raw-and-corr-n=9-N=6;
-%load dc-testbed-raw-and-corr-n=7-N=6;
+%load dc-testbed-raw-and-corr-n=9-N=6;
+load dc-testbed-raw-and-corr-n=7-N=6;
 
-%L = 127;
-L = 511;
+L = 127;
+%L = 511;
 
 close all;
 
@@ -54,8 +54,8 @@ legend('Corr. w/ present code', 'Corr w/ not present code', 'Threshold');
 hold off;
 
 
-idx_first_tp = 511;%95;
-%idx_first_tp = 95;
+%idx_first_tp = 511;%95;
+idx_first_tp = 95;
 tp = 0;
 fp = 0;
 tn = 0;

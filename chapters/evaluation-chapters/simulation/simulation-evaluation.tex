@@ -58,7 +58,7 @@ Now that the simulation steps have been explained and all variables have been se
 The results of the simulation can be seen in \autoref{fig:sim-concurrent-tx-and-f-measure-eps=1-n=7}.
 In this figure the number of concurrent transmitters over time are represented by the blue dots and the left y-axis.
 The maximum number of simultaneous transmitters such that no destructive interference takes place, $m$, is represented with the green dashed line.
-When the number of concurrent transmitters is below or equal to the $m$-line, it is guaranteed that no interference will occur, as proven in \autoref{sec:interference-solution}.
+When the number of concurrent transmitters is below or equal to the $m$-line, it is guarantied that no interference will occur, as proven in \autoref{sec:interference-solution}.
 But when the number of concurrent transmitters is above the $m$-line, it may not be possible to successfully decode the signal
 This depends on what the cross-correlation with the other IDs is, if they cancel each other out or if they enhance each other.
 
@@ -76,7 +76,8 @@ This is an example that the interference created by these IDs is not high enough
 Examples for when the interference is too high to successfully decode the data can be seen at the following times in the \autoref{fig:sim-concurrent-tx-and-f-measure-eps=1-n=7}: 0.27 s, 0.4 s, 0.55 s and 0.6 s.
 At each of these timestamps the number of concurrent LEDs which are transmitting their IDs is so high that they cause so much interference that there are problems with the decoding.
 And as a result the F-measure has significant drops at each of those timestamps.
-For example at time 0.4 s there were 31 false-positives and 0 false-negatives.
+For example at time 0.4 s there were 31 false-positives and 0 false-negatives and 5 true-positives.
+At this time there were 6 LEDs transmitting, meaning that one of the LEDs did not get identified as being on and 31 LEDs were classified as being on while they were actually off.
 
 
 
