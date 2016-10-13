@@ -10,7 +10,8 @@ For the use with radio-signals a code sequence is mapped to a form with $+1$ and
 
 
 
-First the equations are shown, how to calculate the correlation for a particular code when the code sequences from all the transmitters only have $+1$ and $-1$ symbols. In \autoref{eq:eqns-correlation-normal-symbols} it is shown how to calculate the correlation $R$, where we use \autoref{eq:correlation} and where $s(t)$ is the received signal which is the composed signal of $m$ distinct codes, which all use the $+1$ and $-1$ mapping and where $c^r_1(t)$ is the code sequence, with symbols $+1$ and $-1$, for which we want to calculate the correlation.
+First the equations are shown, how to calculate the correlation for a particular code when the code sequences from all the transmitters only have $+1$ and $-1$ symbols, also a simple example will be shown. 
+In \autoref{eq:eqns-correlation-normal-symbols} it is shown how to calculate the correlation $R$, where we use \autoref{eq:correlation} and where $s(t)$ is the received signal which is the composed signal of $m$ distinct codes, which all use the $+1$ and $-1$ mapping and where $c^r_1(t)$ is the code sequence, with symbols $+1$ and $-1$, for which we want to calculate the correlation.
 
 
 \begin{equation}
@@ -42,8 +43,18 @@ First the equations are shown, how to calculate the correlation for a particular
 
 %\end{proof}
 
-So the result is the sum of all the correlations. 
-If the code that is being correlated with, is present in the signal $s(t)$ than one of the outcomes of the correlation will be the peak auto-correlation $L$ then we can write the total correlation as follows: $R_{sc_{1}} = L + \displaystyle\sum_{t = 0} ^ {L - 1} \Bigg\{ c_1(t) \times  \displaystyle\sum_{i = 2} ^ {m} c_i(t) \Bigg\} $, where the result is the auto-correlation $L$ plus all the other correlations.
+The correlation calculation as showed are not strictly for any particular type of sequence, it holds for any sequence of $+1$ and $-1$.
+For example: Assume $c^r_1 = \{ -1, 1, -1, -1, -1 \}$ and $c^r_2 = \{ 1, -1, -1, 1, -1 \}$.
+Note that code $c^r_1$ is not balanced, the sum is equal to $-3$, code $c^r_2$ is balanced because the sum is equal to $-1$.
+Also note that these sequences are completely chosen at random, the codes are not orthogonal, pn or gold sequences.
+These codes are the IDs of transmitters 1 and 2, respectively.
+Also assume that these codes are transmitted at the same time to create $s = c^r_1 + c^r_2 = \{ 0, 0, -2, 0, -2 \}$.
+The calculated correlation using \autoref{eq:eqns-correlation-normal-symbols} will now be: $R_{sc^r_{1}} = 4$ and $R_{sc^r_{2}} = 4$.
+These are the correlation results for when codes are used with $+1$ and $-1$ symbols.
+This example will be used again later in this section to compare when different symbols are used.
+
+The result of \autoref{eq:eqns-correlation-normal-symbols} is the sum of all the correlations. 
+If the code that is being correlated with, is present in the signal $s(t)$ then one of the outcomes of the correlation will be the peak auto-correlation $L$ then we can write the total correlation as follows: $R_{sc_{1}} = L + \displaystyle\sum_{t = 0} ^ {L - 1} \Bigg\{ c_1(t) \times  \displaystyle\sum_{i = 2} ^ {m} c_i(t) \Bigg\} $, where the result is the auto-correlation $L$ plus all the other correlations.
 If the orthogonal sequences were used all the other correlations are zero.
 If the Gold sequences were used each of the other correlations could be one of the values stated in \autoref{eq:corsscorr-gold}.
 This is where the multiple access interference shows.
@@ -68,10 +79,25 @@ A PN sequence outputs zeros and ones and these are mapped to $+1$ and $-1$ respe
 \end{equation}
 
 
+The codes that were used in the example above, can now be mapped to $0$ and $1$ symbols.
+This results in the following codes: $c^b_1 = \{ 1, 0, 1, 1, 1 \}$ and $c^b_2 = \{ 0, 1, 1, 0, 1 \}$.
+The $b$ notation indicates that these sequences consists of $0$ and $1$ symbols.
+
+
+
 The previous equation (\autoref{eq:eqns-correlation-normal-symbols}) can now be altered to incorporate the fact that the LEDs work with a one and zero state.
 In \autoref{eq:eqns-correlation-binary-symbols} it is shown how the correlation formula changes when the codes that are used for the LEDs now have $0$ and $1$ values instead of the $+1$ and $-1$ values.
 In \autoref{eq:eqns-correlation-binary-symbols} the new correlation $\hat{R}$ is calculated, where $c^r_i(t)$ is the code sequence $i$ and consists of symbols $-1$ and $+1$, and $c^b_j(t)$ is the code sequence $j$ and consists of symbols $1$ and $0$ and where $s(t)$ is the received signal which is the composed signal of $m$ distinct codes.
 To clarify: The codes that the LEDs use have values $0$ and $1$ due to the OOK, the code that is being correlated with at the receiver or current-sampler side still uses the $+1$ and $-1$ symbols.
+
+
+When the transmitters or LEDs in this case, transmit the example mapped codes $c^b_1$ and $c^b_2$, the following signal $s$ would be created: $s = c^b_1 + c^b_2= \{ 1, 1, 2, 1, 2 \}$.
+\autoref{eq:eqns-correlation-binary-symbols} can now be used to calculate the new correlation $\hat{R}$: $\hat{R}_{sc^r_{1}} = -5$ and $\hat{R}_{sc^r_{2}} = -3$.
+These results are not the same as with the previous correlation results, where the results were 4 and 4, respectively.
+This is because $R$ and $\hat{R}$ cannot be compared, instead the results obtained from $\hat{R}$ need to be mapped to $R$.
+This mapping needs to be done, because the symbols used for the codes have changed.
+
+
 
 
 
@@ -89,44 +115,7 @@ To clarify: The codes that the LEDs use have values $0$ and $1$ due to the OOK, 
 
 
 
-
-
-
-
-
-
-%\begin{proof}
-%	Let $s(t)$ be the received signal which is the composed signal of $m$ distinct codes, which have symbols consisting of zero and one, which will be denoted be $c^b_i(t)$\\
-%	And let $c^r_i(t)$ be the code sequence $i$, and let $c^r_1(t)$ be the code for which we want to check if there is information there. \\
-%	Where $c^r_i(t)$ denotes a code sequence consisting of symbols $-1$ and $+1$.
-
-%	\begin{align*}
-%	T(\tau)_{xy} = \displaystyle\sum_{t = 0} ^ {L - 1} x(t) \times y(t + \tau)	\tag{See \autoref{eq:correlation}}
-%	\\ \tau = 0,\ x = s(t),\ y = c^r_1(t)
-%	\\ T(0)_{sc^r_{1}} = \displaystyle\sum_{t = 0} ^ {L - 1} s(t) \times c^r_1(t)	
-%	\\ s(t) = \displaystyle\sum_{i = 1} ^ {m} c^b_i(t)
-%	\\ T(0)_{sc^r_{1}} = \displaystyle\sum_{t = 0} ^ {L - 1} \Bigg\{  c^r_1(t)	\times \displaystyle\sum_{i = 1} ^ {m} c^b_i(t) 	\Bigg\}
-%	\\ T(0)_{sc^r_{1}} = \displaystyle\sum_{t = 0} ^ {L - 1} \Bigg\{  c^r_1(t)	\times \displaystyle\sum_{i = 1} ^ {m} \frac{1 - c^r_i(t)}{2}  	\Bigg\}
-%	\\ T(0)_{sc^r_{1}} = \frac{m}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_1(t) - \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1}  \Bigg\{ c^r_1(t) \times \displaystyle\sum_{i = 1} ^ {m} c^r_i(t) \Bigg\}
-%	\end{align*}
-
-%\end{proof}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-This altered correlation calculation, denoted by $\hat{R}$ now shows a different result than the previous result $R$.
+The altered correlation calculation, denoted by $\hat{R}$ shows different results than the previous result $R$.
 Where $R_{sc_{1}} = \displaystyle\sum_{t = 0} ^ {L - 1} \Bigg\{ c^r_1(t) \times  \displaystyle\sum_{i = 1} ^ {m} c^r_i(t) \Bigg\} $ and $\hat{R}_{sc^r_{1}} = \frac{m}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_1(t) - \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1}  \Bigg\{ c^r_1(t) \times \displaystyle\sum_{i = 1} ^ {m} c^r_i(t) \Bigg\}$.
 We can write it such that $R$ will become a function of $\hat{R}$ as can be seen in \autoref{eq:final-mapped-correlation-function}.
 With this equation we get the same output domain as with the normal correlation formula used for the codes that have $+1$ and $-1$ symbols.
@@ -139,29 +128,15 @@ With this equation we get the same output domain as with the normal correlation 
 \end{equation}
 
 
-
-%\begin{equation}
-%	\begin{array}{l}
-%		R_{sc_{1}} = L + \displaystyle\sum_{t = 0} ^ {L - 1} \Bigg\{ c_1(t) \times  \displaystyle\sum_{i = 2} ^ {m} c_i(t) \Bigg\}  \\
-%		\hat{R}_{sc^r_{1}} = \frac{m}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_1(t) - \frac{1}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1}  \Bigg\{ c^r_1(t) \times \displaystyle\sum_{i = 1} ^ {m} c^r_i(t) \Bigg\} \\
-%		R_{sc_{1}} = m \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_1(t) - 2 \times \hat{R}
-%	\end{array} 
-%	\label{eq:eqns-correlation-binary-symbols}
-%\end{equation}
+To complete the example, the values obtained using $\hat{R}$ ($\hat{R}_{sc^r_{1}} = -5$ and $\hat{R}_{sc^r_{2}} = -3$) can now be mapped to $R$ by using \autoref{eq:final-mapped-correlation-function}.
+For this equation we also need the sum of the code sequences, which were already calculated in the beginning of the example to show that one of the code sequences is not balanced.
+The sums are: $\displaystyle\sum c^r_1 = -3$ and $\displaystyle\sum c^r_2 = -1$.
+To obtain $R$: $R_{sc^r_{1}} = m \times \displaystyle\sum c^r_1 - 2 \times \hat{R}_{sc^r_1}  = 2 \times -3 - 2 \times -5 = 4$ and $R_{sc^r_{2}} = m \times \displaystyle\sum c^r_2 - 2 \times \hat{R}_{sc^r_2} = 2 \times -1 -2 \times -3 = 4$.
+And these correlation results are the same as the correlation results as with the codes which had $-1$ and $+1$ symbols.
+These results complete this example to show that any sequence can be mapped from $-1$ and $+1$ symbols to $0$ and $1$ symbols and still get correct correlation results.
 
 
 
-
-
-
-%\begin{proof}
-%
-%	\begin{align*}
-%	T = \frac{m}{2} \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_1(t) - \frac{1}{2} \times R
-%	\\ R = m \times \displaystyle\sum_{t = 0} ^ {L - 1} c^r_1(t) - 2 \times T
-%	\end{align*}
-
-%\end{proof}
 
 In \autoref{eq:final-mapped-correlation-function} the sum of the sequence used to correlate with, is needed. 
 The sum of the sequence depends on the sequence used, when using orthogonal codes the sum will be zero, see \autoref{subsec:orthogonal-sequences}.
@@ -172,8 +147,8 @@ The sequence will have exactly $2^{n-1}$ ones, where the ones will be mapped to 
 These mappings can be found when inversing \autoref{eq:radio-to-bin}, this yields: $r = 1 - 2 \times b$.
 When we calculate the sum of the sequence we get: $2^{n-1} \times -1 + (2^{n-1} - 1) \times 1 = -1$.
 Because the sum is equal to $-1$: $R = -m - 2 \times \hat{R}$, and then $m$, the number of signals, is important.
-When using an unbalanced Gold sequence, the sum if that sequence is not equal to $-1$.
-All the chips of the unbalanced Gold sequence can be added, in order to find the sum of this particular sequence and use the outcome to calculate the correct correlation value.
+When using an unbalanced Gold sequence, the sum of that sequence is not equal to $-1$.
+All the chips of the unbalanced Gold sequence can be added, in order to find the sum of this particular sequence and use the outcome to calculate the correct correlation value as we have done for the example with code $c^r_1$.
 
 
 
