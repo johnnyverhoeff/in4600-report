@@ -47,7 +47,7 @@ And finally the proposed method is introduced.
 		In \cite{Gupta:2010} the authors tried to disaggregate appliances which were powered with a switching mode power supply (SMPS).
 		These power supplies continuously generate high frequency electromagnetic interference (EMI).
 		Appliances can be distinguished based on the differences between the switching frequencies characteristics of each SMPS.
-		The method of disaggregate appliances which are power with a SMPS requires training data of the characteristics of each SMPS.  
+		The method of disaggregating appliances which are powered with a SMPS requires training data of the characteristics of each SMPS.  
 		Many lights also use some kind of SMPS, due to the high efficiency of these types of power supplies.
 		It is claimed that two appliances of the same brand and model can be distinguished by looking at the EMI from the SMPS.
 		However it was also observed that the system could not distinguish similar light fixtures when they were installed spatially near each other.
@@ -56,7 +56,7 @@ And finally the proposed method is introduced.
 
 		In \cite{Englert:2016:LAE:2893711.2893724} the authors present a method which correlates the light switching events obtained from a Building Control Network (BCN) with the power measurements on the mains distribution level.
 		A BCN can manage the lights and HVAC in a building.
-		It can turn the lights on or off depeding on the time of day, for example.
+		It can turn the lights on or off depending on the time of day, for example.
 		So this work already knows which lights are on and off. 
 		This work uses the combined sources of the BCN and the power measurements to estimate the electricity consumption for each light individually, with an error below 11 \%.
 		They use the BCN to retrieve which lights are being switched on or off and then they look at how the power consumption of the building changes.
@@ -90,7 +90,7 @@ And finally the proposed method is introduced.
 
 		Power over Ethernet or PoE is a standard which passes DC power along with data on an Ethernet cable \cite{patoka2003power}.
 		With this solution each light becomes a node in a network with an Ethernet cable being connected to the light.
-		The PoE technique provides the power to use the light and the Ethernet standards allows a micro-controller to transmit status information about that light to a central server, for example.
+		The PoE technique provides the power to use the light and the Ethernet standards allow a micro-controller to transmit status information about that light to a central server, for example.
 		The number of lights that can transmit their status is limited by the network protocols used.
 		A drawback is that an Ethernet cable must be used for each light instead of the existing AC wiring.
 		Another drawback is that PoE provides low voltage DC power and so the power dissipated in the cable itself will also be greater than with the existing high voltage AC wiring.
@@ -144,11 +144,11 @@ And finally the proposed method is introduced.
 	If a building uses PoE, the monitoring of lights is trivial.
 	But many legacy buildings do not have this infrastructure.
 	The proposed method aims to still work in legacy buildings, so it must use the legacy AC wiring that is already present.
-	Since the method is aimed at legacy buildings, we cannot rely an a Building Control Network (BCN).
+	Since the method is aimed at legacy buildings, we cannot rely on a Building Control Network (BCN).
 	A single smart-meter is used to measure the energy usage.
 	The purpose of the smart-meter is to identify which lights are on and which are off.
 	It does this by looking at the the energy signature of each light.
-	But as discussed many lights have the same signature, so it not possible to accurately identify which lights are on using only a smart-meter.
+	But as discussed many lights have the same signature, so it is not possible to accurately identify which lights are on using only a smart-meter.
 
 	So besides a smart-meter, smart-lights will also be used.
 	These smart-lights can take advantage of Visible Light Communication (VLC).
@@ -175,7 +175,7 @@ And finally the proposed method is introduced.
 
 	In \autoref{fig:overview-diagram} an overview of the method can be seen.
 	The smart-meter is shown along with multiple smart lights. 
-	Each smart light is a standalone device which has the necessary embedded hardware to modulate the emitted light
+	Each smart light is a standalone device which has the necessary embedded hardware to modulate the light.
 	The IDs that will be used can also be seen next to the smart lights.
 	The sum of these IDs will then flow as current through the smart-meter, which will sample this aggregated current and in turn be able to identify which of the LEDs is on and which is off.
 

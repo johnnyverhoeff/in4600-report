@@ -24,7 +24,7 @@ Such metrics are:
 
 Correlation is a measure for determining how much sequence $X$ is similar to sequence $Y$ and can be found in \autoref{eq:correlation}.
 With $L$ being the length of the code and $\tau$ the time-shift.
-When sequence $X$ and $Y$ are the same sequence, we speak of the autocorrelation.
+When sequence $X$ and $Y$ are the same sequence, we speak of the auto-correlation.
 When they are two different sequences, we speak of the cross-correlation. 
 
 \begin{equation}
@@ -45,7 +45,7 @@ When they are two different sequences, we speak of the cross-correlation.
 
 
 
-The properties of an ideal set of codes should be, that the autocorrelation for each code should have a clear peak to identify that this code is present in the signal.
+The properties of an ideal set of codes should be, that the auto-correlation for each code should have a clear peak to identify that this code is present in the signal.
 This peak should only occur when there is no time-shift, so at $\tau = 0$.
 The value of this peak should then be $L$, meaning that each chip of the code is equal to the value in the received signal.
 When there is a time-shift, $\tau \neq 0$, the auto-correlation should be as close to zero as possible.

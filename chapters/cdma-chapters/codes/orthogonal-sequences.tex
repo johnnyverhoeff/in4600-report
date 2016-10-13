@@ -38,11 +38,10 @@ And apart from the first row, all other rows have the exact same number of $+1$s
 
 Hadamard matrices exist for every power of $2$, so the code length is also a power of $2$.
 For $\tau = 0$, the cross-correlation is $0$, but when $\tau \neq 0$ not all the rows have a zero cross-correlation with all other rows.
-All rows of the matrix have the property that the autocorrelation at $\tau = 0$ is equal to $L$.
+All rows of the matrix have the property that the auto-correlation at $\tau = 0$ is equal to $L$.
 But when $\tau \neq 0$, undesirable behavior occurs as can be seen in \autoref{fig:autocorr-hadamard}.
 The autocorrelation function has several high peaks where only one is desired, namely at $\tau = 0$.
-This means that if an LED is turned on by a user and it start modulating its code, to transmit that this LED is on, but the smart-meter does not know when in time the start of this code is, because the smart-meter and the LEDs are not synchronized.
-So the smart-meter will get false-positives for data.
+This means that if an LED starts modulating its code, but the smart-meter does not know when in time the start of this code is, the smart-meter will get false-positives for data.
 If there was a way that the smart-meters and all the LEDs could be synchronized with each other, the orthogonal codes will work.
 
 \begin{figure}[t]

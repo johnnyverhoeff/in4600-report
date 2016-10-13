@@ -5,7 +5,7 @@
 
 
 In this section we introduce the main requirements for our system. The overall architecture has three main components: the codes, the modulator and the meter. 
-These components were shown in \autoref{fig:overview-diagram} 
+These components were shown in \autoref{fig:overview-diagram}.
 In this figure multiple lights can be seen.
 We want to monitor which lights are on and off in a timely manner, by only looking at the energy signature of each LED.
 To do this, three things must be investigated: How to construct the IDs, what hardware to use for the modulators and how to sample and process the current.
@@ -37,9 +37,9 @@ And process that data into status indicators for each LED.
 	If a data bit `0' needs to be transmitted, the LED is turned off.
 	This is how the information is transmitted.
 	Since the LED is turning on and off according to the ID in an OOK fashion, this ID will also propagate in the current that this LED draws.
-	This unique current signature flows through the smart meter.
+	This unique current signature flows through the smart-meter.
 	If only a single light is used with an ID, the meter can search for only that ID.
-	If it finds that ID, the light is ON, else the lights is off.
+	If it finds that ID, the light is on, else the lights is off.
 
 
 	A problem rises when more than one light source is sending its identification sequence.
