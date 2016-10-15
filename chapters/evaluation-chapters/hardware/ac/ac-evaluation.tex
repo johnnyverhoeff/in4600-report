@@ -5,11 +5,11 @@
 
 
 The AC testbed has three commercial LEDs, as explained in \autoref{subsec:ac-testbed}.
-Therefor three IDs will be used to be assigned to the LEDs with a fourth ID being used to represent an LED in an off state.
+Therefor three IDs will be for the LEDs with a fourth ID being used to represent an LED in an off state.
 From \autoref{tbl:correlation-gold-families}, we can see that for $m = 3$, the number of simultaneous transmitters such that no destructive interference takes place, requires a code length of 127 or higher.
-With the AC testbed the experiments have been performed with a constant modulation frequency of 10 kHz.
-Two successive samples are $\frac{1}{10000} = 0.1$ ms apart, except for when the triggering circuit detects that no modulation or sampling can take place anymore.
-In that case the sampling and modulation is paused until the triggering circuit detects that modulation and sampling can take place again.
+With the AC testbed, the experiments were performed with a constant modulation frequency of 10 kHz.
+%Two successive samples are $\frac{1}{10000} = 0.1$ ms apart, except for when the triggering circuit detects that no modulation or sampling can take place anymore.
+%In that case the sampling and modulation is paused until the triggering circuit detects that modulation and sampling can take place again.
 
 
 In \autoref{fig:raw-ac-testbed-adc-data} the incoming signals to the current sampler can be seen.
@@ -17,8 +17,8 @@ The raw data from the ADC can be seen as well as the output of the triggering ci
 From 2.5 ms until 6 ms in the figure, the charging peaks of the capacitor can be seen as explained in \autoref{subsec:ac-modulator}.
 In the same time window, the output of the triggering circuit can also be seen.
 The triggering output is used to filter out the charging peaks and only the aggregated IDs are left.
-The aggregated IDs can be seen from the window 6 ms until 14 ms.
-This is the window which holds the encoded data and that data is retrieved by using the triggering circuits output to detect when to start and stop looking for the encoded data.
+The aggregated IDs can be seen in the time window from 6 ms until 14 ms.
+This is the window which holds the encoded data and that data is retrieved by using the triggering circuit to detect when to start and stop looking for the encoded data.
 
 \begin{figure}[ht]
   \centering
@@ -28,8 +28,7 @@ This is the window which holds the encoded data and that data is retrieved by us
 \end{figure}
 
 As is the case in an AC environment, the current that will flow is both positive and negative.
-In \autoref{subsec:ac-current-sampler} this is explained.
-There it was also explained that the voltage measured over the series resistor is added with a constant reference voltage in order for the ADC to only measure positive voltages.
+As explained in \autoref{subsec:ac-current-sampler} to overcome this bipolarity problem the voltage measured over the series resistor is added with a constant reference voltage in order for the ADC to only measure positive voltages.
 The encoded data that is shown in \autoref{fig:raw-ac-testbed-adc-data} is now filtered out with help of the triggering circuit.
 The next step is to subtract the reference voltage from each sample of the encoded data.
 And then the absolute value of the result is considered.
@@ -44,39 +43,39 @@ In this figure the ADC values are on the left y-axis and the current on the righ
 \end{figure}
 
 In \autoref{fig:processed-ac-testbed-adc-data}, four distinguishable current levels can be seen.
-Just like in the DC evaluation, these distinct current levels come from the IDs that the LEDs are encoding.
+%Just like in the DC evaluation, these distinct current levels come from the IDs that the LEDs are encoding.
 When all the LEDs are encoding a `0', the current is (almost) zero, when one LED is encoding a `1' the current is approximately 100 mA and so on.
 With this processed signal the correlation calculations can be done to identify which LEDs are on and which are off.
 
 
-To avoid confusion about the x-axis of \autoref{fig:raw-ac-testbed-adc-data} and \autoref{fig:processed-ac-testbed-adc-data}: The amount of time in both figures is the same, however parts of the raw data of \autoref{fig:raw-ac-testbed-adc-data} are filtered out so why would the time still be the same.
-The time is the same for both figures, because in the processed data which is shown \autoref{fig:processed-ac-testbed-adc-data} was created with the original raw ADC signal.
-And the original raw signal was much longer than the 30 ms shown in this report.
-This means that the amount of encoded data in \autoref{fig:processed-ac-testbed-adc-data} is more than what is shown in \autoref{fig:raw-ac-testbed-adc-data}.
+%To avoid confusion about the x-axis of \autoref{fig:raw-ac-testbed-adc-data} and \autoref{fig:processed-ac-testbed-adc-data}: The amount of time in both figures is the same, however parts of the raw data of \autoref{fig:raw-ac-testbed-adc-data} are filtered out so why would the time still be the same.
+%The time is the same for both figures, because in the processed data which is shown \autoref{fig:processed-ac-testbed-adc-data} was created with the original raw ADC signal.
+%And the original raw signal was much longer than the 30 ms shown in this report.
+%This means that the amount of encoded data in \autoref{fig:processed-ac-testbed-adc-data} is more than what is shown in \autoref{fig:raw-ac-testbed-adc-data}.
 
 
 Now that the raw ADC signal is processed, the correlation can be calculated.
-In \autoref{fig:correlation-ac-testbed}, three graphs are drawn.
+In \autoref{fig:correlation-ac-testbed}, two signals and one line are plotted.
 The straight line represents the threshold, which is based on the length of the codes used, see \autoref{sec:interference-solution}.
-The other two graphs represent the outcome of the correlation with the ID of two LEDs.
+The other two signals represent the outcome of the correlation with the ID of two LEDs.
 One of those IDs is from an LED which is on and the other ID is from the LED which represents an LED in an off state.
 The correlation results from the LED which is in an off state, stay below the threshold for all points in time.
 This is a good result, since being below the threshold line means that the corresponding LED is off, which in this case is actually true.
 
-The other correlation result shown in \autoref{fig:correlation-ac-testbed} comes from the ID which corresponds to an LED which is on and modulating.
-The results of this correlation show two noticeable peaks which are above the threshold.
+The other correlation result, shown in \autoref{fig:correlation-ac-testbed} comes from the ID which corresponds to an LED which is on and modulating.
+The results of this correlation show two noticeable peaks above the threshold.
 These peaks indicate that the ID is present in the sampled current signal by the smart-meter.
 There are two peaks, because the LED is continuously transmitting its ID and the length of the ID in combination with the modulation frequency can be transmitted two times in the 30 ms window.
 All the peaks mean the same thing: The ID is present in the sampled current signal.
-Since this ID represents an LED which is on, these peaks are correct results as they indicate that the LED is indeed on.
+Since this ID represents an LED which is on, these peaks are correct results.% as they indicate that the LED is indeed on.
 
 The evaluation as discussed above for the AC testbed has been run in a similar fashion compared to the DC testbed evaluation.
-This evaluation  has been run for more than ten times.
-And for each time the duration of the run was approximately five minutes.
-Each run showed the same results as were shown in \autoref{fig:correlation-ac-testbed}.
-As discussed, all correlation results shown in \autoref{fig:correlation-ac-testbed} are correct.
+The evaluation was run for more than ten times.
+And for each run the duration was approximately five minutes.
+Each run showed the same results as presented in \autoref{fig:correlation-ac-testbed}.
+All the results we obtained, were correct.
 This means that there are only true-positives and true-negatives.
-So the precision, recall and the F-measure are all equal to $1$ according to \autoref{eq:precision}, \autoref{eq:recall} and \autoref{eq:F-measure}, respectively.
+So the precision, recall and the F-measure are all equal to $1$.% according to \autoref{eq:precision}, \autoref{eq:recall} and \autoref{eq:F-measure}, respectively.
 
 \begin{figure}[t]
 	\centering

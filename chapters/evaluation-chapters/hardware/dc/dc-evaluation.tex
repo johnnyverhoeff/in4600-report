@@ -7,14 +7,14 @@ The DC testbed has six LEDs, as explained in \autoref{subsec:dc-testbed}.
 Therefor six IDs will be used for the LEDs with a seventh code used to represent an LED in an off state.
 From \autoref{tbl:correlation-gold-families}, we can see that for $m = 6$, where $m$ is the number of simultaneous transmitters such that no destructive interference takes place, requires a code length of 511 or higher.
 With the DC testbed the experiments have been performed with a constant modulation frequency of 1 kHz.
-Every two successive samples are $\frac{1}{1000} = 1$ ms apart.
+%Every two successive samples are $\frac{1}{1000} = 1$ ms apart.
 
 In \autoref{fig:raw-dc-testbed-adc-data-n=9} the raw ADC data from the DC testbed can be seen.
 The left y-axis represents the raw ADC data and the right y-axis is converted to current.
 Six LEDs are continuously and simultaneously modulating with different starting times.
 From the figure, seven horizontal lines can be seen.
 Each line represents how many LEDs are on: When all LEDs are encoding a `0', the current will also be zero, when only one of the six LEDs is encoding a `1' the current is roughly 50 mA, when exactly two LEDs are encoding a `1', the current is roughly 100 mA, and so on.
-In contrast to the AC case which will be explained in the next section, in the DC case there is only positive current and no trigger signals to consider, so this raw data is already in a form for which we can start calculating the correlation for the ID of an LED.
+In contrast to the AC case which will be explained in the next section, in the DC case there is only positive current, so this raw data is already in a form for which we can start calculating the correlation for the ID of an LED.
 
 \begin{figure}[t]
   \centering
@@ -32,9 +32,9 @@ In contrast to the AC case which will be explained in the next section, in the D
 \end{figure}
 
 
-In \autoref{fig:correlation-dc-testbed-n=9}, three graphs are drawn.
+In \autoref{fig:correlation-dc-testbed-n=9}, two signals and a line are plotted.
 The straight line represents the threshold, which is based on the length of the codes used, see \autoref{sec:interference-solution}.
-The other two graphs represent the outcome of the correlation with the ID of two LEDs.
+The other two signals represent the outcome of the correlation with the ID of two LEDs.
 One of those IDs is from an LED which is on and the other ID is from the LED which represents an LED in an off state.
 The correlation results from the LED which is in an off state, stay below the threshold for all points in time.
 This is a good result, since being below the threshold line means that the corresponding LED is off, which in this case is actually true.
@@ -78,12 +78,14 @@ A length of 127 is chosen, since it may only have three concurrent modulating LE
 Again the six LEDs are continuously and simultaneously modulating with different starting times.
 For which the raw ADC data can be seen in \autoref{fig:raw-dc-testbed-adc-data-n=7} on the left y-axis and on the right y-axis the current.
 And the correlation results can be found in \autoref{fig:correlation-dc-testbed-n=7}.
-In the correlation figure, large peaks can be seen that cross the threshold line, these are the peaks that represent that the ID is present of an LED that is on.
-They are supposed to be there, since the LED is actually on.
-But also other results can be seen to cross the threshold line.
-These are the false-positives, they occur because this code length can not support this many simultaneous LEDs and the interference is too much.
+In the correlation figure, large peaks can be seen that cross the threshold line, these are the peaks that represent the ID of an LED that is on.
+%They are supposed to be there, since the LED is actually on.
+But also other results can be seen that cross the threshold line.
+These are the false-positives, they occur because this code length can not support more than three simultaneous LEDs and the interference is too much.
 The F-measure in time for these correlation results can be found in \autoref{fig:f-measure-dc-testbed-n=7}.
 And the precision, recall and F-measure can be found in \autoref{fig:eval-metrics-dc-testbed-n=7}.
+Initially the F-measure is high ($\approx 0.7$), because not many false-positives have occured yet.
+But over time more and more false-positives occure and the F-measure drops lower to approximately 0.3.
 
 
 

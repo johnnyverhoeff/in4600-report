@@ -7,12 +7,14 @@
 
 
 	The aim of this thesis is to find out if lights could be identified as being on or off, by measuring the aggregated energy draw of those lights, with the help of VLC and a single smart-meter.
-	CDMA codes have been investigated and compared to see which is the best suited for this scenario.
+	CDMA codes have been investigated and compared to see which one is the best suited for this scenario.
 	Two solutions have been discussed to overcome the interference problem that comes with these types of codes.
-	When these codes were understood and made usable in software simulations, two practical testbed were developed, for DC and AC, in order to experiment with.
-	When the correct codes are used dependent on the size of the system, each individual light in each testbed could be successfully identified as being on or off in a timely manner.
+	One solution allows the LEDs to transmit at all times without causing too much interference, while the other solution uses probabilities to determine which LEDs will transmit.
+	%When these codes were understood and made usable in software simulations, two practical testbed were developed, for DC and AC, in order to experiment with.
+	To validate the applicability of these codes, two testbeds were developed, one for DC and one for AC.
+	When the correct codes are used, each individual light in each testbed could be successfully identified as being on or off in a timely manner.
 	For larger systems a simulation was performed which shows that there can be made a trade-off between time and accuracy. 
-	But the simulation showed that even with a high accuracy, the lights could still be identified in a timely manner.
+	But the simulation showed that if a high level of accuracy is required, the lights could still be identified in a timely manner.
 	%As the testbed only represents a case where only these lights were connected, there is more work to be done when for instance there are also other appliances connected.
 
 
@@ -29,33 +31,35 @@ There remains more work to be done, below there are ideas for future work.
 	\subsection{Power Limiting Capacitor}
 
 	The solution of using a capacitor in order to limit the power dissipated in the current source, introduced in \autoref{subsec:ac-modulator} can be further investigated.
-	In particular what the drawbacks or benefits are of the of the current that is phase-shifted.
+	In particular what the drawbacks or benefits are of the current that is phase-shifted.
 	And if the triggering circuit will still function properly or what the modifications are that need to be made in order for this scheme to work properly.
 
 
 	\subsection{Other Appliances}
 
-	As the testbeds represent cases where only these lights were connected, the question rises: What will happen when other appliances are connected ?
+	As the testbeds represent cases where only these lights were connected, an important question rises: What will happen when other appliances are connected.
 	These could for example be an incandescent light bulb or a refrigerator.
-	To answer that question sample data from \cite{kolter2011redd} could be taken to represent some household appliances and added with the data of the modulation shown from the testbeds.
-	Then signal filtering techniques could be performed to try and filter the signal from the modulating lights, given the fact that we know that these lights operate at a certain constant frequency.
+	%To answer that question sample data from \cite{kolter2011redd} could be taken to represent some household appliances and added with the data of the modulation shown from the testbeds.
+	%Then signal filtering techniques could be performed to try and filter the signal from the modulating lights, given the fact that we know that these lights operate at a certain constant frequency.
+	If the smart-meter samples an aggregated signal from many appliances, one can apply filters to obtain the signals associated with the IDs of the LEDs, because the LEDs are modulating at a certain constant frequency.
+
 
 
 	\subsection{Dimming Lights}
 
 	LEDs can be often too bright for a persons liking, so the lights are dimmed.
 	Dimming of an LED can be done in two ways: PWM, by lowering the duty cycle and so less power is dissipated by the LED or by limiting the current that flows through the LED.
-	Since the LEDs are modulating via an OOK scheme, PWM cannot be used so instead current limiting must be done in order to dim the lights.
-	But the CDMA codes are designed to work with each transmitter or LED has the same amplitude or in this case the same current.
+	Since the LEDs are modulating via an OOK scheme, PWM cannot be used, so instead current limiting must be done in order to dim the lights.
+	But the CDMA codes are designed to work when all LEDs have amplitude or in this case the same current.
 	By dimming the LED and changing the current the codes may not work anymore.
 	A solution for this can be that each LED will have multiple dimming levels and that for each dimming level other frequencies are used to modulate at.
-	A filter can then be used to filter between these LEDs which all have the same amplitude.
+	A filter can then be used to filter LEDs according to their modulating frequency and then use our proposed method.
 
 
 
 	\subsection{Transmitting Data}
 
-	With the current state of this system the LEDs can be identified as being on or off by detecting if their unique code is present or not.
+	With the current state of this system, the LEDs can be identified as being on or off by detecting if their unique code is present or not.
 	This can be seen as transmitting data, namely one bit, if the LED is on or off.
 	If the LED needs to send other data about the status of the light two approaches can be thought of: 
 

@@ -17,12 +17,12 @@ These are only small scale systems, so to test the setup with a greater number o
 
 
 In every setup, each light will be assigned an ID.
-This ID is shared with the smart-meter, so that it knows which light corresponds with which ID.
+This ID is shared with the smart-meter.%, so that it knows which light corresponds with which ID.
 The energy data that the smart-meter samples, is correlated with each ID and the outcome of that calculation will determine if the corresponding light is on or off.
 As was explained in \autoref{sec:interference-solution} the outcome of the correlation calculation is compared to a threshold.
 The outcome can either be less than or equal to the threshold or it can be greater than the threshold.
 For each of these cases, the outcome of the calculation can be correct or incorrect.
-For example, there can be too much interference so that one of lights gets mistakenly identified as being on, while in reality it is off.
+For example, there can be too much interference so that one of the lights gets mistakenly identified as being on, while in reality it is off.
 So in total four categories must be considered, where the correlation outcome is denoted by $R$ and the threshold is denoted by $T$:
 
 
@@ -58,7 +58,7 @@ The definitions of precision and recall can be found in \autoref{eq:precision} a
 \end{equation}
 
 This method provides two metrics to consider.
-Ideally we want only one metric to consider and draw conclusion based on that.
+Ideally we would like only one metric and draw conclusions based on that.
 We can take the weighted average of the two metrics.
 This is called the F-measure \cite{sokolova2009systematic} and is the harmonic mean of the precision and recall.
 The definition of the F-measure can be seen in \autoref{eq:F-measure}.
@@ -72,7 +72,7 @@ The lower the F-measure is, the more false-negatives and/or false-positives have
 
 
 
-The next sections will explain the evaluation with the hardware testbeds and then the evaluation of the software simulation is considered.
+The next sections will explain the evaluation of the hardware testbeds and the software simulation.
 
 
 \input{chapters/evaluation-chapters/hardware/hardware-evaluation}
