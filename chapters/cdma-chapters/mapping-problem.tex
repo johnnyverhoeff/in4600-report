@@ -46,7 +46,7 @@ In \autoref{eq:eqns-correlation-normal-symbols} it is shown how to calculate the
 The correlation calculation holds for any sequence with $+1$ and $-1$ symbols.
 For example: Assume $c^r_1 = \{ -1, 1, -1, -1, -1 \}$ and $c^r_2 = \{ 1, -1, -1, 1, -1 \}$.
 Note that code $c^r_1$ is not balanced, the sum is equal to $-3$, code $c^r_2$ is balanced because the sum is equal to $-1$.
-Also note that these sequences are completely chosen at random, the codes are not orthogonal, pn or gold sequences.
+Also note that these sequences are completely chosen at random, the codes are not orthogonal, PN or Gold sequences.
 These codes are the IDs of transmitters 1 and 2, respectively.
 Also assume that these codes are transmitted at the same time to create $s = c^r_1 + c^r_2 = \{ 0, 0, -2, 0, -2 \}$.
 The calculated correlation using \autoref{eq:eqns-correlation-normal-symbols} will now be: $R_{sc^r_{1}} = 4$ and $R_{sc^r_{2}} = 4$.
@@ -56,7 +56,7 @@ These are the correlation results when codes are used with $+1$ and $-1$ symbols
 The result of \autoref{eq:eqns-correlation-normal-symbols} is the sum of all the correlations. 
 If the code that is being correlated with, is present in the signal $s(t)$ then one of the outcomes of the correlation will be the peak auto-correlation $L$ then we can write the total correlation as follows: $R_{sc_{1}} = L + \displaystyle\sum_{t = 0} ^ {L - 1} \Bigg\{ c_1(t) \times  \displaystyle\sum_{i = 2} ^ {m} c_i(t) \Bigg\} $, where the result is the auto-correlation $L$ plus all the other correlations.
 If the orthogonal sequences were used all the other correlations are zero.
-If the Gold sequences were used each of the other correlations could be one of the values as stated in \autoref{eq:corsscorr-gold}.
+If the Gold sequences were used, each of the other correlations could be one of the values as stated in \autoref{eq:corsscorr-gold}.
 This is where the multiple access interference shows.
 
 

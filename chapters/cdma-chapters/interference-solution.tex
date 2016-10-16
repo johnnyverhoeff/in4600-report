@@ -20,19 +20,19 @@ With this information two methods can be used to overcome the interference probl
 One method is to only use the maximum number of transmitters such that no interference will occur.
 A threshold $T$ must be set for which we will accept or reject a correlation as being a valid result.
 When a particular code sequence is present in the received signal, the correlation will be equal to the length of the code, $L$.
-To prevent false negatives, meaning there is a code sequence present in the received signal but it is lost due to too much interference from other code sequences, the correlation result needs to be higher than the threshold $T$.
+To prevent false-negatives, meaning there is a code sequence present in the received signal but it is lost due to too much interference from other code sequences, the correlation result needs to be higher than the threshold $T$.
 Lets say we have a signal with $m$ codes and we correlate with a code that is also present in this signal.
 The correlation for the code that is present will be $L$ and the correlation for all the other codes will be bounded by $t(n)$.
 %The correlation result itself is equal to $R = L + \displaystyle\sum_{t = 0} ^ {L - 1} \Bigg\{ c_0(t) \times  \displaystyle\sum_{i = 1} ^ {m} c_i(t) \Bigg\} $ (See \autoref{sec:mapping-problem}).
-Assuming the worst case scenario and each correlation with each other code sequence will be the negative of the absolute maximum cross correlation $t(n)$, the correlation is: $R = L - m \times t(n)$, where $m$ is the number of transmitters.
-The correlation needs to be higher than the threshold $T$ to prevent false negatives, so we get the following equation \autoref{eq:gold-max-tx-pt1}.
+Assuming the worst case scenario and each correlation with each other code sequence will be the negative of the absolute maximum cross-correlation $t(n)$, the correlation is: $R = L - m \times t(n)$, where $m$ is the number of transmitters.
+The correlation needs to be higher than the threshold $T$ to prevent false-negatives, so we get the following equation \autoref{eq:gold-max-tx-pt1}.
 
 \begin{equation}
 	\label{eq:gold-max-tx-pt1}
 	R = L - m \times t(n) > T
 \end{equation}
 
-Now to also prevent false positives, meaning for the code sequence that we are correlating with is not present but due to interference the correlation result suggests that it is present, we get \autoref{eq:gold-max-tx-pt2}.
+Now to also prevent false-positives, meaning for the code sequence that we are correlating with is not present but due to interference the correlation result suggests that it is present, we get \autoref{eq:gold-max-tx-pt2}.
 
 
 \begin{equation}
@@ -55,8 +55,9 @@ The results can be seen in \autoref{eq:m} and \autoref{eq:T}, respectively.
 \end{equation}
 
 
-Using the equations above, a table can be compiled showing the maximum number of simultaneous transmitters for which it is guarantied that there will be no false-positives and/or false-negatives when decoding the incoming signal.
-The table can be seen in \autoref{tbl:correlation-gold-families}, since $m$ is a real number but the number of transmitters can only be an integer, the `floor' function is used on $m$. If the `ceil' or `round' function was used, the result could exceed $m$ and interference free decoding can only be guaranteed if the number of transmitters concurrently transmitting is equal or less than $m$.
+Using the equations above, a table can be compiled showing the maximum number of simultaneous transmitters for which it is guaranteed that there will be no false-positives and/or false-negatives when decoding the incoming signal.
+The table can be seen in \autoref{tbl:correlation-gold-families}, since $m$ is a real number but the number of transmitters can only be an integer, the `floor' function is used on $m$. 
+%If the `ceil' or `round' function was used, the result could exceed $m$ and interference free decoding can only be guaranteed if the number of transmitters concurrently transmitting is equal or less than $m$.
  %\cite{holmes2007spread}
 
 
@@ -136,7 +137,7 @@ This will guaranty good decoding properties, meaning no false-positives and/or f
 	\begin{tabular}{  | l | l | l | }
 
 	\hline
-	Number of transmitters (m)	& Code Length (L)		& Time (t)					\\ \hline
+	Number of transmitters ($m$)	& Code Length ($L$)		& Time ($t$)					\\ \hline
 
 
 	%1							& 31					& 0.0031 s					\\ \hline
@@ -189,7 +190,7 @@ When those values are calculated the time in order to successfully identify each
 
 
 The probability $p$ must be chosen such that at every point in time the number of transmitters transmitting their sequence will not exceed $m$, in order to not have interference issues.
-The cumulative distribution function for a binomial distribution can be seen in \autoref{eq:cdf-binomial}, where $X$ is the random variable for the number of transmitters at every point in time, $m$ is the maximum number of transmitter to avoid interference issues and $N$ is the total number of transmitters used.
+The cumulative distribution function for a Binomial distribution can be seen in \autoref{eq:cdf-binomial}, where $X$ is the random variable for the number of transmitters at every point in time, $m$ is the maximum number of transmitter to avoid interference issues and $N$ is the total number of transmitters used.
 The probability that $X \le m$ needs to be as high as possible to avoid the interference issue, but as the CDF goes asymptotically to $1$, we cannot choose the probability $1$.
 Instead a value of $1 - \epsilon$ is chosen, where $\epsilon$ is the error, so $1 - \epsilon$ is the precision or accuracy.
 \autoref{eq:cdf-binomial} is then equalized to $1 - \epsilon$ to find a probability $p$, since every other variable is known.
@@ -215,7 +216,7 @@ And $p$ is a function of the error $\epsilon$ and $N$.
 	t = \frac{L}{f} \times k = \frac{L}{f} \times \frac{1}{p}
 \end{equation}
 
-This probabilistic method allows to use all the sequences in the same set.
+This probabilistic method allows the use of all the sequences in the same set.
 The drawback is that the time for which all transmitters have transmitted, is dependent on the accuracy $1 - \epsilon$.
 In \autoref{tbl:probabilistic-method-time-as-function-N} the time it takes to let each transmitter transmit, is listed as a function of the number of transmitters in the total system and the error $\epsilon$. 
 The time in the table is for a constant modulation frequency chosen to be 10 kHz, for other frequencies the time scales linearly, see \autoref{eq:time-for-probabilistic-txs}.

@@ -41,7 +41,7 @@ For $\tau = 0$, the cross-correlation is $0$, but when $\tau \neq 0$ not all the
 All rows of the matrix have the property that the auto-correlation at $\tau = 0$ is equal to $L$.
 But when $\tau \neq 0$, undesirable behavior occurs as can be seen in \autoref{fig:autocorr-hadamard}.
 The autocorrelation function has several high peaks where only one is desired, namely at $\tau = 0$.
-This means that if an LED starts modulating its code, but the smart-meter does not know when in time the start of this code is, the smart-meter will get false-positives for data.
+This means that if an LED starts modulating its code, but the smart-meter does not know when in time the start of this code is, the smart-meter will get false-positives.
 If there was a way that the smart-meters and all the LEDs could be synchronized with each other, the orthogonal codes will work.
 
 \begin{figure}[t]
@@ -66,10 +66,10 @@ But the auto- and cross-correlation only have the desired properties when the co
 To overcome the problem when sending orthogonal codes in an asynchronous manner, a subset of the orthogonal codes have been identified that are still orthogonal to each other, no matter how these codes are time-shifted with respect to each other.
 
 In \cite{1182447} the authors proved that an Hadamard matrix of size $2^P$ could be divided into $P + 1$ subsets of rows, where one row could be selected giving $P + 1$ orthogonal rows for each time-shift $\tau$.
-In other words, this subset of rows have a cross-correlation of zero, for every time-shift $\tau$.
+In other words, this subset of rows has a cross-correlation of zero, for every time-shift $\tau$.
 These codes are called Cyclically Orthogonal Walsh Hadamard Codes (COWHC).
 With code length $L$ there are $\log_2 L$ codes in the set, which makes these codes not scalable \cite{1182447}. 
 Also the auto-correlation does not have a clear peak to identify the code, because these codes are an unmodified subset of the original orthogonal sequences.
 For these sequences the auto-correlation has already been shown in \autoref{fig:autocorr-hadamard}.
 
-These codes suffer from the same auto-correlation problems as the normal Orthogonal codes as described in \autoref{subsec:orthogonal-sequences} and they have the additional drawback that they are less scalable.
+These codes suffer from the same auto-correlation problems as the normal orthogonal codes as described in \autoref{subsec:orthogonal-sequences} and they have the additional drawback that they are less scalable.

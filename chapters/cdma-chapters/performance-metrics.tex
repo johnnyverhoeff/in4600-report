@@ -16,7 +16,7 @@ Such metrics are:
 
 	\item Number of codes: The number of unique codes that can be used in the same system is important for the scalability.
 
-	\item Asynchronous behavior: It should be also be considered if the codes can be used in a synchronous only or in an a-synchronous environment.
+	\item Asynchronous behavior: It should also be considered if the codes can be used in a synchronous only or in an a-synchronous environment.
 
 \end{itemize}
 
@@ -49,7 +49,7 @@ The properties of an ideal set of codes should be, that the auto-correlation for
 This peak should only occur when there is no time-shift, so at $\tau = 0$.
 The value of this peak should then be $L$, meaning that each chip of the code is equal to the value in the received signal.
 When there is a time-shift, $\tau \neq 0$, the auto-correlation should be as close to zero as possible.
-If the signal is the sampled current and the code is the ID of a LED, then we can say the LED is on when the auto-correlation peak is seen.
+If the signal is the sampled current and the code is the ID of an LED, then we can say the LED is on when the auto-correlation peak is seen.
 The ideal cross-correlation properties should be $0$ for every time-shift $\tau$, so that no code interferes with any other code, hereby causing no MAI (Multiple Access Interference).
 
 

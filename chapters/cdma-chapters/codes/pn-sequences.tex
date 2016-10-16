@@ -56,7 +56,7 @@ The LFSR is defined entirely by the feedback function, also called a characteris
 It determines the length and the type of sequence generated.
 The polynomial looks like \autoref{eq:lfsr-polynomial}.
 For example: The polynomial $q(x) = x^5 + x^2 + 1$ tells us that the LFSR has length $5$ and that the outputs of elements with number zero and two are XORed and fed back into the last element. 
-
+\vspace{-1mm}
 \begin{equation}
 	\label{eq:lfsr-polynomial}
 	p(x) = x^n + C_{n-1} x^{n-1}  + C_{n-2} x^{n-2} + \dotsc + C_{2} x^{2}  + C_{1} x  + C_{0}
@@ -115,7 +115,7 @@ For PN sequences, there exists no formula for the cross-correlation of two diffe
 Exhaustive analysis is required to find out which sequences or entire sets have the cross-correlation characteristics that are good enough for the user's application.
 In \autoref{tbl:pn-sequences-C-and-cross-corr} the calculated peak cross-correlations per PN sequences from the same set can be found.
 For each sequence the cross-correlation is calculated with every other sequence for every time-shift $\tau$. 
-Then the maximum of those cross-correlation is taken and used for the peak cross-correlation.
+Then, the maximum of those cross-correlations is taken and used for the peak cross-correlation.
 For the PN codes the auto-correlation does not have to be calculated, this is already shown in \autoref{eq:autocorr-pn}.
 
 

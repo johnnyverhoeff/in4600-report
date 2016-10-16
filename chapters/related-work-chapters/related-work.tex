@@ -100,9 +100,45 @@ And finally the proposed method is introduced.
 
 	\section{Proposed Method}
 
-	\begin{figure}[h]
+	
+
+
+
+	If a building uses PoE, the monitoring of lights is trivial.
+	But many legacy buildings do not have this infrastructure.
+	The proposed method aims to still work in legacy buildings, so it must use the legacy AC wiring that is already present.
+	Since the method is aimed at legacy buildings, we cannot rely on a Building Control Network (BCN).
+	A single smart-meter is used to measure the energy usage.
+	The purpose of the smart-meter is to identify which lights are on and which are off.
+	It does this by looking at the the energy signature of each light.
+	But as discussed many lights have the same signature, so it is not possible to accurately identify which lights are on using only a smart-meter.
+
+	So besides a smart-meter, smart-lights will also be used.
+	These smart-lights can take advantage of Visible Light Communication (VLC).
+	VLC is a short-range optical means of wireless communication using the visible light spectrum.
+	VLC is made possible by the advances in LED technology.
+	VLC can turn the lights on or off at high frequencies to avoid seeing flickering effects.
+	The interest in VLC has grown since the widespread deployment of LED lighting fixtures for energy efficiency over the normal incandescent light bulb \cite{rajagopal2012ieee}.
+
+
+	Visible light communication opens up the opportunity to monitor the energy consumption of lights. Applications such as indoor localization are becoming widely popular with VLC and these applications require lights to broadcast a unique ID. 
+	Given that VLC modulates LEDs by turning them on and off, the ID that is used for indoor localization can also be used for detecting if the light is on or off by looking at the current signature.
+
+	%Now that VLC allows lighting fixtures to transmit data, research is being done to make indoor localization more precise than with traditional RF-based approaches \cite{Kuo:2014:LIP:2639108.2639109}.
+	%Since the light does not pass through walls and it has less reflection compared to RF, an indoor localization system can be more precise.
+	%Each VLC lighting fixture can act like a beacon which transmits an ID of some sort, thereby describing its location inside the building.
+
+	%So the lights are already transmitting IDs to describe their location inside a building with the help of VLC.
+	The information that a light is transmitting via VLC, will also propagate to the current that the light draws.
+	And with the smart-meter, we are looking at the aggregated current draw of all attached devices, including these lights.
+	The information or ID that the light will be transmitting, needs to be constructed in such a way that the sum of all these currents, which flows through the smart-meter, can still tell us which lights are actually on or off.
+	How these IDs can be constructed needs be to be investigated.
+	With this proposed method the lights can still be used as beacons for applications such as indoor localization because the IDs will still be unique.
+	The current signature of each light will tell us which lights are on and it can be done over the existing wiring infrastructure.
+
+	\begin{figure}[t]
 		\centering
-		\resizebox {\textwidth} {!} {
+		\resizebox {0.9\textwidth} {!} {
 			\begin{tikzpicture}
 
 				\node[block] (smart_meter) {Smart-meter};	
@@ -139,44 +175,10 @@ And finally the proposed method is introduced.
 		\label{fig:overview-diagram}
 	\end{figure}
 
-
-
-	If a building uses PoE, the monitoring of lights is trivial.
-	But many legacy buildings do not have this infrastructure.
-	The proposed method aims to still work in legacy buildings, so it must use the legacy AC wiring that is already present.
-	Since the method is aimed at legacy buildings, we cannot rely on a Building Control Network (BCN).
-	A single smart-meter is used to measure the energy usage.
-	The purpose of the smart-meter is to identify which lights are on and which are off.
-	It does this by looking at the the energy signature of each light.
-	But as discussed many lights have the same signature, so it is not possible to accurately identify which lights are on using only a smart-meter.
-
-	So besides a smart-meter, smart-lights will also be used.
-	These smart-lights can take advantage of Visible Light Communication (VLC).
-	VLC is a short-range optical means of wireless communication using the visible light spectrum.
-	VLC is made possible by the advances in LED technology.
-	VLC can turn the lights on or off at high frequencies to avoid seeing flickering effects.
-	The interest in VLC has grown since the widespread deployment of LED lighting fixtures for energy efficiency over the normal incandescent light bulb \cite{rajagopal2012ieee}.
-
-
-	Visible light communication opens up the opportunity to monitor the energy consumption of lights. Applications such as indoor localization are becoming widely popular with VLC and these applications require lights to broadcast a unique ID. 
-	Given that VLC modulates LEDs by turning them on and off, the ID that is used for indoor localization can also be used for detecting if the light is on or off by looking at the current signature.
-
-	%Now that VLC allows lighting fixtures to transmit data, research is being done to make indoor localization more precise than with traditional RF-based approaches \cite{Kuo:2014:LIP:2639108.2639109}.
-	%Since the light does not pass through walls and it has less reflection compared to RF, an indoor localization system can be more precise.
-	%Each VLC lighting fixture can act like a beacon which transmits an ID of some sort, thereby describing its location inside the building.
-
-	%So the lights are already transmitting IDs to describe their location inside a building with the help of VLC.
-	The information that a light is transmitting via VLC, will also propagate to the current that the light draws.
-	And with the smart-meter, we are looking at the aggregated current draw of all attached devices, including these lights.
-	The information or ID that the light will be transmitting, needs to be constructed in such a way that the sum of all these currents, which flows through the smart-meter, can still tell us which lights are actually on or off.
-	How these IDs can be constructed needs be to be investigated.
-	With this proposed method the lights can still be used as beacons for applications such as indoor localization because the IDs will still be unique.
-	The current signature of each light will tell us which lights are on and it can be done over the existing wiring infrastructure.
-
 	In \autoref{fig:overview-diagram} an overview of the method can be seen.
-	The smart-meter is shown along with multiple smart lights. 
-	Each smart light is a standalone device which has the necessary embedded hardware to modulate the light.
-	The IDs that will be used can also be seen next to the smart lights.
+	The smart-meter is shown along with multiple smart-lights. 
+	Each smart-light is a standalone device which has the necessary embedded hardware to modulate the light.
+	The IDs that will be used can also be seen next to the smart-lights.
 	The sum of these IDs will then flow as current through the smart-meter, which will sample this aggregated current and in turn be able to identify which of the LEDs is on and which is off.
 
 
