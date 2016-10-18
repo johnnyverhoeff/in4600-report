@@ -1,0 +1,1096 @@
+\documentclass{beamer}
+\usepackage[english]{babel}
+\usepackage{calc}
+\usepackage[absolute,overlay]{textpos}
+\mode<presentation>{\usetheme{tud}}
+
+
+
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows}
+
+\tikzset{
+  block/.style={
+    draw,
+    rectangle,
+    minimum height=1cm,
+    minimum width=1cm,
+    align=center
+  },
+  subblock/.style={
+    draw,
+    rectangle,
+    minimum height=.75cm,
+    minimum width=1.5cm,
+    align=center
+  },
+  line/.style={->,>=latex},
+  LED/.style={draw,circle,append after command={
+        [shorten >=\pgflinewidth, shorten <=\pgflinewidth,]
+        %(\tikzlastnode.north) edge (\tikzlastnode.south)
+        %(\tikzlastnode.east) edge (\tikzlastnode.west)
+        }
+    },
+  dot/.style={draw,circle,minimum size=2mm,inner sep=0pt,outer sep=0pt,fill=black},
+  XOR/.style={draw,circle,append after command={
+        [shorten >=\pgflinewidth, shorten <=\pgflinewidth,]
+        (\tikzlastnode.north) edge (\tikzlastnode.south)
+        (\tikzlastnode.east) edge (\tikzlastnode.west)
+        }
+    }
+}
+
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+
+
+\usepackage{epstopdf}
+
+\usepackage{multicol}
+
+
+
+
+\title[MSc Defense]{Leveraging VLC for energy }
+\subtitle{disaggregation in Smart Buildings}
+\institute[TU Delft]{Delft University of Technology}
+\author{Johnny Verhoeff}
+\date{\today}
+
+% Insert frame before each subsection (requires 2 latex runs)
+\AtBeginSubsection[] {
+	\begin{frame}<beamer>\frametitle{\titleSubsec}
+		\tableofcontents[currentsection,currentsubsection]  % Generation of the Table of Contents
+	\end{frame}
+}
+% Define the title of each inserted pre-subsection frame
+\newcommand*\titleSubsec{Next Subsection}
+% Define the title of the "Table of Contents" frame
+\newcommand*\titleTOC{Outline}
+
+% define a symbol which can be removed if you don't need it
+\newcommand{\field}[1]{\mathbb{#1}}
+\newcommand{\Zset}{\field{Z}}
+
+\begin{document} {
+	% remove the next line if you don't want a background image
+	\usebackgroundtemplate{\includegraphics[width=\paperwidth,height=\paperheight]{images/background-titlepage.jpg}}%
+	\setbeamertemplate{footline}{\usebeamertemplate*{minimal footline}}
+	\frame{\titlepage}
+}
+
+\beamertemplatenavigationsymbolsempty
+%\setbeamertemplate{navigation symbols}{}
+
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+%{\setbeamertemplate{footline}{\usebeamertemplate*{minimal footline}}
+%\begin{frame}\frametitle{\titleTOC}
+%	\tableofcontents
+%\end{frame}
+%}
+
+%\section{First Section}
+%\subsection{Section 1 - Subsection 1}
+
+
+	%intro
+	\begin{frame}\frametitle{Energy Disaggregation}
+
+		Energy consumption is a most pressing issue.
+
+		\begin{itemize}
+
+			\item To reduce it, understanding the usage of that energy is needed.
+
+			\item Smart-meter can disaggregate the energy usage in a household.
+
+			\item This is done by recognizing the unique signatures of appliances.
+
+		\end{itemize}
+
+		\begin{figure}[t]
+			\centering
+			\includegraphics[width=0.7\textwidth]{../chapters/introduction-chapters/energy-consumption-house.png}
+		\end{figure}
+
+		% For example here we can see the aggregated energy from a household during a day.
+		% With the different colors it is indicated what appliance is being used at what time.
+		% In the blue we can see 'lighting' as a constant consumer but it can not disaggregate which individual lights are on.
+
+	\end{frame}
+
+
+
+
+
+
+	\begin{frame}\frametitle{Energy Consumption Lighting}
+
+		Individual lights cannot be disaggregated (yet).
+
+		\begin{itemize}
+
+			\item The reason: Lighting does not have a unique signature. %Which HVAC for example does have.
+
+			\item Instead there are many lights with the same signature.
+
+			\item Still important to be able to disaggregate individual lights: Lighting consumes 19 \% of the power in an average household.
+
+		\end{itemize}
+
+
+	\end{frame}
+
+
+
+
+
+	\begin{frame}\frametitle{VLC Piggybacking}
+
+		VLC is a communication method which uses visible light to transmit data.
+
+		\begin{itemize}
+
+			\item This data can be unique IDs for LED beacons used for indoor localization.
+
+			\item This data will also propagate through the current draw.
+
+			\item Can we construct these IDs in such a way that the aggregated current can be disaggregated by a smart-meter ?
+
+		\end{itemize}
+
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.3\textwidth]{vlc-indoor-positioning-edit.png}
+		\end{figure}
+
+
+
+	\end{frame}
+
+
+
+	\begin{frame}\frametitle{Contributions}
+
+		%Smart-meter will measure aggregated current draw of all LEDs.
+
+		%\begin{figure}
+		%	\centering
+		%	\resizebox {0.8\textwidth} {!} {
+		%		\begin{tikzpicture}
+%
+%		%			\node[block] (smart_meter) {Smart-meter};	
+%
+%		%			\node[block, left = 1cm of smart_meter] (power) {Power};	
+%		%			\draw[line] (power.east) -- (smart_meter.west) node [midway, right] {};		
+%
+%		%			% second mod.
+%		%			\node[block, right = 4cm of smart_meter] (second_modulator) {Modulator};
+%		%			\node[LED, right = 0.5cm of second_modulator] (second_led) {LED};
+%		%			\draw[line] (second_modulator.east) -- (second_led.west) node [midway, right] {};
+%
+%		%			% first mod.
+%		%			\node[block, above = 1cm of second_modulator] (first_modulator) {Modulator};
+%		%			\node[LED, right = 0.5cm of first_modulator] (first_led) {LED};
+%		%			\draw[line] (first_modulator.east) -- (first_led.west) node [midway, right] {};
+%
+%		%			% third mod.
+%		%			\node[block, below = 1cm of second_modulator] (third_modulator) {Modulator};
+%		%			\node[LED, right = 0.5cm of third_modulator] (third_led) {LED};
+%		%			\draw[line] (third_modulator.east) -- (third_led.west) node [midway, right] {};
+%
+%		%			\node[dot, right = 2.5cm of smart_meter] (CP) {};
+%
+%		%			\draw (smart_meter.east) -- (CP) node [pos=0.3, above] {0222};
+%
+%		%			\draw (CP) |- (first_modulator.west) node  [pos=0.75, above] {0011};
+%		%			\draw (CP) |- (second_modulator.west) node [pos=0.75, above] {0110};
+%		%			\draw (CP) |- (third_modulator.west) node  [pos=0.75, below] {0101};
+%
+%		%		\end{tikzpicture}
+%		%	}
+		%\end{figure}
+
+		
+
+		
+
+
+
+		\noindent
+		\begin{minipage}{.5\linewidth}
+			\begin{enumerate}
+
+				\item Investigation of codes that can be used.
+
+				\item Design of hardware to modulate and sample the current.
+
+				\item Evaluate the solutions.
+
+			\end{enumerate}
+		\end{minipage}%
+		\begin{minipage}{.5\linewidth}
+			\begin{figure}
+				%\centering
+				\includegraphics[width=1.05\textwidth]{design.pdf}
+			\end{figure}
+		\end{minipage}
+
+	\end{frame}
+
+
+
+	\begin{frame}\frametitle{Code Investigation}
+
+		\begin{itemize}
+
+			\item Code Theory.
+			\begin{itemize}
+
+				\item How to recognize the IDs ?
+
+				\item Requirements for the codes.
+
+				\item Analyzing and comparison of codes.
+			\end{itemize}
+
+			\item Symbol mapping problem.
+
+			\item Interference solution.
+
+		\end{itemize}
+
+	\end{frame}
+
+	
+
+
+
+
+	\begin{frame}\frametitle{Recognizing the IDs}
+		
+		Correlation: Measuring the similarity between a code and a received signal:
+
+		\begin{equation*}
+			R(\tau)_{xy} = \displaystyle\sum_{i = 0} ^ {L - 1} x(i) \times y(i + \tau) {\text{  with $\tau = 0, 1, 2, \dotsc, L$}}
+		\end{equation*}
+
+		
+
+		\noindent
+		\begin{minipage}{.5\linewidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.8\textwidth]{correlation-leds.png}
+			\end{figure}
+		\end{minipage}%
+		\begin{minipage}{.5\linewidth}
+			\begin{itemize}
+				\item Auto-correlation: $R_{XX} = L$
+				\item Cross-correlation: $R_{XY} = 0$
+			\end{itemize}
+		\end{minipage}
+
+		%\begin{itemize}
+%
+%		%	\item Auto-correlation: When the ID is present in the signal, it should yield a high value.
+%
+%		%	\item Cross-correlation: When the ID is NOT present in the signal, it should yield a low value.
+%
+		%\end{itemize}
+
+
+	\end{frame}
+
+
+
+	\begin{frame}\frametitle{Requirements for Codes}
+		
+		\begin{itemize}
+
+			\item Correlation:
+			\begin{itemize}
+
+				\item Auto-correlation should be high.
+
+				\item Cross-correlation should be low.
+
+			\end{itemize}
+
+			\item The ability to work in synchronous and asynchronous scenarios.
+
+			\item The codes should be not too long, the system should be able to identify an ID in a timely manner.
+
+			%\item The number of codes should scale well with the length of the code. 
+			\item With code length $L$: $2^L$ possible codes. Only small subset suitable for IDs. Size of subset should be proportional to $L$.
+
+		\end{itemize}
+		
+	\end{frame}
+
+
+
+	\begin{frame}\frametitle{Orthogonal Codes}
+		\begin{itemize}
+
+			\item Creation via Hadamard matrix: 
+			\begin{equation*}
+				H_{2n} = 
+				\begin{bmatrix} 
+					H_n & H_n \\ 
+					H_n & -H_n 
+				\end{bmatrix}
+			\end{equation*}
+
+
+			\noindent
+			\begin{minipage}{.5\linewidth}
+				\begin{equation*}
+					H_{1} = 
+					\begin{bmatrix} 
+						1
+					\end{bmatrix}
+				\end{equation*}
+			\end{minipage}%
+			\begin{minipage}{.5\linewidth}
+				\begin{equation*}
+					H_{2} = 
+					\begin{bmatrix} 
+						1 & 1 \\ 
+						1 & -1
+					\end{bmatrix}
+				\end{equation*}
+			\end{minipage}
+
+	
+			\item Properties:
+				\begin{itemize}
+
+
+
+				\item Auto-correlation is high, only in synchronous scenario.
+
+				\item Cross-correlation is low and math. bounded, only in synchronous scenario.
+
+				\item Number of codes $C \propto L$, the length of code, so it scales well.
+
+			\end{itemize}
+
+
+		\end{itemize}
+		
+
+	\end{frame}
+
+
+	\begin{frame}\frametitle{PN Codes}
+		\begin{itemize}
+			\item Creation of a PN code via LFSR:
+		
+				\begin{figure}[t]
+					\centering
+					\resizebox {0.8\textwidth} {!} {
+						\begin{tikzpicture}
+
+
+							\node[block                  ] (last_register) {$s_{n-1}$};
+							\node[block, right = 1cm of last_register] (second_last_register) {$s_{n-2}$};
+							\draw[line] (last_register.east) -- (second_last_register.west) ;
+
+							\node[block, right = 3cm of second_last_register] (second_register) {$s_{1}$};
+							\node[block, right = 1cm of second_register] (mid_register) {$s_{0}$};
+							\draw[line] (second_register.east) -- (mid_register.west) ;
+
+							\draw[dashed, line] (second_last_register.east) -- (second_register.west) ;
+
+							\node[coordinate, right = 2cm of mid_register] (output_point) {};
+							\draw[line] (mid_register.east) -- (output_point.west) node [midway, above] {output};
+
+							\node[XOR, scale=2, below = 2cm of second_register] (first_xor) {};
+							\draw[line] (second_register.south) -- (first_xor.north) node [midway, right] {$C_1$};
+							\draw[line] (mid_register.south) |- (first_xor.east) node [pos=0.21, right] {$C_0$};
+
+							\node[coordinate, right = 1.5cm of second_last_register] (h) {};
+							\node[XOR, scale=2, below = 2.5cm of h] (mid_xor) {};
+							\draw[line] (first_xor.west) -- (mid_xor.east) ;
+							\draw[dashed, line] (h.south) -- (mid_xor.north) ;
+
+							\node[XOR, scale=2, below = 2cm of second_last_register] (second_last_xor) {};
+							\node[XOR, scale=2, below = 2cm of last_register] (last_xor) {};
+
+							\draw[line] (second_last_register.south) -- (second_last_xor.north) node [midway, right] {$C_{n-2}$};
+							\draw[line] (mid_xor.west) -- (second_last_xor.east) ;
+							
+							\draw[line] (second_last_xor.west) -- (last_xor.east) ;
+							\draw[line] (last_register.south) -- (last_xor.north) node [midway, right] {$C_{n-1}$};
+
+							\node[coordinate, left = 1cm of last_register] (return_point) {};
+							
+							\draw[line] (last_xor.west) -| (return_point) -- (last_register.west) ;
+
+						\end{tikzpicture}
+					}
+				\end{figure}
+
+			\item Properties:
+
+			\begin{itemize}
+				\item Auto-correlation is high, in synchronous and asynchronous scenarios.
+
+				\item Cross-correlation: Exhaustive analysis is required.
+
+				\item Number of codes $C = \frac{1}{n} \prod \{ P_{i} ^ {(\alpha_i - 1)} \times (P_i - 1) \}$ $\rightarrow$ $C \not\propto L$, does not scale well.
+			\end{itemize}
+
+		\end{itemize}
+		
+
+	\end{frame}
+
+
+
+	\begin{frame}\frametitle{Gold Codes}
+
+		\begin{itemize}
+			\item Creation of a Gold code via two LFSRs with the output connected to each other.
+
+			\item Properties:
+			\begin{itemize}
+
+				\item Auto-correlation is high, in synchronous and asynchronous scenarios.
+
+				\item Cross-correlation is low and math. bounded in synchronous and asynchronous scenarios.
+
+				\item Number of codes $C \propto L$, the length of code, so it scales well.
+
+			\end{itemize}
+
+
+		\end{itemize}
+		
+
+	\end{frame}
+
+
+
+
+
+
+
+
+
+
+	\begin{frame}\frametitle{Comparison of Codes}
+		
+
+		\begin{table}
+			\centering
+			\resizebox {\textwidth} {!} {
+				\begin{tabular}{ | l | l | l | l | }
+
+					\hline
+																	& Orthogonal 	& PN 		& Gold 		\\ \hline
+					Synchronous	Transmission						& \cmark		& \cmark	& \cmark	\\ \hline
+					A-synchronous Transmission						& \xmark		& \cmark	& \cmark	\\ \hline
+					Math. bounded CC (synch.)						& \cmark		& \xmark	& \cmark	\\ \hline
+					Math. bounded CC (asynch.)						& \xmark		& \xmark	& \cmark	\\ \hline
+					Scalability ($C \propto L$)						& \cmark		& \xmark	& \cmark	\\ \hline		
+
+
+				\end{tabular}
+			}
+
+		\end{table}
+	\end{frame}
+
+
+
+
+
+	\begin{frame}\frametitle{Mapping Problem}
+
+
+
+		\noindent
+		\begin{minipage}{.5\linewidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.8\textwidth]{mapping_radio_symbols.jpg}
+			\end{figure}
+
+			\begin{itemize}
+				\item Normal correlation function: $R_{XY}$
+			\end{itemize}
+			
+		\end{minipage}%
+		\begin{minipage}{.5\linewidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.8\textwidth]{mapping_binary_symbols.jpg}
+			\end{figure}
+
+			\begin{itemize}
+				\item Mapping of symbols: $b = \frac{1 - r}{2}$
+				\item New correlation function: $\hat{R}_{XY}$
+				\item $R_{XY} = -m - 2 \times \hat{R}_{XY}$
+			\end{itemize}
+
+
+		\end{minipage}
+
+
+
+
+
+		%\begin{itemize}
+%
+%		%	\item Problem:
+%
+%		%	\begin{itemize}
+%
+%		%		\item Codes explained are used with wireless communication that use symbols: $+1$ and $-1$: $\rightarrow$ %balanced around $0$, multiple signals will still be balanced around $0$.%
+%
+%		%		\item VLC is most commonly used with OOK symbols: 0 (LED Off) and 1 (LED On) $\rightarrow$ NOT balanced around %$0$, multiple signals will influence the balance.%
+%
+%		%		
+%		%	\end{itemize}
+%
+%		%	\item Solution:
+%		%	\begin{itemize}
+%
+%		%		\item Mapping must take place between these two sets of symbols: $b = \frac{1 - r}{2}$: $-1 \rightarrow 1$ and %$+1 \rightarrow 0$.%
+%
+%		%		\item Input this mapping into the correlation formula to correct for this issue.
+%
+%		%	\end{itemize}
+%
+		%\end{itemize}
+	\end{frame}
+
+
+
+
+
+	\begin{frame}\frametitle{Interference Solution}
+
+		\begin{itemize}
+
+			\item $R_{XY} \neq 0$ for Gold codes.
+
+			\item $R_{XY}$ is bounded.
+
+			\item Determine the max. no. of concurrent transmitters $m$ such that no interference occurs.
+
+			\item Example:
+				\begin{itemize}
+					\item 1025 LEDs
+					\item 1023 ID length
+					\item $m = 7$ LEDs
+				\end{itemize}
+
+			\item Continuous Method: Allows to transmit with all LEDs continuously.
+
+			\item Probabilistic Approach: Each LED will have a probability to transmit.
+
+		\end{itemize} 
+
+		%Cross-correlation is not negligible, therefore there will be interference. The amount of interference must be limited to still get accurate results.
+
+		%\begin{itemize}
+
+		%	\item Continuous Method: Allows to transmit with all LEDs continuously.
+
+		%	\item Probabilistic Approach: Each LED will have a probability to transmit.
+
+
+		%\end{itemize}
+
+
+	\end{frame}
+
+
+	\begin{frame}\frametitle{Continuous Method}
+
+		%Cross-correlation is math. bounded with Gold codes, bounded meaning that the maximum number of concurrent transmitters $m$ can be calculated, such that no interference will take place.
+
+		\begin{itemize}
+			\item Based on these $m$ LEDs we can calculate what code length to use: $L \propto m^2$.
+			\item With modulating frequency $f = 10$ kHz:
+			\item Example: System with $m = 7$ LEDs $\rightarrow L = 1023$ $\rightarrow t = 0.05$ s.
+			\item Example: System with $m = 1023$ LEDs $\rightarrow L = 2^{23} = 8388608$ $\rightarrow t = 14$ min.
+		\end{itemize}
+
+
+	\end{frame}
+
+
+
+	\begin{frame}\frametitle{Probabilistic Approach}
+
+		Trade-off must be made by the user between time and accuracy.
+
+		\begin{itemize}
+
+			\item Accuracy ($1 - \epsilon$): determines the accuracy in identifying which LEDs are on and off. Outputs a probability $p$ for which the LEDs will modulate.
+
+			\item Each point in time the no. of modulating LEDs $\le m$.
+
+			\item Time it will take to successfully identify all LEDs: $t = \frac{L}{f} \times \frac{1}{p}$
+
+			\begin{itemize}
+				\item Example: $1025$ LEDs $\rightarrow L = 1023$ $\rightarrow t = 53$ s for 99.9 \% accuracy or $t = 22$ s for 99 \% accuracy.
+			\end{itemize}
+
+		\end{itemize}
+		
+	\end{frame}
+
+
+
+
+
+
+	\begin{frame}\frametitle{Hardware Components}
+
+		Things that will be investigated: 
+
+		\begin{itemize}
+
+			\item Difference between DC and AC.
+
+			\item LED modulator:
+
+			\begin{itemize}
+				\item Existing LED modulator solutions.
+				\item Design of custom modulator:
+				\begin{itemize}
+					\item Zero crossing issue.
+					\item Non constant voltage issue.
+				\end{itemize}
+
+			\end{itemize}
+
+			\item Current sampler (smart-meter):
+			\begin{itemize}
+				\item Existing current sample option.
+				\item Custom solution.
+			\end{itemize}
+
+		\end{itemize}
+		
+	\end{frame}
+
+
+
+	\begin{frame}\frametitle{DC vs AC Voltage}
+
+		\begin{figure}
+			\resizebox {\textwidth} {!} {
+			  \centering
+			  \begin{minipage}[b]{0.49\textwidth}
+			    \includegraphics[width=\textwidth]{dc-wave.eps}
+			  \end{minipage}
+			  \hfill
+			  \begin{minipage}[b]{0.49\textwidth}
+			    \includegraphics[width=\textwidth]{ac-wave.eps}
+			  \end{minipage}
+			  
+		  }
+		\end{figure}
+
+		AC characteristics:
+
+		\begin{itemize}
+
+			\item Supplied voltage is not constant.
+
+			\item Supplied voltage will be both positive and negative.
+
+		\end{itemize}
+		
+	\end{frame}
+
+
+
+
+
+
+	\begin{frame}\frametitle{Existing Modulator Hardware}
+
+		\begin{figure}
+			\resizebox {0.8\textwidth} {!} {
+			  \centering
+			  \begin{minipage}[b]{0.48\textwidth}
+			    \includegraphics[width=\textwidth]{../chapters/hardware-chapters/AC/ac-modulator/smps-led/smps-current-primary-no-load-cropped.jpg}
+			    \caption{Switching Mode Power Supply modulating a `0'}
+			  \end{minipage}
+			  \hfill
+			  \begin{minipage}[b]{0.48\textwidth}
+			    \includegraphics[width=\textwidth]{../chapters/hardware-chapters/AC/ac-modulator/smps-led/smps-current-primary-with-load-cropped.jpg}
+			    \caption{Switching Mode Power Supply modulating a `1'}
+			  \end{minipage}
+		  }
+		\end{figure}
+
+		Very hard to distinguish and will not yield nice aggregated results when multiple of these SMPS will be used.
+		
+	\end{frame}
+
+
+
+
+	\begin{frame}\frametitle{Detecting When to Modulate}
+
+		\begin{itemize}
+
+			\item AC Voltage is zero crossing.
+
+			\item LEDs require some voltage before the current starts flowing.
+
+		\end{itemize}
+		
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.7\textwidth]{ac-wave-triggering.eps}
+		\end{figure}
+		
+		
+	\end{frame}
+
+
+
+	\begin{frame}\frametitle{Constant Current Draw}
+
+
+		\begin{itemize}
+
+			\item AC Voltage is not constant.
+
+			\item For disaggregation a constant current is desired.
+
+		\end{itemize}
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.6\textwidth]{../chapters/hardware-chapters/AC/ac-modulator/custom-hardware/ac-current-source/current-source-measurement-cropped.png}
+			%\caption{Constant current source}
+		\end{figure}
+
+
+	\end{frame}
+
+
+
+	\begin{frame}\frametitle{Smart meter}
+
+		AC Current sampler options:
+
+		\begin{columns}
+			\begin{column}{0.48\textwidth}
+
+				\begin{itemize}
+					\item Hall effect sensor:
+
+					\begin{itemize}
+						\item Sensitivity: 185 mV / A
+						\item Noise: 21 mV
+						\item Output: 15 W LED yields 12 mV 
+						\item Noise $>$ output: not a viable option.
+					\end{itemize}
+
+					\item Burden resistor:
+
+					\begin{itemize}
+						\item Sensitivity: 2800 mV / A
+						\item No noise 
+						\item Output: 15 W LED yields 183 mV 
+						\item Positive and negative voltage output %because of AC, so add a constant voltage to it and feed to an ADC
+					\end{itemize}
+
+
+				\end{itemize}
+			\end{column}
+			\begin{column}{0.48\textwidth}
+
+				\begin{figure}
+					\centering
+					\includegraphics[width=0.8\textwidth]{hall-effect-sensing}
+				\end{figure}
+
+			\end{column}
+		\end{columns}
+
+
+		
+
+		
+		
+	\end{frame}
+
+
+
+
+	\begin{frame}\frametitle{Recap}
+
+		%\begin{figure}
+%		%	\centering
+%		%	\resizebox {0.8\textwidth} {!} {
+%		%		\begin{tikzpicture}
+%
+%		%			\node[block] (smart_meter) {Smart-meter};	
+%
+%		%			\node[block, left = 1cm of smart_meter] (power) {Power};	
+%		%			\draw[line] (power.east) -- (smart_meter.west) node [midway, right] {};		
+%
+%		%			% second mod.
+%		%			\node[block, right = 4cm of smart_meter] (second_modulator) {Modulator};
+%		%			\node[LED, right = 0.5cm of second_modulator] (second_led) {LED};
+%		%			\draw[line] (second_modulator.east) -- (second_led.west) node [midway, right] {};
+%
+%		%			% first mod.
+%		%			\node[block, above = 1cm of second_modulator] (first_modulator) {Modulator};
+%		%			\node[LED, right = 0.5cm of first_modulator] (first_led) {LED};
+%		%			\draw[line] (first_modulator.east) -- (first_led.west) node [midway, right] {};
+%
+%		%			% third mod.
+%		%			\node[block, below = 1cm of second_modulator] (third_modulator) {Modulator};
+%		%			\node[LED, right = 0.5cm of third_modulator] (third_led) {LED};
+%		%			\draw[line] (third_modulator.east) -- (third_led.west) node [midway, right] {};
+%
+%		%			\node[dot, right = 2.5cm of smart_meter] (CP) {};
+%
+%		%			\draw (smart_meter.east) -- (CP) node [pos=0.3, above] {0222};
+%
+%		%			\draw (CP) |- (first_modulator.west) node  [pos=0.75, above] {0011};
+%		%			\draw (CP) |- (second_modulator.west) node [pos=0.75, above] {0110};
+%		%			\draw (CP) |- (third_modulator.west) node  [pos=0.75, below] {0101};
+%
+		%		\end{tikzpicture}
+		%	}
+		%\end{figure}
+
+
+		
+		\noindent
+		\begin{minipage}{.5\linewidth}
+			Explained: 
+
+			\begin{itemize}
+
+				\item Coding theory and which codes to use with the hardware.
+
+				\item Each hardware element on its own.
+
+			\end{itemize}
+		\end{minipage}%
+		\begin{minipage}{.5\linewidth}
+			\begin{figure}
+				%\centering
+				\includegraphics[width=1.05\textwidth]{design.pdf}
+			\end{figure}
+		\end{minipage}
+
+
+		
+
+	\end{frame}
+
+
+	\begin{frame}\frametitle{Evaluation Outline}
+		
+
+		\begin{itemize}
+
+			\item Hardware evaluation:
+			\begin{itemize}
+
+				\item Describe the setup.
+				\item Explain the results.
+			
+			\end{itemize}
+
+			\item Simulation:
+			\begin{itemize}
+				\item Describe the simulation.
+				\item Discuss the results.
+			\end{itemize}
+
+
+
+
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}\frametitle{AC Testbed}
+		
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.8\textwidth]{../chapters/hardware-chapters/AC/ac-test-bed/ac-test-bed-picture}
+		\end{figure}
+
+	\end{frame}
+
+
+
+
+	\begin{frame}\frametitle{Setup for Hardware Evaluation}
+		
+		
+
+		\begin{itemize}
+
+			\item Setup: 
+			\begin{itemize}
+				\item The setup consists of 3 commercial LEDs + current sampler.
+
+				\item 4 distinct codes will be used, 3 for the LEDs and one will represent an LED in an off state.
+
+				\item All LEDs are transmitting continuously with a code that support at least $m \ge 3$ concurrent transmitters.
+			\end{itemize}
+
+			\item Goals:
+			\begin{itemize}
+				\item Identifying an LED as being on without seeing interference from the other LEDs in a timely manner.
+
+				\item Verify that the fourth code cannot be identified as being on. 
+
+			\end{itemize}
+
+
+
+		\end{itemize}
+	\end{frame}
+
+
+
+
+	\begin{frame}\frametitle{Raw ADC Data}
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.8\textwidth]{ac-raw-data.eps}
+		\end{figure}
+
+	\end{frame}
+
+	\begin{frame}\frametitle{Processed ADC Data}
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.8\textwidth]{../chapters/evaluation-chapters/hardware/ac/processed-ac-testbed-adc-data.eps}
+		\end{figure}
+
+	\end{frame}
+
+	\begin{frame}\frametitle{Identifying LEDs}
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.8\textwidth]{correlation-results.eps}
+		\end{figure}
+
+	\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+	\begin{frame}\frametitle{Simulation}
+		
+		To be able to test larger systems, a software simulation is used: 
+
+		\begin{itemize}
+
+			\item Assuming 129 individual LEDs which follow the probabilistic scheme.
+
+			\item Each LED has its probability $p$ and for each point in time it is determined how many LEDs will be transmitting.
+
+			\item Those LEDs will then transmit its code.
+
+			\item The aggregated signal with all the code is then checked to try to identify if any LEDs are on.
+		\end{itemize}
+
+		
+
+	\end{frame}
+
+
+
+	\begin{frame}\frametitle{Fast but Inaccurate Simulation}
+		
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.8\textwidth]{../chapters/evaluation-chapters/simulation/sim-concurrent-tx-and-f-measure-eps=1-n=7}
+		\end{figure}
+
+	\end{frame}
+
+	\begin{frame}\frametitle{Slow but Accurate Simulation}
+		
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.8\textwidth]{../chapters/evaluation-chapters/simulation/sim-concurrent-tx-and-f-measure-eps=001-n=7}
+		\end{figure}
+
+	\end{frame}
+
+
+
+
+
+
+
+	\begin{frame}\frametitle{Conclusion and Future Work}
+
+		\begin{itemize}
+			\item Conclusion:
+				\begin{itemize}
+
+					\item Codes have been investigated.
+
+					\item Hardware is designed to encode and decode the IDs.
+
+					\item The software and hardware is evaluated along with a simulation for scalability.
+
+				\end{itemize}
+
+			\item Future Work:
+				\begin{itemize}
+
+					\item Other appliances
+
+					\item Dimming lights
+
+				\end{itemize}
+		\end{itemize}
+
+		
+		
+		
+
+	\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
