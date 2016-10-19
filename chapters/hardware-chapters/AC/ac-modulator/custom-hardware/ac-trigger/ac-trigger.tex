@@ -46,7 +46,7 @@
 	In \autoref{fig:triggering-circuit-output-2}, the preset voltage is set at 100 V.
 	When more than 100 V is available the LED will emit light and start drawing current.
 	At that point, around 1 ms in the figure, the triggering circuit will output a logical `1' to the micro-controller, meaning that the encoding of the ID may start.
-	When less than 100 V is available, around 9 ms in the figure, the logical output of the circuit becomes `0', indicating to the micro-controller that it is time to stop encoding the ID, else information is lost since the LED is not turning on anymore and therefor no longer draws current.
+	When less than 100 V is available, around 9 ms in the figure, the logical output of the circuit becomes `0', indicating to the micro-controller that it is time to stop encoding the ID, else information is lost since the LED is not turning on anymore and therefore no longer draws current.
 	The same happens for the negative part of the sine wave, except the preset is now $-100$ V.
 
 
