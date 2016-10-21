@@ -176,14 +176,14 @@
 
 			\item This data will also propagate through the current draw.
 
-			\item Can we construct these IDs in such a way that the aggregated current can be disaggregated by a smart-meter ?
+			%\item Can we construct these IDs in such a way that the aggregated current can be disaggregated by a smart-meter ?
 
 		\end{itemize}
 
 
 		\begin{figure}
 			\centering
-			\includegraphics[width=0.3\textwidth]{vlc-indoor-positioning-edit.png}
+			\includegraphics[width=0.5\textwidth]{vlc-indoor-positioning-edit2.jpg}
 		\end{figure}
 
 
@@ -356,7 +356,8 @@
 	%But this consists out of the correlation between A and A, A and B and A and C.
 	% R_AA is called the auto-correlation, which should be a high number to identify of the LED is on or off.
 	% The other two numbers are the cross-correlation, because the measure similarity between two different IDs.
-	% These two terms cause interfence and limit the accuracy of the system, so the cross-correlation must be as low as possible.
+	% These two terms cause interfence and limit the accuracy of the system, so the cross-correlation must be as close to zero as possible.
+	% if they are a large negative number the outcome could result in being a false-negative for example
 
 	% Because we are dealing with a large amount of lights, the interference can be so high that we can not make sense of the aggregated signal anymore.
 	% To prevent we will two solutions have been thought of which well come back to later.
@@ -657,6 +658,7 @@
 
 		\noindent
 		\begin{minipage}{.5\linewidth}
+			Wireless:
 			\begin{figure}
 				\centering
 				\includegraphics[width=0.8\textwidth]{mapping_radio_symbols.jpg}
@@ -668,6 +670,8 @@
 			
 		\end{minipage}%
 		\begin{minipage}{.5\linewidth}
+
+			Our Scenario:
 			\begin{figure}
 				\centering
 				\includegraphics[width=0.8\textwidth]{mapping_binary_symbols.jpg}
@@ -676,7 +680,7 @@
 			\begin{itemize}
 				\item Mapping of symbols: $b = \frac{1 - r}{2}$
 				\item New correlation function: $\hat{R}_{XY}$
-				\item $R_{XY} = f(\hat{R}_{XY})$    %$R_{XY} = -m - 2 \times \hat{R}_{XY}$
+				\item $R_{XY} = -m - 2 \times \hat{R}_{XY}$ %$R_{XY} = f(\hat{R}_{XY})$
 			\end{itemize}
 
 
@@ -693,6 +697,9 @@
 	% This figure from earlier shows this interference.
 	% Here we want to see if light A is on. 
 	% but B and C are interfering with identifying if A is on or off.
+	% if the CC is large negative then false negative will occur, because the result sugusts A is off while it is ON.
+	% IF we want to see if another light D is on, we know D is off, because it is not transmitting.
+	% however if the sums of CC is high positive number  it says that D is on , which is a false positive. 
 
 	%becuse of the interfernce of other LEDs there must be a maximum amount of other leds transmitting at the same time while still maintaining an accurate system.
 
@@ -703,9 +710,6 @@
 
 	%This can be done in via methods.
 	%
-
-
-
 
 
 	\begin{frame}\frametitle{Interference Solution}
@@ -798,6 +802,7 @@
 
 	% in order to speed the system up, a probabilistic approach is used.
 	% with this approach a trade off must be made betweeen time and accuracy.
+	% Fast identifyin of all leds will results in a less accurate system, and a more accurate system will result in a greater time needed to identify all the leds
 	% The accuracy expressed in 1 - epsilon outputs a probability p which is assigned to each LED for which it will transmit.
 	% p is chosen such that most of the time the number of transmitting leds will not exceed m.
 	% when we have approx. the same number of LEDs as in the previous example where it took 14 mins, it will now take less than a minute with 99.9 accuracy or even faster 22 s for a slighty lower accuracy.
@@ -837,6 +842,8 @@
 	% Or at least we can do this in theory.
 
 	% now we need to investigate if it will also work in practice
+
+	% for this work a dc and ac hardware is developed, but the dc case is the more trivial one, so in this presentaion we will focus on the AC case.
 	% To do this we will need two pieces of hardware: the modulator and the smart-meter.
 
 	% first we will go over the modulators requirements
@@ -1002,6 +1009,7 @@
 	% this smart meter also consists of two important parts.
 	% The part where it samples the current and gives this information to the microcontroller.
 	% And also the same  triggering circuit is presetn to notify the micro controller when to start and stop looking for encoded information.
+	% because the triggering circuits are the same here as in the modulator and they both receive the same voltage, both devices are synchronized.
 
 
 	\begin{frame}\frametitle{Smart-meter}
@@ -1120,18 +1128,21 @@
 
 			\item Setup: 
 			\begin{itemize}
-				\item The setup consists of 3 commercial LEDs + current sampler.
+				%\item The setup consists of 3 commercial LEDs + current sampler.
 
 				\item 4 distinct codes will be used, 3 for the LEDs and one will represent an LED in an off state.
 
-				\item All LEDs are transmitting continuously with a code that support at least $m \ge 3$ concurrent transmitters.
+				%\item All LEDs are transmitting continuously with a code that support at least $m \ge 3$ concurrent transmitters.
+				\item Modulation via continuous method with $m \ge 3$ code.
 			\end{itemize}
 
 			\item Goals:
 			\begin{itemize}
-				\item Identifying an LED as being on without seeing interference from the other LEDs in a timely manner.
+				%\item Identifying an LED as being on without seeing interference from the other LEDs in a timely manner.
 
-				\item Verify that the fourth code cannot be identified as being on. 
+				%\item Verify that the fourth code cannot be identified as being on. 
+
+				\item Correctly identify state of LEDs in a timely manner.
 
 			\end{itemize}
 
@@ -1175,7 +1186,7 @@
 	\end{frame}
 
 
-
+	%this evaluation has run multiple times adn each time similar results were observerd
 	% First of we can see here the threshold line, if a results is above measn led on else led is off.
 
 	% the blue signal represents the LED which is on and the oragne signal the led that is off.
@@ -1207,17 +1218,23 @@
 
 	\begin{frame}\frametitle{Simulation}
 		
-		To be able to test larger systems, a software simulation is used: 
+		%To be able to test larger systems, a software simulation is used: 
+		Software simulation:
 
 		\begin{itemize}
 
-			\item Assuming 129 individual LEDs which follow the probabilistic scheme.
+			%\item Assuming 129 individual LEDs which follow the probabilistic scheme.
+			\item 129 LEDs.
 
-			\item Each LED has its probability $p$ for which it will modulate.
+			\item Modulation via probabilistic method.
 
-			\item Those LEDs will then transmit its code.
+			%\item Each LED has its probability $p$ for which it will modulate.
 
-			\item The aggregated signal with all the code is then checked to try to identify if any LEDs are on.
+			%\item Those LEDs will then transmit its code.
+
+			%\item The aggregated signal with all the code is then checked to try to identify if any LEDs are on.
+
+			\item Identify state of all LEDs by correlating all IDs with aggregated signal.
 		\end{itemize}
 
 		
@@ -1276,10 +1293,21 @@
 
 
 
-	% Investigatd codes and made them suitable for the use with LEDs.
+	%First goal explain:
+	% What we set out to do with this work is to see if we could identify which individual lights are on with a single smart-meter.
+	%WE could only  measure the aggregated energy signatures and with that we had to identify which lights were on.
+
+	% we have eachiev this by doing the following things
+
+	% Investigatd codes that have resilisnce to each other
+	% we made them suitable for the use with LEDs.
+	% And come up with a way to identfy a large amount of leds in a timelymanner
+
 	% Designed hardware to give each LED a recognizable and unique energy signature.
 	% Designed smart-meter which can sample the aggregated energy consumption.
 	% Made software which can detect which leds are on by looking at the aggragted energy consumption
+
+	% multiple evulating efforts were made with good results, we were able to identify which leds were on in a timely manner when using DC and AC.
 	% PRoven the scalability of the system.
 
 	% two most important items for future work are to do with other appliances and dimming lights.
